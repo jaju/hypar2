@@ -1,0 +1,8 @@
+link_directories (${CMAKE_SOURCE_DIR}/hypar)
+link_libraries (hypar)
+add_executable (charentitytest charentitytest.cpp)
+add_executable (charstreamtest charstreamtest.cpp)
+add_executable (iconvtest iconvtest.cpp)
+add_executable (mmaptest mmaptest.cpp)
+add_executable (saxtimertest saxtimertest.cpp)
+add_executable (tokenizertest tokenizertest.cpp)

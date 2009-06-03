@@ -1,0 +1,9 @@
+#ifndef _HYPAR_CONFIG_H_
+#define _HYPAR_CONFIG_H_
+
+#cmakedefine DEBUG
+#cmakedefine USE_WIDECHAR
+#cmakedefine HAVE_CXX_LIST
+#cmakedefine HAVE_MMAP
+
+#endif // _HYPAR_CONFIG_H_

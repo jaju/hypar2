@@ -1,0 +1,28 @@
+              The HYpertext PARsing SUITE (Version 2)
+              ---------------------------------------
+
+ README
+--------
+
+This is a library meant mainly for information extraction purposes from *ML
+documents. It takes a document as input, and creates a DOM tree from it, and
+then allows you to work with it. It's very tolerant towards malformed documents
+(that is, documents which do not well-formed according to the XML terminology.)
+
+The library needs a table containing rules which tell it which tags are valid,
+and where those tags should occur. It's completely table-driven, without any
+hard-coding of rules. There is a default table containing rules which resemble
+the HTML-rulesets very closely (the table has its limitations - it can not
+capture the rules which DTDs can specify perfectly ...)
+If no table is supplied, default 'XML well-formed'-ness rules are applied.
+
+For the sample rules-table of HTML, look for the file htmltable.cpp within the
+src/hypar directory.
+
+The test/ directory contains a lot of sample code for testing various
+components and serves as a good starting point to figure how to use the
+library.
+
+-- 
+All copyrights reserved by Ravindra Jaju (2004 -)
+<lastname-in-smallcase> [AT] msync org

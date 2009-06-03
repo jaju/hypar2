@@ -1,0 +1,36 @@
+Installation Instructions
+*************************
+This library uses the 'autotools.' See the generic installation instructions
+for using the "configure" script.
+
+*** First Time ***
+Use the 'autogen.sh' script to generate the configure script, and the
+Makefile.in-s The options to the configure script can be passed to the
+autogen.sh script, and they will be passed verbatim to the generated
+configure script (except for the '--force' option, which should follow
+immediately after the './autogen.sh' as it has to be 'gobbled up'
+******************
+
+HyPar specific options to the "configure" script follow:
+* --enable-debug
+  Enable debug messages. This is a compile-time option, and there is no way
+  to toggle this at run-time, as of now.
+* --enable-widechar
+  Enable use of wchar_t based strings instead of char based ones, for internal
+  representation. Most of the IO happens in 'char' mode. This is for use mostly
+  with other applications which work with their text data in wchar_t format.
+
+Most commonly used options (as far as HyPar is concerned)
+*********************************************************
+* --disable-static
+  Disable the building of the static library
+* --prefix
+  Specify where the installation happens (default is /usr/local)
+
+Usage instructions (after installation)
+***************************************
+HyPar depends on pkg-config to facilitate other applications/libraries to
+use HyPar. By default, the .pc file (hypar.pc) is installed in
+$prefix/lib/pkgconfig. If pkg-config can not find hypar-specific flags,
+add the pkgconfig directory path to the PKG_CONFIG_PATH shell variable and
+run pkg-config again.

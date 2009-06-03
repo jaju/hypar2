@@ -1,0 +1,3 @@
+ - Fix the 'const char *' or 'char *' text buffer issue, first!
+ - A better debugging system?
+ - More unit-test code
