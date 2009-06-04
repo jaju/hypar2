@@ -94,12 +94,10 @@ TagEntry::TagEntry (
     m_pParentList (0),
     m_pRparentList (0)
 {
-    _char *tmpStrPtr;
-
     if (m_pParent != 0)
     {
-        tmpStrPtr = _strrchr (m_pParent, ',');
-        if (!tmpStrPtr)
+        const _char *constTmpStrPtr = _strrchr (m_pParent, ',');
+        if (!constTmpStrPtr)
         {
             m_pFirstParent = m_pParent;
         }
@@ -107,7 +105,7 @@ TagEntry::TagEntry (
         {
             m_pParentNew = _strdup (m_pParent);
             assert (m_pParentNew);
-            tmpStrPtr = m_pParentNew;
+            _char *tmpStrPtr = m_pParentNew;
             while (*tmpStrPtr)
             {
                 *tmpStrPtr = _tolower(*tmpStrPtr);
@@ -122,8 +120,8 @@ TagEntry::TagEntry (
 
     if (m_pRparent != 0)
     {
-        tmpStrPtr = _strrchr(m_pRparent, ',');
-        if (!tmpStrPtr)
+        const _char *constTmpStrPtr = _strrchr(m_pRparent, ',');
+        if (!constTmpStrPtr)
         {
             m_pFirstRparent = m_pRparent;
         }
@@ -131,7 +129,7 @@ TagEntry::TagEntry (
         {
             m_pRparentNew = _strdup (m_pRparent);
             assert (m_pRparentNew);
-            tmpStrPtr = m_pRparentNew;
+            _char *tmpStrPtr = m_pRparentNew;
             while (*tmpStrPtr)
             {
                 *tmpStrPtr = _tolower (*tmpStrPtr);

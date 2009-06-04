@@ -10,6 +10,7 @@
 #include "hypar/debug.hpp"
 
 #include <iostream>
+#include <cstdio>
 #include <stdarg.h>
 
 BEGIN_NAMESPACE (hy);
