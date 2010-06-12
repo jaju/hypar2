@@ -7,9 +7,7 @@
  * included with the source-code
  */
 
-#ifndef _URL_H_
-#define _URL_H_
-
+#pragma once
 #include "hypar/localdefs.h"
 #include <string>
 #include <list>
@@ -140,5 +138,3 @@ class URL
 };
 
 END_NAMESPACE (hy);
-
-#endif /* _URL_H_ */

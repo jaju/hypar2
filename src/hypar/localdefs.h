@@ -7,9 +7,7 @@
  * included with the source-code
  */
 
-#ifndef _LOCALDEFS_H_
-#define _LOCALDEFS_H_
-
+#pragma once
 #ifdef HAVE_CONFIG_H
 # include "hypar/config.h"
 #endif
@@ -86,5 +84,3 @@ typedef std::wstring _string;
 # define _strtol strtol
 typedef std::string _string;
 #endif /* USE_WIDECHAR */
-
-#endif // _LOCALDEFS_H_

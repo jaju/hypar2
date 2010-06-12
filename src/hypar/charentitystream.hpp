@@ -19,8 +19,7 @@
  * multi-byte char processing)
  */
 
-#ifndef _WIDECHARENTITYSTREAM_H_
-#define _WIDECHARENTITYSTREAM_H_
+#pragma once
 
 #include "hypar/localdefs.h"
 
@@ -107,4 +106,3 @@ class CharEntityStream
 };
 
 END_NAMESPACE (hy);
-#endif // _WIDECHARENTITYSTREAM_H_

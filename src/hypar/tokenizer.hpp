@@ -7,9 +7,7 @@
  * included with the source-code
  */
 
-#ifndef _TXT_TOKENIZER_H_
-#define _TXT_TOKENIZER_H_
-
+#pragma once
 #include "hypar/localdefs.h"
 
 #include <string>
@@ -129,5 +127,3 @@ typedef Tokenizer WC_TEMPLATE_SPEC WCTokenizer;
 #endif
 
 END_NAMESPACE (hy);
-
-#endif // _TXT_TOKENIZER_H_

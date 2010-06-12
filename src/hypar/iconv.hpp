@@ -7,9 +7,7 @@
  * included with the source-code
  */
 
-#ifndef _HY_ICONV_H_
-#define _HY_ICONV_H_
-
+#pragma once
 #include "hypar/localdefs.h"
 #include <iconv.h>
 
@@ -58,4 +56,3 @@ class Iconv
 };
 
 END_NAMESPACE (hy);
-#endif // _HY_ICONV_H_

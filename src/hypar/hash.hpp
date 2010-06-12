@@ -7,9 +7,7 @@
  * included with the source-code
  */
 
-#ifndef _UTILS_HASH_H_
-#define _UTILS_HASH_H_
-
+#pragma once
 #include "hypar/localdefs.h"
 #include "hypar/url.hpp"
 
@@ -68,4 +66,3 @@ struct strcasehash
 };
 
 END_NAMESPACE (hy);
-#endif // _UTILS_HASH_H_

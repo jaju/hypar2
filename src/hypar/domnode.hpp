@@ -1,6 +1,4 @@
-#ifndef _HYPAR_DOMNODE_H_
-#define _HYPAR_DOMNODE_H_
-
+#pragma once
 #include "hypar/localdefs.h"
 #include "hypar/hash.hpp"
 #include "hypar/hashmap.hpp"
@@ -114,4 +112,3 @@ class DOMNode
 
 };
 END_NAMESPACE(hy);
-#endif // _HYPAR_DOMNODE_H_

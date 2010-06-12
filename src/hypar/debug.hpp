@@ -7,8 +7,7 @@
  * included with the source-code
  */
 
-#ifndef _HYPAR_DEBUG_H_
-#define _HYPAR_DEBUG_H_
+#pragma once
 #include "hypar/localdefs.h"
 
 BEGIN_NAMESPACE (hy);
@@ -25,7 +24,6 @@ long echowide (long l);
 void debug_print (const char *format, ...);
 
 #define hy_warn(a) debug_print ("WARN:%s(%d): ", __FILE__, __LINE__); debug_print a
-#endif /* _HYPAR_DEBUG_H_ */
 END_NAMESPACE (hy);
 
 #ifdef _HYPAR_DEBUG_H_

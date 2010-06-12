@@ -7,9 +7,7 @@
  * included with the source-code
  */
 
-#ifndef _HYPAR_DOMUTILS_H_
-#define _HYPAR_DOMUTILS_H_
-
+#pragma once
 #include "hypar/localdefs.h"
 #include "hypar/xml.hpp"
 
@@ -28,5 +26,3 @@ NodeList filterNodesByAttrVal (const _char *pAttr, const _char *pVal,
 int toText (DOMNode *pRootNode, _string &outString);
 
 END_NAMESPACE (hy);
-
-#endif // _HYPAR_DOMUTILS_H_

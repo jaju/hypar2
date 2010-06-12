@@ -1,6 +1,4 @@
-#ifndef _HYPAR_ENTITYSTACK_H_
-#define _HYPAR_ENTITYSTACK_H_
-
+#pragma once
 #include "hypar/localdefs.h"
 #include <deque>
 #include <vector>
@@ -31,4 +29,3 @@ class EntityStack
 };
 
 END_NAMESPACE(hy);
-#endif // _HYPAR_ENTITYSTACK_H_

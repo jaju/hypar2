@@ -1,6 +1,4 @@
-#ifndef _HYPAR_TAG_H_
-#define _HYPAR_TAG_H_
-
+#pragma once
 #include "hypar/localdefs.h"
 #include <list>
 
@@ -59,4 +57,3 @@ class Tag
                 _char **pValue, bool bSetNull = false);
 };
 END_NAMESPACE(hy);
-#endif // _HYPAR_TAG_H_

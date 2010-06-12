@@ -7,9 +7,7 @@
  * included with the source-code
  */
 
-#ifndef _HYPAR_HTML_H_
-#define _HYPAR_HTML_H_
-
+#pragma once
 #include "hypar/xml.hpp"
 #include "hypar/hash.hpp"
 
@@ -108,4 +106,3 @@ class URLCollector
 };
 
 END_NAMESPACE (hy);
-#endif // _HYPAR_HTML_H_

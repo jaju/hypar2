@@ -12,9 +12,7 @@
  * kinds - 'char' and 'wchar_t'
  */
 
-#ifndef _HYPAR_STRUTILS_H_
-#define _HYPAR_STRUTILS_H_
-
+#pragma once
 #include "hypar/localdefs.h"
 #include <string>
 
@@ -43,4 +41,3 @@ _string _itos (int ii);
 
 END_NAMESPACE (textutils);
 END_NAMESPACE (hy);
-#endif

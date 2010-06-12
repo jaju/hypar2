@@ -1,5 +1,4 @@
-#ifndef _HYPAR_TAGTABLE_H_
-#define _HYPAR_TAGTABLE_H_
+#pragma once
 #include "hypar/localdefs.h"
 #include "hypar/tagentry.hpp"
 #include "hypar/hash.hpp"
@@ -48,4 +47,3 @@ class TagTable
         TERepository m_TERepository;
 };
 END_NAMESPACE(hy);
-#endif // _HYPAR_TAGTABLE_H_

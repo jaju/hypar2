@@ -1,5 +1,4 @@
-#ifndef _HYPAR_TAGENTRY_H_
-#define _HYPAR_TAGENTRY_H_
+#pragma once
 #include "hypar/localdefs.h"
 
 #include <vector>
@@ -60,4 +59,3 @@ class TagEntry
         const std::vector <const _char *> *getRparentList () const;
 };
 END_NAMESPACE(hy);
-#endif // _HYPAR_TAGENTRY_H_

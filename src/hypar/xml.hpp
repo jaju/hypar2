@@ -7,9 +7,7 @@
  * included with the source-code
  */
 
-#ifndef _HYPAR_HYXML_H_
-#define _HYPAR_HYXML_H_
-
+#pragma once
 #include "hypar/localdefs.h"
 #include "hypar/tag.hpp"
 #include "hypar/tagentry.hpp"
@@ -130,4 +128,3 @@ class XML
 };
 
 END_NAMESPACE (hy);
-#endif // _HYPAR_HYXML_H_

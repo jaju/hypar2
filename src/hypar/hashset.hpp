@@ -7,9 +7,7 @@
  * included with the source-code
  */
 
-#ifndef _UTILS_HASHSET_H_
-#define _UTILS_HASHSET_H_
-
+#pragma once
 #ifndef WIN32
 # include <tr1/unordered_set>
 # define HashSet std::tr1::unordered_set
@@ -18,5 +16,3 @@
 #include <set>
 #define Set set
 #endif
-
-#endif // _UTILS_HASHSET_H_

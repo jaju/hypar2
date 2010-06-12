@@ -7,9 +7,7 @@
  * included with the source-code
  */
 
-#ifndef _HYPAR_MMAPWRAPPER_H_
-#define _HYPAR_MMAPWRAPPER_H_
-
+#pragma once
 #include "hypar/localdefs.h"
 
 BEGIN_NAMESPACE (hy);
@@ -60,4 +58,3 @@ class Mmap
 };
 
 END_NAMESPACE (hy);
-#endif // _HYPAR_MMAPWRAPPER_H_
