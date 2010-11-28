@@ -3,6 +3,7 @@
 #include "hypar/hash.hpp"
 #include "hypar/hashmap.hpp"
 #include "hypar/tag.hpp"
+#include "hypar/tree.hpp"
 
 BEGIN_NAMESPACE(hy);
 
@@ -16,7 +17,8 @@ typedef HashMap <const _char *, const _char *, strcasehash, eqcase> PropertyMap;
  * do all analysis stuff in the derived class. DOMNode provides only
  * basic functionality.
  */
-class DOMNode
+
+class DOMNode : public TreeNode
 {
     public:
         typedef void (*CallBack) (DOMNode *, void *);
@@ -35,14 +37,14 @@ class DOMNode
         const char *name() const { return m_pName; }
         void setName(const char *name) { m_pName = name; }
         const char *content() const { return m_pContent; }
-        DOMNode *&parent() { return m_pParent; }
-        DOMNode *&child() { return m_pChild; }
-        DOMNode *&previous() { return m_pPrev; }
-        DOMNode *&next() { return m_pNext; }
-        DOMNode *&last() { return m_pLast; }
         bool &selfClosing() { return m_bSelfClosing; }
-        int &level() { return m_iLevel; }
-        int &horizontalLevel() { return m_iHorLevel; }
+
+    public: // convenience
+        DOMNode *&parent() { return (DOMNode *&) TreeNode::parent(); }
+        DOMNode *&child() { return (DOMNode *&) TreeNode::child(); }
+        DOMNode *&previous() { return (DOMNode *&) TreeNode::previous(); }
+        DOMNode *&next() { return (DOMNode *&) TreeNode::next(); }
+        DOMNode *&last() { return (DOMNode *&) TreeNode::last(); }
 
     private:
         void reset ();
@@ -53,19 +55,11 @@ class DOMNode
 
         virtual DOMNode *clone () const;
         virtual DOMNode *clone (NodeType nodeType, const _char *pName = 0) const;
-        int initLevel (int iLevel = 0, bool bNext = true);
 
     public:
         virtual ~DOMNode ();
 
     public:
-        int detach ();
-        int attachAsChild (DOMNode *pNode);
-        int insertAsParent (DOMNode *pNode);
-        int insertAsChild (DOMNode *pNode);
-        int attachAsPrevious (DOMNode *pNode);
-        int attachAsNext (DOMNode *pNode);
-
     public:
         int addProperty (pair <const _char *, const _char *> &p);
         int addProperty (const _char *pName, const _char *pValue);

@@ -10,7 +10,7 @@
 #include "hypar/domnode.hpp"
 #include "hypar/textutils.hpp"
 
-#include <assert.h>
+#include <cassert>
 #include <iostream>
 #include "hypar/debug.hpp"
 
@@ -18,19 +18,12 @@ USING_NAMESPACE (std);
 
 BEGIN_NAMESPACE (hy);
 
-DOMNode::DOMNode (DOMNode::NodeType nodeType, const _char *pStr) :
+DOMNode::DOMNode (DOMNode::NodeType nodeType, const _char *pStr) : TreeNode (),
     m_pPropertyMap (0),
-    m_pParent (0),
-    m_pPrev (0),
-    m_pNext (0),
-    m_pChild (0),
-    m_pLast (0),
     m_type (nodeType),
     m_pName (0),
     m_pContent (0),
-    m_bSelfClosing (true),
-    m_iLevel (0),
-    m_iHorLevel (0)
+    m_bSelfClosing (true)
 {
     switch (m_type)
     {
@@ -48,14 +41,6 @@ DOMNode::DOMNode (DOMNode::NodeType nodeType, const _char *pStr) :
 
 DOMNode::~DOMNode ()
 {
-    DOMNode *pTmpNode = m_pChild;
-
-    while (m_pChild)
-    {
-        pTmpNode = m_pChild;
-        m_pChild = m_pChild->m_pNext;
-        delete pTmpNode;
-    }
     safe_delete (m_pPropertyMap);
 }
 
@@ -83,156 +68,6 @@ DOMNode::clone (NodeType nodeType, const _char *pName) const
     return pRetNode;
 }
 
-    int
-DOMNode::detach ()
-{
-    if (!m_pParent && !m_pPrev && !m_pNext)
-        return -1;
-    if (m_pPrev)
-    {
-        m_pPrev->m_pNext = m_pNext;
-    }
-    else
-    {
-        if (m_pParent)
-        {
-            m_pParent->m_pChild = m_pNext;
-        }
-    }
-    if (m_pNext)
-    {
-        m_pNext->m_pPrev = m_pPrev;
-    }
-    else
-    {
-        if (m_pParent)
-        {
-            m_pParent->m_pLast = 0;
-        }
-    }
-    m_pParent = 0;
-    m_pPrev = 0;
-    m_pNext = 0;
-    return 0;
-}
-
-    int
-DOMNode::attachAsChild (DOMNode *pNode)
-{
-    if (!pNode)
-        return -1;
-    if (!m_pChild)
-    {
-        m_pChild = m_pLast = pNode;
-        pNode->m_pParent = this;
-        pNode->m_pPrev = pNode->m_pNext = 0;
-        pNode->initLevel (m_iLevel + 1, true);
-        return 1;
-    }
-    else
-    {
-        int retval = m_pLast->attachAsNext (pNode);
-        assert (m_pLast == pNode);
-        return retval;
-    }
-}
-
-    int
-DOMNode::insertAsParent (DOMNode *pNode)
-{
-    int retval = -1;
-    if (!pNode)
-    {
-        return -1;
-    }
-    if (m_pPrev)
-    {
-        m_pPrev->m_pNext = pNode;
-    }
-    if (m_pNext)
-    {
-        m_pNext->m_pPrev = pNode;
-    }
-    if (m_pParent)
-    {
-        if (this == m_pParent->m_pChild)
-        {
-            m_pParent->m_pChild = pNode;
-        }
-        if (this == m_pParent->m_pLast)
-        {
-            m_pParent->m_pLast = pNode;
-        }
-    }
-    m_pPrev = m_pNext = m_pParent = 0;
-    retval = pNode->attachAsChild (this);
-    return retval;
-}
-
-    int
-DOMNode::insertAsChild (DOMNode *pNewChild)
-{
-    DOMNode *pChild = m_pChild;
-    while (pChild)
-    {
-        pChild->m_pParent = pNewChild;
-        pChild = pChild->m_pNext;
-    }
-    pNewChild->m_pChild = m_pChild;
-    pNewChild->m_pLast = m_pLast;
-    m_pChild = pNewChild;
-    m_pLast = pNewChild;
-    m_pChild->initLevel(m_iLevel + 1, true);
-    return 1;
-}
-
-    int
-DOMNode::attachAsPrevious (DOMNode *pNode)
-{
-    if (!pNode)
-        return -1;
-    pNode->m_pNext = this;
-    pNode->m_pPrev = m_pPrev;
-    pNode->m_pParent = m_pParent;
-    if (m_pPrev)
-    {
-        m_pPrev->m_pNext = pNode;
-    }
-    else
-    {
-        if (m_pParent)
-        {
-            m_pParent->m_pChild = pNode;
-        }
-    }
-    m_pPrev = pNode;
-    pNode->initLevel(m_iLevel, false);
-    return 0;
-}
-
-    int
-DOMNode::attachAsNext (DOMNode *pNode)
-{
-    if (!pNode)
-        return -1;
-    pNode->m_pNext = m_pNext;
-    pNode->m_pPrev = this;
-    pNode->m_pParent = m_pParent;
-    if (m_pNext)
-    {
-        m_pNext->m_pPrev = pNode;
-    }
-    else
-    {
-        if (m_pParent)
-        {
-            m_pParent->m_pLast = pNode;
-        }
-    }
-    m_pNext = pNode;
-    pNode->initLevel (m_iLevel, false);
-    return 0;
-}
 
 int DOMNode::copyAttributes (Tag *tag)
 {
@@ -272,20 +107,6 @@ DOMNode::reset ()
     m_iHorLevel = 0;
 }
 
-    int
-DOMNode::initLevel (int iLevel, bool bNext)
-{
-    m_iLevel = iLevel;
-    if (m_pChild)
-    {
-        m_pChild->initLevel (m_iLevel + 1, true);
-    }
-    if (bNext && m_pNext)
-    {
-        m_pNext->initLevel (m_iLevel, true);
-    }
-    return 0;
-}
 
     int
 DOMNode::addProperty (const _char *pName, const _char *pValue)

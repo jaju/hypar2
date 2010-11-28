@@ -14,6 +14,7 @@ tag.cpp
 tagentry.cpp
 tagtable.cpp
 textutils.cpp
+tree.cpp
 urlcollector.cpp
 url.cpp
 xml.cpp

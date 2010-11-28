@@ -18,3 +18,7 @@ src/test/iconvtest
 src/test/mmaptest
 src/test/saxtimertest
 src/test/tokenizertest
+.cproject
+.project
+tags
+install_manifest.txt
