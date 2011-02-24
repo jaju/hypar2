@@ -120,6 +120,7 @@ int XML::addNode (Tag *pTag, bool bSelfClosing)
 
 int XML::addNode (const _char *pElementName, bool bSelfClosing)
 {
+    debug(("Adding XML node...\n"));
     DOMNode *pNode = m_pCloneableNode->clone (DOMNode::ELEMENT, pElementName);
     pNode->selfClosing() = bSelfClosing;
     if (m_pCurrentNode)
@@ -143,6 +144,7 @@ int XML::addNode (const _char *pElementName, bool bSelfClosing)
 int XML::addNodeSelfContained (DOMNode::NodeType nodeType,
         const _char *pContent)
 {
+    debug(("Adding self-contained XML node\n"));
     DOMNode *pNode = m_pCloneableNode->clone (nodeType, pContent);
     if (m_pCurrentNode)
     {
@@ -163,6 +165,7 @@ int XML::addNodeSelfContained (DOMNode::NodeType nodeType,
 
 int XML::addNodeSelfContained (Tag *t)
 {
+    debug(("Adding self-contained Tag named %s\n", t->m_pName));
     addNodeSelfContained (DOMNode::ELEMENT, t->m_pName);
     m_pCurrentNode->copyAttributes (t);
     return 0;
@@ -170,6 +173,7 @@ int XML::addNodeSelfContained (Tag *t)
 
 int XML::closeNode ()
 {
+    debug(("Closing node...\n"));
     if (m_pCurrentParentNode == m_pRootNode)
     {
         debug (("Tried closing more nodes than you opened!"));
@@ -508,14 +512,12 @@ MAKE_VALID_ONLY_GOTO:
 
 inline int XML::handleText (_char *pText)
 {
-    addNodeSelfContained (DOMNode::TEXT, pText);
-    return 0;
+    return addNodeSelfContained (DOMNode::TEXT, pText);
 }
 
 inline int XML::handleComment (_char *pComment)
 {
-    addNodeSelfContained (DOMNode::COMMENT, pComment);
-    return 0;
+    return addNodeSelfContained (DOMNode::COMMENT, pComment);
 }
 
 int XML::correctStack (const TagEntry *pTagEntry, bool bCheckOnly)
