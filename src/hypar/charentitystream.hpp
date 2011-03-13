@@ -66,22 +66,28 @@ class CharEntityStream
         status_t m_status;
         EntityType m_prevEntity;
 
-    public:
+    private:
         CharEntityStream ();
+        void setSourceBuffer (_char *pBuffer, long lBufLength);
+        void reset ();
+        bool set (const _char c);
+        bool setNull ();
+        bool putBack (const _char c);
+        long getRemainingLength ();
+        long getBufferLength ();
+
+    public:
         CharEntityStream (_char *pBuffer, long lBufLength);
         ~CharEntityStream () {}
 
     public:
-        void setSourceBuffer (_char *pBuffer, long lBufLength);
-        void reset ();
 
         unsigned long advance (unsigned long lLenToAdvance = 1);
         unsigned long rewind (unsigned long lLenToRewind = 1);
 
         _char peek ();
         _char get ();
-        _char *getBuffer ();
-        _char *getBufferBase ();
+        const _char *getBuffer ();
         _char *getTill (const _char stopChar, long &lOutLen, bool &bFound,
                 bool bAdvance = false);
 
@@ -92,15 +98,7 @@ class CharEntityStream
                 const _char stopChar_2,
                 long &lOutLen, _char &charFound, bool bAdvance = false);
 
-        bool set (const _char c);
-        bool setNull ();
-        bool putBack (const _char c);
-
-        long getRemainingLength ();
-        long getBufferLength ();
         void setPrevEntity (EntityType et);
-
-    public:
         EntityType getNextEntity (_char **pEntityStr, bool bSetNull = false);
 
 };

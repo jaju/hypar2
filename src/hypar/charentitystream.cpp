@@ -117,18 +117,13 @@ _char CharEntityStream::get ()
     }
 }
 
-_char * CharEntityStream::getBuffer ()
+const _char * CharEntityStream::getBuffer ()
 {
     if (m_status != CharEntityStream::EWCSTREAMEOF)
     {
         return m_pCur;
     }
     return 0;
-}
-
-_char * CharEntityStream::getBufferBase ()
-{
-    return m_pStart;
 }
 
 _char * CharEntityStream::getTill (const _char stopChar, long &outLen,
