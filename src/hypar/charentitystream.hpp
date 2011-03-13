@@ -69,7 +69,6 @@ class CharEntityStream
     private:
         CharEntityStream ();
         void setSourceBuffer (_char *pBuffer, long lBufLength);
-        void reset ();
         bool set (const _char c);
         bool setNull ();
         bool putBack (const _char c);
@@ -88,14 +87,13 @@ class CharEntityStream
         _char peek ();
         _char get ();
         const _char *getBuffer ();
-        _char *getTill (const _char stopChar, long &lOutLen, bool &bFound,
+        _char *getTill (_char stopChar, long &lOutLen, bool &bFound,
                 bool bAdvance = false);
 
         _char *getUntilElement(const _char *pElementName, long &outLen,
                 bool &bFound, bool bAdvance = false); /* Not Implemented */
 
-        _char *getTillFirstOf (const _char stopChar_1,
-                const _char stopChar_2,
+        _char *getTillFirstOf (_char stopChar_1, _char stopChar_2,
                 long &lOutLen, _char &charFound, bool bAdvance = false);
 
         void setPrevEntity (EntityType et);

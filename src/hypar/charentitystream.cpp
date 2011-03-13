@@ -48,13 +48,6 @@ void CharEntityStream::setSourceBuffer (_char *pBuffer, long lBufLength)
     m_prevEntity = ELEMENT;
 }
 
-void CharEntityStream::reset ()
-{
-    assert (m_status != EWCSTREAMINVALID);
-    m_pCur = m_pStart;
-    m_status = CharEntityStream::OK;
-}
-
 unsigned long CharEntityStream::advance (unsigned long lLenToAdvance)
 {
     unsigned long retval = 0;
@@ -126,7 +119,7 @@ const _char * CharEntityStream::getBuffer ()
     return 0;
 }
 
-_char * CharEntityStream::getTill (const _char stopChar, long &outLen,
+_char * CharEntityStream::getTill (_char stopChar, long &outLen,
         bool &bFound, bool bAdvance)
 {
     if (CharEntityStream::EWCSTREAMEOF == m_status)
@@ -166,8 +159,8 @@ _char * CharEntityStream::getTill (const _char stopChar, long &outLen,
     return retLocation;
 }
 
-_char *CharEntityStream::getTillFirstOf (const _char stopChar_1,
-        const _char stopChar_2, long &lOutLen, _char &wcharFound, bool bAdvance)
+_char *CharEntityStream::getTillFirstOf (_char stopChar_1,
+        _char stopChar_2, long &lOutLen, _char &wcharFound, bool bAdvance)
 {
     _char *pCur1, *pCur2;
     long lLenTillStopChar1, lLenTillStopChar2;
@@ -216,8 +209,7 @@ void CharEntityStream::setPrevEntity (EntityType et)
     m_prevEntity = et;
 }
 
-    bool
-CharEntityStream::putBack (_char c)
+bool CharEntityStream::putBack (_char c)
 {
     bool retval = set (c);
     if (retval)
@@ -266,7 +258,7 @@ CharEntityStream::getNextEntity (_char **pEntityStr, bool bSetNull)
     if ((m_prevEntity == TEXT) || (LANGLE == *m_pCur))
     {
         bNextIsElement = true;
-        if (L('<') == *m_pCur)
+        if (LANGLE == *m_pCur)
         {
             m_pCur++;
         }
