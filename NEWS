@@ -1,3 +1,11 @@
 Thu Jun 4 2009
 ==============
 Imported into github - without the svn history
+
+Wed June 8 2011
+===============
+Starting to revive hypar2 again - this time, with better tests (using google test and mock.)
+The plan is to refactor slowly into something more usable (and more exciting). I have used
+this library enough for my personal projects (including my startup and at my previous company)
+to good effect. But the world has moved quite a bit in the past few years, and I wasn't maintaining
+hypar too. I'm hoping to bring in my new learnings while I work on this now onwards.
