@@ -1,7 +1,7 @@
 #ifndef _HYPAR_CONFIG_H_
 #define _HYPAR_CONFIG_H_
 
-/* #define DEBUG */
+#define DEBUG
 /* #undef USE_WIDECHAR */
 /* #undef HAVE_CXX_LIST */
 #define HAVE_MMAP

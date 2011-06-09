@@ -70,11 +70,8 @@ int main (int argc, char *argv[])
         usage (argc, argv);
         return 255;
     }
-    else
-    {
-        pFilename = argv[1];
-    }
 
+    pFilename = argv[1];
     HTMLDoc h (HTMLDoc::kFILE, pFilename);
     _string outString = L("");
     HTMLNode *pNode = h.getRootNode ();
