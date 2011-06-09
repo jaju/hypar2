@@ -7,18 +7,18 @@
  * included with the source-code
  */
 
-#include "hypar/localdefs.h"
-#include "hypar/mmap.hpp"
-#include "hypar/mbtowide.hpp"
-#include "hypar/charentitystream.hpp"
-#include "hypar/html.hpp"
-#include "hypar/hash.hpp"
-#include "hypar/hashset.hpp"
+#include "localdefs.h"
+#include "mmap.hpp"
+#include "mbtowide.hpp"
+#include "entitystream.hpp"
+#include "html.hpp"
+#include "hash.hpp"
+#include "hashset.hpp"
 
 #if !DEBUG
 #define DEBUG 0
 #endif
-#include "hypar/debug.hpp"
+#include "debug.hpp"
 
 #include <iostream>
 #include <fstream>

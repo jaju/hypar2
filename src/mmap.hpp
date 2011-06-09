@@ -34,7 +34,7 @@ class Mmap
 
     private:
         Mmap ();
-        inline int init ();
+        inline status_t init ();
 
     public:
         /**

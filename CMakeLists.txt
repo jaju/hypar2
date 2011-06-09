@@ -30,3 +30,4 @@ endif(BUILD_WITH_COVERAGE)
 
 add_subdirectory(src)
 add_subdirectory(test)
+add_subdirectory(apps)

@@ -7,13 +7,13 @@
  * included with the source-code
  */
 
-#include "hypar/html.hpp"
+#include "html.hpp"
 
 
 #if !DEBUG
 #define DEBUG 0
 #endif
-#include "hypar/debug.hpp"
+#include "debug.hpp"
 
 #include <iostream>
 #include <fstream>

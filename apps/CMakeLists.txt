@@ -1,5 +1,5 @@
 link_directories (${CMAKE_SOURCE_DIR}/hypar)
-link_libraries (hypar-static)
+link_libraries (hypar)
 
 add_executable (hyhtml2text  hyhtml2text.cpp)
 add_executable (hyhtmldoc  hyhtmldoc.cpp)

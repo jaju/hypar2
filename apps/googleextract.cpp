@@ -7,14 +7,14 @@
  * included with the source-code
  */
 
-#include "hypar/xml.hpp"
-#include "hypar/html.hpp"
-#include "hypar/domutils.hpp"
+#include "xml.hpp"
+#include "html.hpp"
+#include "domutils.hpp"
 
 #if !DEBUG
 #define DEBUG 0
 #endif
-#include "hypar/debug.hpp"
+#include "debug.hpp"
 
 #include <iostream>
 #include <fstream>

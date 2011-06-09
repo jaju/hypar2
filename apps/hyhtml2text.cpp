@@ -7,16 +7,16 @@
  * included with the source-code
  */
 
-#include "hypar/localdefs.h"
-#include "hypar/url.hpp"
-#include "hypar/html.hpp"
+#include "localdefs.h"
+#include "url.hpp"
+#include "html.hpp"
 
 #if !DEBUG
 #define DEBUG 0
 #endif
-#include "hypar/debug.hpp"
-#include "hypar/textutils.hpp"
-#include "hypar/mmap.hpp"
+#include "debug.hpp"
+#include "textutils.hpp"
+#include "mmap.hpp"
 
 #include <iostream>
 #include <string>

@@ -7,17 +7,17 @@
  * included with the source-code
  */
 
-#include "hypar/mmap.hpp"
-#include "hypar/mbtowide.hpp"
-#include "hypar/charentitystream.hpp"
-#include "hypar/html.hpp"
-#include "hypar/url.hpp"
-#include "hypar/hash.hpp"
+#include "mmap.hpp"
+#include "mbtowide.hpp"
+#include "entitystream.hpp"
+#include "html.hpp"
+#include "url.hpp"
+#include "hash.hpp"
 
 #if !DEBUG
 #define DEBUG 0
 #endif
-#include "hypar/debug.hpp"
+#include "debug.hpp"
 
 #include <iostream>
 #include <fstream>

@@ -14,3 +14,10 @@ install_manifest.txt
 test/*test
 tags
 Testing/
+*.swp
+*.swo
+apps/googleextract
+apps/hyhtml2text
+apps/hyhtmldoc
+apps/hyurlextract
+apps/hyxmlclean

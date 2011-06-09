@@ -27,13 +27,10 @@ Mmap::Mmap (const char *pFileName) :
 {
     assert (pFileName);
     m_filename = pFileName;
-    if (init () == Mmap::OK)
-    {
-        m_status = Mmap::OK;
-    }
+    m_status = init();
 }
 
-inline int Mmap::init ()
+inline Mmap::status_t Mmap::init ()
 {
     int fd;
     struct stat fstatinfo;
