@@ -32,8 +32,8 @@ static const TagEntry defaultTable[] =
 
 void XML::resetUnknownTagEntry ()
 {
-    m_unknownTagEntry.setRparent(m_tagTable.getRootElement ());
-    m_unknownTagEntry.setFirstRparent(m_unknownTagEntry.rparent());
+    m_unknownTagEntry.setAncestor(m_tagTable.getRootElement ());
+    m_unknownTagEntry.setFirstAncestor(m_unknownTagEntry.rparent());
     m_unknownTagEntry.m_bClosure = true;
 }
 
@@ -528,9 +528,9 @@ int XML::correctStack (const TagEntry *pTagEntry, bool bCheckOnly)
     const std::vector <const _char *> *pAncestorList = 0;
     int iDummy = -1, iLocationFromTop = -1;
     bool bParent = false;
-    if ((pAncestor = pTagEntry->getRparent ()) != 0)
+    if ((pAncestor = pTagEntry->getAncestor ()) != 0)
     {
-        pAncestorList = pTagEntry->getRparentList ();
+        pAncestorList = pTagEntry->getAncestorList ();
     }
     else
     {

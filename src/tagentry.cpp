@@ -65,20 +65,20 @@ m_pName (0),
         m_bClosure (true),
         m_bOccurOnce (false),
         m_pParent (0),
-        m_pRparent (0),
+        m_pAncestor (0),
         m_pFirstParent (0),
-        m_pFirstRparent (0),
+        m_pFirstAncestor (0),
         m_pParentNew (0),
-        m_pRparentNew (0),
+        m_pAncestorNew (0),
         m_pParentList (0),
-        m_pRparentList (0)
+        m_pAncestorList (0)
 {
 }
 
 TagEntry::TagEntry (
         const _char *pName, unsigned int iContextSwitch,
         unsigned int iContextLevel, bool bClosure,
-        bool bOccurOnce, const _char *pParent, const _char *pRparent
+        bool bOccurOnce, const _char *pParent, const _char *pAncestor
         ) :
     m_pName (pName),
     m_iContextSwitch (iContextSwitch),
@@ -86,13 +86,13 @@ TagEntry::TagEntry (
     m_bClosure (bClosure),
     m_bOccurOnce (bOccurOnce),
     m_pParent (pParent),
-    m_pRparent (pRparent),
+    m_pAncestor (pAncestor),
     m_pFirstParent (0),
-    m_pFirstRparent (0),
+    m_pFirstAncestor (0),
     m_pParentNew (0),
-    m_pRparentNew (0),
+    m_pAncestorNew (0),
     m_pParentList (0),
-    m_pRparentList (0)
+    m_pAncestorList (0)
 {
     if (m_pParent != 0)
     {
@@ -118,27 +118,27 @@ TagEntry::TagEntry (
         }
     }
 
-    if (m_pRparent != 0)
+    if (m_pAncestor != 0)
     {
-        const _char *constTmpStrPtr = _strrchr(m_pRparent, ',');
+        const _char *constTmpStrPtr = _strrchr(m_pAncestor, ',');
         if (!constTmpStrPtr)
         {
-            m_pFirstRparent = m_pRparent;
+            m_pFirstAncestor = m_pAncestor;
         }
         else
         {
-            m_pRparentNew = _strdup (m_pRparent);
-            assert (m_pRparentNew);
-            _char *tmpStrPtr = m_pRparentNew;
+            m_pAncestorNew = _strdup (m_pAncestor);
+            assert (m_pAncestorNew);
+            _char *tmpStrPtr = m_pAncestorNew;
             while (*tmpStrPtr)
             {
                 *tmpStrPtr = _tolower (*tmpStrPtr);
                 tmpStrPtr++;
             }
-            m_pRparentList = new vector<const _char *>;
-            parseAndStoreElementNamesFromCommaDelimitedString (m_pRparentNew,
-                    m_pRparentList);
-            m_pFirstRparent = m_pRparentList->at (0);
+            m_pAncestorList = new vector<const _char *>;
+            parseAndStoreElementNamesFromCommaDelimitedString (m_pAncestorNew,
+                    m_pAncestorList);
+            m_pFirstAncestor = m_pAncestorList->at (0);
         }
     }
 }
@@ -152,12 +152,12 @@ TagEntry::~TagEntry ()
         free (m_pParentNew);
         m_pParentNew = 0;
     }
-    if (m_pRparentNew)
+    if (m_pAncestorNew)
     {
-        delete m_pRparentList;
-        m_pRparentList = 0;
-        free (m_pRparentNew);
-        m_pRparentNew = 0;
+        delete m_pAncestorList;
+        m_pAncestorList = 0;
+        free (m_pAncestorNew);
+        m_pAncestorNew = 0;
     }
 }
 
@@ -201,9 +201,9 @@ TagEntry::getParent () const
 }
 
 const _char *
-TagEntry::getRparent () const
+TagEntry::getAncestor () const
 {
-    return m_pFirstRparent;
+    return m_pFirstAncestor;
 }
 
 const std::vector<const _char *> *
@@ -213,9 +213,9 @@ TagEntry::getParentList () const
 }
 
 const std::vector<const _char *> *
-TagEntry::getRparentList () const
+TagEntry::getAncestorList () const
 {
-    return m_pRparentList;
+    return m_pAncestorList;
 }
 
     bool
@@ -230,14 +230,14 @@ TagEntry::isParent (const _char *pParent)
 }
 
     bool
-TagEntry::isRparent (const _char *pRparent)
+TagEntry::isAncestor (const _char *pAncestor)
 {
-    if (m_pRparentNew)
+    if (m_pAncestorNew)
     {
-        return findInList (pRparent, m_pRparentList) > -1 ?
+        return findInList (pAncestor, m_pAncestorList) > -1 ?
             true : false;
     }
-    return _strcasecmp (pRparent, m_pRparent) == 0 ? true : false;
+    return _strcasecmp (pAncestor, m_pAncestor) == 0 ? true : false;
 }
 
 END_NAMESPACE (hy);

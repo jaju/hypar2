@@ -27,24 +27,24 @@ class TagEntry
 
     public:
         const _char *parent() const { return m_pParent; }
-        const _char *rparent() const { return m_pRparent; }
+        const _char *rparent() const { return m_pAncestor; }
         const _char *firstParent() const { return m_pFirstParent; }
-        const _char *firstRparent() const { return m_pFirstRparent; }
+        const _char *firstAncestor() const { return m_pFirstAncestor; }
 
         void setParent(const _char *x) { m_pParent = x; }
-        void setRparent(const _char *x) { m_pRparent = x; }
+        void setAncestor(const _char *x) { m_pAncestor = x; }
         void setFirstParent(const _char *x) { m_pFirstParent = x; }
-        void setFirstRparent(const _char *x) { m_pFirstRparent = x; }
+        void setFirstAncestor(const _char *x) { m_pFirstAncestor = x; }
 
     private:
         const _char *m_pParent;
-        const _char *m_pRparent;
+        const _char *m_pAncestor;
         const _char *m_pFirstParent;
-        const _char *m_pFirstRparent;
+        const _char *m_pFirstAncestor;
 
     private:
-        _char *m_pParentNew, *m_pRparentNew; /* strdup()'ed strings */
-        std::vector <const _char *> *m_pParentList, *m_pRparentList;
+        _char *m_pParentNew, *m_pAncestorNew; /* strdup()'ed strings */
+        std::vector <const _char *> *m_pParentList, *m_pAncestorList;
 
     private:
         inline bool findSubstr (const _char *needle,
@@ -57,16 +57,16 @@ class TagEntry
         TagEntry (const _char *pName, unsigned int iContextSwitch,
                 unsigned int iContextLevel, bool bClosure,
                 bool bOccurOnce, const _char *pParent,
-                const _char *pRparent);
+                const _char *pAncestor);
         ~TagEntry ();
 
     public:
         const _char *getName ();
         bool isParent (const _char *pParent);
-        bool isRparent (const _char *pRparent);
+        bool isAncestor (const _char *pAncestor);
         const _char *getParent () const;
-        const _char *getRparent () const;
+        const _char *getAncestor () const;
         const std::vector <const _char *> *getParentList () const;
-        const std::vector <const _char *> *getRparentList () const;
+        const std::vector <const _char *> *getAncestorList () const;
 };
 END_NAMESPACE(hy);
