@@ -24,6 +24,29 @@ using std::wstring;
 BEGIN_NAMESPACE (hy);
 BEGIN_NAMESPACE (textutils);
 
+template<typename C>
+class Buffer {
+    public:
+        Buffer(const C *c, int length) {
+            m_pRaw = new C[length + 1];
+            bzero(m_pRaw, sizeof(C) * (length + 1));
+            memcpy(m_pRaw, c, sizeof(C) * (length + 1));
+            m_length = length;
+        }
+        ~Buffer() { delete m_pRaw; }
+
+        C *get() { return m_pRaw; }
+        int length() { return m_length; }
+
+    private:
+        C *m_pRaw;
+        int m_length;
+};
+
+typedef Buffer<char> CBuffer;
+typedef Buffer<wchar_t> WCBuffer;
+typedef Buffer<_char> _Buffer;
+
 void tolower (string &s);
 void tolower (char *s);
 #if USE_WIDECHAR
