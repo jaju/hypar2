@@ -4,6 +4,6 @@
 #define DEBUG
 /* #undef USE_WIDECHAR */
 /* #undef HAVE_CXX_LIST */
-/* #undef HAVE_MMAP */
+#define HAVE_MMAP
 
 #endif // _HYPAR_CONFIG_H_

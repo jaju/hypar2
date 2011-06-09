@@ -22,3 +22,5 @@ apps/hyhtmldoc
 apps/hyurlextract
 apps/hyxmlclean
 apps/mmapcat
+apps/hypariconv
+apps/hyparsaxtimer
