@@ -32,8 +32,8 @@ static const TagEntry defaultTable[] =
 
 void XML::resetUnknownTagEntry ()
 {
-    m_unknownTagEntry.m_pRparent = m_tagTable.getRootElement ();
-    m_unknownTagEntry.m_pFirstRparent = m_unknownTagEntry.m_pRparent;
+    m_unknownTagEntry.setRparent(m_tagTable.getRootElement ());
+    m_unknownTagEntry.setFirstRparent(m_unknownTagEntry.rparent());
     m_unknownTagEntry.m_bClosure = true;
 }
 
@@ -534,7 +534,7 @@ int XML::correctStack (const TagEntry *pTagEntry, bool bCheckOnly)
     }
     else
     {
-        if (!pTagEntry->m_pParent)
+        if (!pTagEntry->parent())
         {
             /* This could be the root element! */
             return iCorrections;

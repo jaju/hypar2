@@ -26,6 +26,17 @@ class TagEntry
         };
 
     public:
+        const _char *parent() const { return m_pParent; }
+        const _char *rparent() const { return m_pRparent; }
+        const _char *firstParent() const { return m_pFirstParent; }
+        const _char *firstRparent() const { return m_pFirstRparent; }
+
+        void setParent(const _char *x) { m_pParent = x; }
+        void setRparent(const _char *x) { m_pRparent = x; }
+        void setFirstParent(const _char *x) { m_pFirstParent = x; }
+        void setFirstRparent(const _char *x) { m_pFirstRparent = x; }
+
+    private:
         const _char *m_pParent;
         const _char *m_pRparent;
         const _char *m_pFirstParent;
