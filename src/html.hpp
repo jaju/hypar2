@@ -53,7 +53,7 @@ class HTMLDoc
 
 
     private:
-        static XML m_sParser;
+        XML m_sParser;
         static HTMLNode m_sCloneableNode;
         static bool s_bIsInitialised;
 

@@ -49,7 +49,6 @@ static StringSet::iterator itsx;
  */
 
 HTMLNode HTMLDoc::m_sCloneableNode (DOMNode::ELEMENT, L ("cloneable"));
-XML HTMLDoc::m_sParser (s_defaultHTMLTable);
 bool HTMLDoc::s_bIsInitialised = false;
 bool HTMLDoc::s_bProcessTextData = false;
 
@@ -158,6 +157,7 @@ void HTMLNode::toText (_string &targetString, bool bChildOnly)
 
 HTMLDoc::HTMLDoc (SourceType sourceType, const char *pSource,
         const char *pLocale) :
+    m_sParser (s_defaultHTMLTable),
     m_sourceType (sourceType),
     m_pRootNode (0),
     m_pLocale (pLocale),

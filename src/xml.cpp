@@ -32,7 +32,7 @@ static const TagEntry defaultTable[] =
 
 void XML::resetUnknownTagEntry ()
 {
-    m_unknownTagEntry.setAncestor(m_tagTable.getRootElement ());
+    m_unknownTagEntry.setAncestor(m_tagTable.rootTagName ());
     m_unknownTagEntry.setFirstAncestor(m_unknownTagEntry.rparent());
     m_unknownTagEntry.m_bClosure = true;
 }
@@ -272,14 +272,6 @@ void XML::doNotClean (bool flag)
  * The 'main' routine. Note: pTextBuffer should be editable!
  */
 
-#if USE_WIDECHAR
-DOMNode *XML::parse (char *pTextBuffer, DOMNode *pCloneableNode)
-{
-    assert (0);
-    return 0;
-}
-#endif
-
 DOMNode *XML::parse (_char *pTextBuffer, DOMNode *pCloneableNode)
 {
     /* Define/declare needed variables */
@@ -402,7 +394,7 @@ inline int XML::handleElement (Tag *pTag, bool bDocStarted)
         return -1;
     }
 
-    m_pCurTagEntry = m_tagTable.search (pTag->m_pName);
+    m_pCurTagEntry = m_tagTable.find (pTag->m_pName);
     if (!m_pCurTagEntry)
     {
         if (m_bIgnoreUnknownTag && !m_bMakeValidOnly)
@@ -426,19 +418,20 @@ inline int XML::handleElement (Tag *pTag, bool bDocStarted)
         {
             return -1;
         }
-        if (_strcasecmp (pTag->m_pName, m_tagTable.getRootElement ()) != 0)
+        const _char *rootTagName = m_tagTable.rootTagName();
+        if (_strcasecmp (pTag->m_pName, rootTagName) != 0)
         {
-            Tag t (m_tagTable.getRootElement ());
+            Tag t (rootTagName);
             hy_warn (("(Correction) Adding node '%s'\n", t.m_pName));
             addNode (&t, m_pCurTagEntry->m_bClosure);
-            m_occurenceMap[m_tagTable.getRootElement ()] = true;
-            m_entityStack.push (m_tagTable.getRootElement ());
+            m_occurenceMap[rootTagName] = true;
+            m_entityStack.push (rootTagName);
         }
         else
         {
             debug (("Adding node '%s'\n", pTag->m_pName));
             addNode (pTag);
-            m_occurenceMap[m_tagTable.getRootElement ()] = true;
+            m_occurenceMap[rootTagName] = true;
             m_entityStack.push (pTag->m_pName);
             return 0;
         }
@@ -557,7 +550,7 @@ int XML::correctStack (const TagEntry *pTagEntry, bool bCheckOnly)
         if (bCheckOnly)
             return 1;
         Tag tag (pAncestor);
-        const TagEntry *pt = m_tagTable.search (tag.m_pName);
+        const TagEntry *pt = m_tagTable.find (tag.m_pName);
         if (pt)
         {
             clearCurrentContext (&tag, pt, false);
@@ -597,7 +590,7 @@ int XML::clearCurrentContext (Tag *pTag, const TagEntry *pTagEntry,
     {
         while (m_entityStack.size () > 0)
         {
-            pte = m_tagTable.search (m_entityStack.top ());
+            pte = m_tagTable.find (m_entityStack.top ());
             if (pte && (pte->m_iContextLevel < TagEntry::TEXT_ATTR))
             {
                 break;
@@ -614,7 +607,7 @@ int XML::clearCurrentContext (Tag *pTag, const TagEntry *pTagEntry,
     {
         return 0;
     }
-    pte = m_tagTable.search (m_entityStack.top ());
+    pte = m_tagTable.find (m_entityStack.top ());
     assert (!_strcasecmp (m_entityStack.top (), m_pCurrentParentNode->name()));
     if (pTagEntry->m_iContextLevel < TagEntry::TEXT_ATTR)
     {
@@ -637,7 +630,7 @@ int XML::clearCurrentContext (Tag *pTag, const TagEntry *pTagEntry,
             {
                 break;
             }
-            pte = m_tagTable.search (m_entityStack.top());
+            pte = m_tagTable.find (m_entityStack.top());
         }
     }
     return retval;

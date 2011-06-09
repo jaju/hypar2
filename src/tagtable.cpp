@@ -11,6 +11,9 @@
 #include <limits.h>
 #include <assert.h>
 
+#include <iostream>
+using namespace std;
+
 BEGIN_NAMESPACE (hy);
 
 typedef pair<const _char*, const TagEntry*> NameTagPair;
@@ -37,26 +40,27 @@ int TagTable::construct (const TagEntry *pte)
     int iEntryCount = 0;
     unsigned int iRootLevel = INT_MAX;
 
-    if (!pte)
-    {
-        assert (0);
-    }
+    assert(pte != 0);
+    const TagEntry *pEntry;
     while (pte[iEntryCount].m_pName != 0)
     {
-        NameTagPair p (pte[iEntryCount].m_pName, &pte[iEntryCount]);
+        pEntry = &pte[iEntryCount];
+        cout << "TagTable entry for: " << pEntry->m_pName << endl;
+        NameTagPair p (pEntry->m_pName, pEntry);
         m_TERepository.insert (p);
-        if (pte[iEntryCount].m_iContextLevel < iRootLevel)
+        if (pEntry->m_iContextLevel < iRootLevel)
         {
-            iRootLevel = pte[iEntryCount].m_iContextLevel;
-            m_pRootElementName = pte[iEntryCount].m_pName;
+            iRootLevel = pEntry->m_iContextLevel;
+            m_pRootElementName = pEntry->m_pName;
         }
         iEntryCount++;
     }
-    //assert (m_pRootElementName);
+    cout << iEntryCount << endl;
+    assert (m_pRootElementName);
     return iEntryCount;
 }
 
-const TagEntry *TagTable::search (const _char *pName)
+const TagEntry *TagTable::find (const _char *pName)
 {
     if (likely (pName))
     {
@@ -69,7 +73,7 @@ const TagEntry *TagTable::search (const _char *pName)
     return 0;
 }
 
-const _char *TagTable::getRootElement ()
+const _char *TagTable::rootTagName ()
 {
     return m_pRootElementName;
 }

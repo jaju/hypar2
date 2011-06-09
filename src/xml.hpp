@@ -67,10 +67,6 @@ class XML
          * supplied pCloneableNode as the root of this 'DOM' tree.
          * NOTE the quotes - this isn't the standards-compliant DOM.
          */
-#ifdef USE_WIDECHAR
-        // Convenience function in wide-char mode
-        DOMNode *parse (char *pTextBuffer, DOMNode *pCloneableNode);
-#endif
         DOMNode *parse (_char *pTextBuffer, DOMNode *pCloneableNode);
 
     private:
