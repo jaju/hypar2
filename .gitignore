@@ -1,0 +1,15 @@
+CMakeCache.txt
+CMakeFiles/
+CTestTestfile.cmake
+Testing/
+apps/
+cmake_install.cmake
+gmon.out
+install_manifest.txt
+src/tagCMakeFiles/
+src/CTestTestfile.cmake
+Makefile
+src/cmake_installl.cmake
+test/
+*.swp
+*.so
