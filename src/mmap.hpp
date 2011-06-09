@@ -41,7 +41,7 @@ class Mmap
          * The constructor, with the file-name
          */
         Mmap (const char *pFileName);
-        ~Mmap ();
+        virtual ~Mmap ();
 
     public:
         status_t getStatus ();
@@ -49,8 +49,8 @@ class Mmap
          * Get the pointer to the base of the buffer where the file's contents
          * exist
          */
-        const char *getBuffer ();
-        const char *getFileName ();
+        virtual const char *getBuffer ();
+        virtual const char *getFileName ();
         /**
          * Call to get the length of the file
          */

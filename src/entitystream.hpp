@@ -68,11 +68,7 @@ class EntityStream
 
     private:
         EntityStream () {}
-        bool set (const _char c);
-        bool setNull ();
-        bool putBack (const _char c);
         long getRemainingLength ();
-        long getBufferLength ();
 
     public:
         EntityStream (_char *pBuffer, long lBufLength);

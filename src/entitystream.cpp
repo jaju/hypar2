@@ -146,35 +146,9 @@ _char *EntityStream::getTill (_char stopChar, long &outLen,
     return retLocation;
 }
 
-bool EntityStream::set (const _char c)
-{
-    assert(m_status != EntityStream::EWCSTREAMINVALID);
-    if (m_pCur < m_pEnd)
-    {
-        *m_pCur = c;
-        return true;
-    }
-    return false;
-}
-
-bool EntityStream::setNull ()
-{
-    return set (L('\0'));
-}
-
 void EntityStream::setPrevEntity (EntityType et)
 {
     m_prevEntity = et;
-}
-
-bool EntityStream::putBack (_char c)
-{
-    bool retval = set (c);
-    if (retval)
-    {
-        return rewind (1) == 1 ? true : false;
-    }
-    return false;
 }
 
     long
@@ -182,12 +156,6 @@ EntityStream::getRemainingLength ()
 {
     assert(m_pCur <= m_pEnd);
     return (m_pEnd - m_pCur);
-}
-
-    long
-EntityStream::getBufferLength ()
-{
-    return m_lBufLength;
 }
 
     EntityStream::EntityType
