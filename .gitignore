@@ -21,3 +21,4 @@ apps/hyhtml2text
 apps/hyhtmldoc
 apps/hyurlextract
 apps/hyxmlclean
+apps/mmapcat

@@ -1,18 +1,17 @@
 link_directories (${CMAKE_SOURCE_DIR}/hypar)
-link_libraries (hypar)
 
-add_executable (hyhtml2text  hyhtml2text.cpp)
-add_executable (hyhtmldoc  hyhtmldoc.cpp)
-add_executable (hyurlextract  hyurlextract.cpp)
-add_executable (hyxmlclean  hyxmlclean.cpp)
-add_executable (googleextract  googleextract.cpp)
+file(GLOB_RECURSE APP_SOURCES "*.cpp")
+
+set(APPSLIST "")
+foreach(appfile ${APP_SOURCES})
+    get_filename_component(appname ${appfile} NAME_WE)
+    add_executable(${appname} ${appfile})
+    target_link_libraries(${appname} ${LIB_NAME})
+    list(APPEND APPSLIST ${appname})
+endforeach()
 
 install (FILES
-hyhtml2text
-hyhtmldoc
-hyurlextract
-hyxmlclean
-googleextract
+    ${APPSLIST}
 DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
 PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ
 GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)

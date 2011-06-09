@@ -28,12 +28,12 @@ int main (int argc, char *argv[])
     }
     Mmap m (argv[1]);
 
-    cout << "---------------------------------------" << endl;
+    cout << "----------------------   SLOW mmapcat - spits out one char at a time. ----------------------------" << endl;
     for (int i = 0; i < m.getBufferLength (); i++)
     {
-        cout << *(m.getBuffer () + i) << flush;
+        cout << *(m.getBuffer() + i) << flush;
     }
-    cout << "---------------------------------------" << endl;
+    cout << "--------------------------------------------------------------------------------------------------" << endl;
 
     return 1;
 }
