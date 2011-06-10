@@ -71,7 +71,7 @@ int main (int argc, char *argv[])
 #endif
     XML h;
     DOMNode node (DOMNode::ELEMENT, L("root"));
-    node.level() = -1;
+    node.level = -1;
     DOMNode *pNode = h.parse (pBuffer, &node);
 
     _string text = L("");

@@ -18,13 +18,17 @@ USING_NAMESPACE (std);
 
 BEGIN_NAMESPACE (hy);
 
-DOMNode::DOMNode (DOMNode::NodeType nodeType, const _char *pStr) : TreeNode (),
+DOMData::DOMData() :
     m_pPropertyMap (0),
-    m_type (nodeType),
     m_pName (0),
     m_pContent (0),
     m_bSelfClosing (true)
 {
+}
+
+void DOMData::initData (DOMData::NodeType nodeType, const _char *pStr)
+{
+    m_type = nodeType;
     switch (m_type)
     {
         case ELEMENT:
@@ -39,7 +43,7 @@ DOMNode::DOMNode (DOMNode::NodeType nodeType, const _char *pStr) : TreeNode (),
     }
 }
 
-DOMNode::~DOMNode ()
+DOMData::~DOMData ()
 {
     safe_delete (m_pPropertyMap);
 }
@@ -69,7 +73,7 @@ DOMNode::clone (NodeType nodeType, const _char *pName) const
 }
 
 
-int DOMNode::copyAttributes (Tag *tag)
+int DOMData::copyAttributes (Tag *tag)
 {
     int retval = 0;
     if (!m_pPropertyMap)
@@ -89,27 +93,24 @@ int DOMNode::copyAttributes (Tag *tag)
 }
 
     void
-DOMNode::reset ()
+DOMData::reset ()
 {
     if (m_pPropertyMap)
     {
         m_pPropertyMap->clear ();
     }
-    m_pParent = 0;
-    m_pPrev = 0;
-    m_pNext = 0;
-    m_pChild = 0;
-    m_pLast = 0;
     m_type = END;
     m_pName = 0;
     m_pContent = 0;
-    m_iLevel = 0;
-    m_iHorLevel = 0;
+}
+
+void DOMNode::reset() {
+    TreeNode<DOMData>::reset();
 }
 
 
     int
-DOMNode::addProperty (const _char *pName, const _char *pValue)
+DOMData::addProperty (const _char *pName, const _char *pValue)
 {
     if (!m_pPropertyMap)
     {
@@ -123,7 +124,7 @@ DOMNode::addProperty (const _char *pName, const _char *pValue)
 }
 
     int
-DOMNode::addProperty (pair<const _char *, const _char *> &p)
+DOMData::addProperty (pair<const _char *, const _char *> &p)
 {
     if (!m_pPropertyMap)
     {
@@ -140,7 +141,7 @@ DOMNode::addProperty (pair<const _char *, const _char *> &p)
 }
 
     const _char *
-DOMNode::findProperty (const _char *pName) const
+DOMData::findProperty (const _char *pName) const
 {
     if (m_pPropertyMap)
     {
@@ -155,28 +156,28 @@ DOMNode::findProperty (const _char *pName) const
 }
 
     void
-DOMNode::recursiveCb (DOMNode::CallBack f)
+DOMNode::recursiveCb (DOMData::CallBack f)
 {
-    if (m_pChild)
+    if (TreeNode::child)
     {
-        ((DOMNode *) m_pChild)->recursiveCb (f);
+        child()->recursiveCb (f);
     }
 
-    if (m_pNext)
+    if (TreeNode::next)
     {
-        ((DOMNode *) m_pNext)->recursiveCb (f);
+        next()->recursiveCb (f);
     }
 
     return;
 }
 
     void
-DOMNode::toString (_string &targetString, bool bChildOnly) const
+DOMNode::toString (_string &targetString, bool bChildOnly)
 {
     switch (m_type)
     {
         case ELEMENT:
-            targetString += textutils::echoSpaces (m_iLevel);
+            targetString += textutils::echoSpaces (level);
             targetString += L("<");
             targetString += m_pName;
             /* TODO - Add the attributes */
@@ -195,15 +196,15 @@ DOMNode::toString (_string &targetString, bool bChildOnly) const
             }
 #if 1
             targetString += L(" level=\"");
-            targetString += textutils::_itos (m_iLevel);
+            targetString += textutils::_itos (level);
             targetString += L("\" horlevel=\"");
-            targetString += textutils::_itos (m_iHorLevel);
+            targetString += textutils::_itos (horizontalLevel);
             targetString += L("\"");
 #endif
-            if (m_pChild)
+            if (TreeNode::child)
             {
                 targetString += L(">\n");
-                ((DOMNode *) m_pChild)->toString(targetString);
+                child()->toString(targetString);
             }
             else
             {
@@ -243,13 +244,13 @@ DOMNode::toString (_string &targetString, bool bChildOnly) const
         default:
             break;
     }
-    if (!bChildOnly && m_pNext)
+    if (!bChildOnly && TreeNode::next)
     {
-        ((DOMNode *) m_pNext)->toString (targetString);
+        next()->toString (targetString);
     }
 }
 
-_string DOMNode::toString(bool bChildOnly) const
+_string DOMNode::toString(bool bChildOnly)
 {
     _string result;
     toString(result, bChildOnly);
@@ -257,14 +258,14 @@ _string DOMNode::toString(bool bChildOnly) const
 }
 
 
-void DOMNode::toText (_string &targetString, bool bChildOnly) const
+void DOMNode::toText (_string &targetString, bool bChildOnly)
 {
     switch (m_type)
     {
         case ELEMENT:
-            if (m_pChild)
+            if (TreeNode::child)
             {
-                ((DOMNode *) m_pChild)->toText (targetString);
+                child()->toText (targetString);
             }
             break;
         case TEXT:
@@ -274,9 +275,9 @@ void DOMNode::toText (_string &targetString, bool bChildOnly) const
         default:
             break;
     }
-    if (!bChildOnly && m_pNext)
+    if (!bChildOnly && TreeNode::next)
     {
-        ((DOMNode *) m_pNext)->toText (targetString);
+        next()->toText (targetString);
     }
 }
 

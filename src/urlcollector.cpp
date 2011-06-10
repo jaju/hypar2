@@ -95,7 +95,7 @@ int URLCollector::collect (_char *pBuffer, const char *pEncoding)
     h.m_pCallbackArg = (void *) this;
     DOMNode node(DOMNode::ELEMENT, L("root"));
 
-    node.level() = -1;
+    node.level = -1;
     h.parse (pBuffer, &node);
     return m_URLList.size ();
 }

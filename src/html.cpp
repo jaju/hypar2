@@ -131,9 +131,9 @@ void HTMLNode::toText (_string &targetString, bool bChildOnly)
             }
             else
             {
-                if (m_pChild)
+                if (TreeNode::child)
                 {
-                    ((HTMLNode *) m_pChild)->toText (targetString);
+                    ((HTMLNode *) child())->toText (targetString);
                 }
             }
             break;
@@ -149,9 +149,9 @@ void HTMLNode::toText (_string &targetString, bool bChildOnly)
         default:
             break;
     }
-    if (!bChildOnly && m_pNext)
+    if (!bChildOnly && TreeNode::next)
     {
-        ((HTMLNode *) m_pNext)->toText (targetString);
+        ((HTMLNode *) next())->toText (targetString);
     }
 }
 

@@ -198,9 +198,9 @@ NodeList filterNodesByLevel (int iLevel, int iHorLevel, NodeList &_nodeList)
     {
         if (iLevel >= 0)
         {
-            if (iLevel == (*_x)->level())
+            if (iLevel == (*_x)->level)
             {
-                if (iHorLevel >= 0 && (iHorLevel == (*_x)->horizontalLevel()))
+                if (iHorLevel >= 0 && (iHorLevel == (*_x)->horizontalLevel))
                 {
                     nodeList.push_back (*_x);
                 }
@@ -210,7 +210,7 @@ NodeList filterNodesByLevel (int iLevel, int iHorLevel, NodeList &_nodeList)
                 }
             }
         }
-        else if (iHorLevel >= 0 && (iHorLevel == (*_x)->horizontalLevel()))
+        else if (iHorLevel >= 0 && (iHorLevel == (*_x)->horizontalLevel))
         {
             nodeList.push_back (*_x);
         }

@@ -126,8 +126,8 @@ int XML::addNode (const _char *pElementName, bool bSelfClosing)
     if (m_pCurrentNode)
     {
         m_pCurrentNode->next() = pNode;
-        pNode->previous() = m_pCurrentNode;
-        pNode->horizontalLevel() = m_pCurrentNode->horizontalLevel() + 1;
+        pNode->prev() = m_pCurrentNode;
+        pNode->horizontalLevel = m_pCurrentNode->horizontalLevel + 1;
         m_pCurrentNode = 0;
     }
     else
@@ -136,7 +136,7 @@ int XML::addNode (const _char *pElementName, bool bSelfClosing)
     }
     pNode->parent() = m_pCurrentParentNode;
     m_pCurrentParentNode->last() = pNode;
-    pNode->level() = m_pCurrentParentNode->level() + 1;
+    pNode->level = m_pCurrentParentNode->level + 1;
     m_pCurrentParentNode = pNode;
     return 0;
 }
@@ -149,15 +149,15 @@ int XML::addNodeSelfContained (DOMNode::NodeType nodeType,
     if (m_pCurrentNode)
     {
         m_pCurrentNode->next() = pNode;
-        pNode->previous() = m_pCurrentNode;
-        pNode->horizontalLevel() = m_pCurrentNode->horizontalLevel() + 1;
+        pNode->prev() = m_pCurrentNode;
+        pNode->horizontalLevel = m_pCurrentNode->horizontalLevel + 1;
     }
     else
     {
         m_pCurrentParentNode->child() = pNode;
     }
     pNode->parent() = m_pCurrentParentNode;
-    pNode->level() = m_pCurrentParentNode->level() + 1;
+    pNode->level = m_pCurrentParentNode->level + 1;
     m_pCurrentParentNode->last() = pNode;
     m_pCurrentNode = pNode;
     return 0;
