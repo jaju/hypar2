@@ -100,7 +100,6 @@ class DOMNode : public TreeNode
     protected:
         NodeType m_type;
         const _char *m_pName, *m_pContent;
-        DOMNode *m_pParent, *m_pPrev, *m_pNext, *m_pChild, *m_pLast;
         bool m_bSelfClosing;
         int m_iLevel, m_iHorLevel;
 

@@ -159,12 +159,12 @@ DOMNode::recursiveCb (DOMNode::CallBack f)
 {
     if (m_pChild)
     {
-        m_pChild->recursiveCb (f);
+        ((DOMNode *) m_pChild)->recursiveCb (f);
     }
 
     if (m_pNext)
     {
-        m_pNext->recursiveCb (f);
+        ((DOMNode *) m_pNext)->recursiveCb (f);
     }
 
     return;
@@ -203,7 +203,7 @@ DOMNode::toString (_string &targetString, bool bChildOnly) const
             if (m_pChild)
             {
                 targetString += L(">\n");
-                m_pChild->toString(targetString);
+                ((DOMNode *) m_pChild)->toString(targetString);
             }
             else
             {
@@ -245,7 +245,7 @@ DOMNode::toString (_string &targetString, bool bChildOnly) const
     }
     if (!bChildOnly && m_pNext)
     {
-        m_pNext->toString (targetString);
+        ((DOMNode *) m_pNext)->toString (targetString);
     }
 }
 
@@ -264,7 +264,7 @@ void DOMNode::toText (_string &targetString, bool bChildOnly) const
         case ELEMENT:
             if (m_pChild)
             {
-                m_pChild->toText (targetString);
+                ((DOMNode *) m_pChild)->toText (targetString);
             }
             break;
         case TEXT:
@@ -276,7 +276,7 @@ void DOMNode::toText (_string &targetString, bool bChildOnly) const
     }
     if (!bChildOnly && m_pNext)
     {
-        m_pNext->toText (targetString);
+        ((DOMNode *) m_pNext)->toText (targetString);
     }
 }
 

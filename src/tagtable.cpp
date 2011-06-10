@@ -45,7 +45,6 @@ int TagTable::construct (const TagEntry *pte)
     while (pte[iEntryCount].m_pName != 0)
     {
         pEntry = &pte[iEntryCount];
-        cout << "TagTable entry for: " << pEntry->m_pName << endl;
         NameTagPair p (pEntry->m_pName, pEntry);
         m_TERepository.insert (p);
         if (pEntry->m_iContextLevel < iRootLevel)
@@ -55,7 +54,6 @@ int TagTable::construct (const TagEntry *pte)
         }
         iEntryCount++;
     }
-    cout << iEntryCount << endl;
     assert (m_pRootElementName);
     return iEntryCount;
 }
