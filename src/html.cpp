@@ -131,7 +131,7 @@ void HTMLNode::toText (_string &targetString, bool bChildOnly)
             }
             else
             {
-                if (TreeNode::child)
+                if (_child)
                 {
                     ((HTMLNode *) child())->toText (targetString);
                 }
@@ -149,7 +149,7 @@ void HTMLNode::toText (_string &targetString, bool bChildOnly)
         default:
             break;
     }
-    if (!bChildOnly && TreeNode::next)
+    if (!bChildOnly && _next)
     {
         ((HTMLNode *) next())->toText (targetString);
     }

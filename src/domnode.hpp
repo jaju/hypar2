@@ -34,12 +34,13 @@ class DOMData
         NodeType;
 
     public:
-        NodeType &type() { return m_type; }
+        const NodeType type() { return m_type; }
         void setType(NodeType type) { m_type = type; }
         const char *name() const { return m_pName; }
         void setName(const char *name) { m_pName = name; }
         const char *content() const { return m_pContent; }
-        bool &selfClosing() { return m_bSelfClosing; }
+        bool selfClosing() { return m_bSelfClosing; }
+        void setSelfClosing(bool s) { m_bSelfClosing = s; }
 
     protected:
         void reset ();
@@ -47,8 +48,6 @@ class DOMData
     public:
         DOMData ();
         DOMData (NodeType nodeType, const _char *pStr);
-
-    public:
         virtual ~DOMData ();
 
     public:
@@ -80,6 +79,7 @@ class DOMNode : public TreeNode<DOMData> {
         DOMNode(NodeType nodeType, const _char *pStr) {
             initData(nodeType, pStr);
         }
+
     public:
         DOMNode *findFirstChild (const _char *pName);
         DOMNode *findFirstChild (NodeType type);
@@ -103,11 +103,11 @@ class DOMNode : public TreeNode<DOMData> {
         virtual DOMNode *clone (NodeType nodeType, const _char *pName = 0) const;
 
     public: // convenience
-        DOMNode *&child() { return (DOMNode *&) TreeNode::child; }
-        DOMNode *&parent() { return (DOMNode *&) TreeNode::parent; }
-        DOMNode *&next() { return (DOMNode *&) TreeNode::next; }
-        DOMNode *&last() { return (DOMNode *&) TreeNode::last; }
-        DOMNode *&prev() { return (DOMNode *&) TreeNode::prev; }
+        DOMNode *&child() { return (DOMNode *&) _child; }
+        DOMNode *&parent() { return (DOMNode *&) _parent; }
+        DOMNode *&next() { return (DOMNode *&) _next; }
+        DOMNode *&last() { return (DOMNode *&) _last; }
+        DOMNode *&prev() { return (DOMNode *&) _prev; }
 
 
     protected:

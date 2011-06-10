@@ -122,7 +122,7 @@ int XML::addNode (const _char *pElementName, bool bSelfClosing)
 {
     debug(("Adding XML node...\n"));
     DOMNode *pNode = m_pCloneableNode->clone (DOMNode::ELEMENT, pElementName);
-    pNode->selfClosing() = bSelfClosing;
+    pNode->setSelfClosing(bSelfClosing);
     if (m_pCurrentNode)
     {
         m_pCurrentNode->next() = pNode;

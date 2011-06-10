@@ -158,12 +158,12 @@ DOMData::findProperty (const _char *pName) const
     void
 DOMNode::recursiveCb (DOMData::CallBack f)
 {
-    if (TreeNode::child)
+    if (_child)
     {
         child()->recursiveCb (f);
     }
 
-    if (TreeNode::next)
+    if (_next)
     {
         next()->recursiveCb (f);
     }
@@ -201,7 +201,7 @@ DOMNode::toString (_string &targetString, bool bChildOnly)
             targetString += textutils::_itos (horizontalLevel);
             targetString += L("\"");
 #endif
-            if (TreeNode::child)
+            if (_child)
             {
                 targetString += L(">\n");
                 child()->toString(targetString);
@@ -244,7 +244,7 @@ DOMNode::toString (_string &targetString, bool bChildOnly)
         default:
             break;
     }
-    if (!bChildOnly && TreeNode::next)
+    if (!bChildOnly && _next)
     {
         next()->toString (targetString);
     }
@@ -263,7 +263,7 @@ void DOMNode::toText (_string &targetString, bool bChildOnly)
     switch (m_type)
     {
         case ELEMENT:
-            if (TreeNode::child)
+            if (_child)
             {
                 child()->toText (targetString);
             }
@@ -275,7 +275,7 @@ void DOMNode::toText (_string &targetString, bool bChildOnly)
         default:
             break;
     }
-    if (!bChildOnly && TreeNode::next)
+    if (!bChildOnly && _next)
     {
         next()->toText (targetString);
     }
