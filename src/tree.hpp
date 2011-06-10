@@ -28,6 +28,18 @@ class TreeNode : public G {
         int initLevel (int iLevel = 0, bool bNext = true);
         int detach ();
 
+    public: // convenience
+        TreeNode *&child() { return (TreeNode *&) _child; }
+        void setChild(TreeNode *n) { _child = n; }
+        TreeNode *&parent() { return (TreeNode *&) _parent; }
+        void setParent(TreeNode *n) { _parent = n; }
+        TreeNode *&next() { return (TreeNode *&) _next; }
+        void setNext(TreeNode *n) { _next = n; }
+        TreeNode *&last() { return (TreeNode *&) _last; }
+        void setLast(TreeNode *n) { _last = n; }
+        TreeNode *&prev() { return (TreeNode *&) _prev; }
+        void setPrev(TreeNode *n) { _prev = n; }
+
     protected:
         TreeNode();
         virtual ~TreeNode();
@@ -174,6 +186,7 @@ int TreeNode<G>::insertAsChild (TreeNode *pNewChild) {
     }
     pNewChild->_child = _child;
     pNewChild->_last = _last;
+    pNewChild->_parent = this;
     _child = pNewChild;
     _last = pNewChild;
     _child->initLevel(level + 1, true);
