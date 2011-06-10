@@ -33,7 +33,7 @@ static const TagEntry defaultTable[] =
 void XML::resetUnknownTagEntry ()
 {
     m_unknownTagEntry.setAncestor(m_tagTable.rootTagName ());
-    m_unknownTagEntry.setFirstAncestor(m_unknownTagEntry.rparent());
+    m_unknownTagEntry.setFirstAncestor(m_unknownTagEntry.ancestor());
     m_unknownTagEntry.m_bClosure = true;
 }
 

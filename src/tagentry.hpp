@@ -27,7 +27,7 @@ class TagEntry
 
     public:
         const _char *parent() const { return m_pParent; }
-        const _char *rparent() const { return m_pAncestor; }
+        const _char *ancestor() const { return m_pAncestor; }
         const _char *firstParent() const { return m_pFirstParent; }
         const _char *firstAncestor() const { return m_pFirstAncestor; }
 
