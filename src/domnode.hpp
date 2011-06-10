@@ -104,10 +104,15 @@ class DOMNode : public TreeNode<DOMData> {
 
     public: // convenience
         DOMNode *&child() { return (DOMNode *&) _child; }
+        void setChild(DOMNode *n) { _child = n; }
         DOMNode *&parent() { return (DOMNode *&) _parent; }
+        void setParent(DOMNode *n) { _parent = n; }
         DOMNode *&next() { return (DOMNode *&) _next; }
+        void setNext(DOMNode *n) { _next = n; }
         DOMNode *&last() { return (DOMNode *&) _last; }
+        void setLast(DOMNode *n) { _last = n; }
         DOMNode *&prev() { return (DOMNode *&) _prev; }
+        void setPrev(DOMNode *n) { _prev = n; }
 
 
     protected:
