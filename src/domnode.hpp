@@ -23,7 +23,6 @@ typedef HashMap <const _char *, const _char *, strcasehash, eqcase> PropertyMap;
 class DOMData
 {
     public:
-        typedef void (*CallBack) (DOMData *, void *);
         typedef enum
         {
             END = -1,
@@ -34,13 +33,15 @@ class DOMData
         NodeType;
 
     public:
-        const NodeType type() { return m_type; }
-        void setType(NodeType type) { m_type = type; }
-        const char *name() const { return m_pName; }
+        NodeType type()                  const { return m_type; }
+        const char *name()               const { return m_pName; }
+        const char *content()            const { return m_pContent; }
+        bool selfClosing()               const { return m_bSelfClosing; }
+        const PropertyMap *propertyMap() const { return m_pPropertyMap; }
+
+        void setSelfClosing(bool s)    { m_bSelfClosing = s; }
+        void setType(NodeType type)    { m_type = type; }
         void setName(const char *name) { m_pName = name; }
-        const char *content() const { return m_pContent; }
-        bool selfClosing() { return m_bSelfClosing; }
-        void setSelfClosing(bool s) { m_bSelfClosing = s; }
 
     protected:
         void reset ();
@@ -48,15 +49,13 @@ class DOMData
     public:
         DOMData ();
         DOMData (const DOMData &other);
-        DOMData (NodeType nodeType, const _char *pStr);
+        void initType(NodeType nodeType, const _char *pStr);
         virtual ~DOMData ();
 
     public:
-        int addProperty (pair <const _char *, const _char *> &p);
         int addProperty (const _char *pName, const _char *pValue);
         int copyAttributes (Tag *tag);
         const _char *findProperty (const _char *pName) const;
-        const PropertyMap *getPropertyMap() { return m_pPropertyMap; }
 
     public:
         inline bool equals (const _char *pName) const
@@ -67,7 +66,6 @@ class DOMData
         }
 
     protected:
-        void initData(NodeType nodeType, const _char *pStr);
         PropertyMap *m_pPropertyMap;
         NodeType m_type;
         const _char *m_pName, *m_pContent;

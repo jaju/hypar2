@@ -7,9 +7,12 @@
 
 #pragma once
 #include <cassert>
+#include <vector>
 
 template<typename G>
 class TreeNode : public G {
+        typedef std::vector<const TreeNode*> Vector;
+
     protected:
         TreeNode *_parent, *_prev, *_next, *_child, *_last;
         int _level, _horizontalLevel;
@@ -31,26 +34,35 @@ class TreeNode : public G {
 
     public:
         typedef bool (*NodeFilterPred)(TreeNode *, void *);
-        void depthVisitorFilter(NodeFilterPred f, void *context) {
+        void depthVisitorFilter(NodeFilterPred f, void *context, Vector &collector) {
+            _child && _child->depthVisitor(f, context, collector);
+            _next && _next->depthVisitor(f, context, collector);
+            if ((f)(this, context)) {
+                collector.push_back(this);
+            }
+        }
+        typedef void (*NodeCallback)(TreeNode *, void *);
+        void depthVisitor(NodeCallback f, void *context) {
             _child && _child->depthVisitor(f, context);
             _next && _next->depthVisitor(f, context);
             (f)(this, context);
         }
 
     public: // convenience
-        TreeNode *&child() { return (TreeNode *&) _child; }
-        void setChild(TreeNode *n) { _child = n; }
-        TreeNode *&parent() { return (TreeNode *&) _parent; }
-        void setParent(TreeNode *n) { _parent = n; }
-        TreeNode *&next() { return (TreeNode *&) _next; }
-        void setNext(TreeNode *n) { _next = n; }
-        TreeNode *&last() { return (TreeNode *&) _last; }
-        void setLast(TreeNode *n) { _last = n; }
-        TreeNode *&prev() { return (TreeNode *&) _prev; }
-        void setPrev(TreeNode *n) { _prev = n; }
-        int level() { return _level; }
-        void setLevel(int l) { _level = l; }
+        TreeNode *&child()    { return (TreeNode *&) _child; }
+        TreeNode *&parent()   { return (TreeNode *&) _parent; }
+        TreeNode *&next()     { return (TreeNode *&) _next; }
+        TreeNode *&last()     { return (TreeNode *&) _last; }
+        TreeNode *&prev()     { return (TreeNode *&) _prev; }
+        int level()           { return _level; }
         int horizontalLevel() { return _horizontalLevel; }
+
+        void setChild(TreeNode *n)     { _child = n; }
+        void setParent(TreeNode *n)    { _parent = n; }
+        void setNext(TreeNode *n)      { _next = n; }
+        void setLast(TreeNode *n)      { _last = n; }
+        void setPrev(TreeNode *n)      { _prev = n; }
+        void setLevel(int l)           { _level = l; }
         void setHorizontalLevel(int l) { _horizontalLevel = l; }
 
     protected:

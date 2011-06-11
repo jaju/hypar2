@@ -92,14 +92,12 @@ bool processHTMLComment (_char *pComment, void *pArg)
 
 HTMLNode::HTMLNode () : DOMNode ()
 {
-    setType(DOMNode::ELEMENT);
-    setName("htmlnode");
+    initType(DOMNode::ELEMENT, "htmlnode");
 }
 
 HTMLNode::HTMLNode (DOMNode::NodeType nodeType, const _char *pStr) : DOMNode()
 {
-        setType(nodeType);
-        setName(pStr);
+        initType(nodeType, pStr);
 }
 
 

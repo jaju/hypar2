@@ -26,7 +26,7 @@ DOMData::DOMData() :
 {
 }
 
-void DOMData::initData (DOMData::NodeType nodeType, const _char *pStr)
+void DOMData::initType (DOMData::NodeType nodeType, const _char *pStr)
 {
     m_type = nodeType;
     switch (m_type)
@@ -98,20 +98,7 @@ DOMData::reset ()
     int
 DOMData::addProperty (const _char *pName, const _char *pValue)
 {
-    if (!m_pPropertyMap)
-    {
-        m_pPropertyMap = new PropertyMap;
-        m_pPropertyMap->clear ();
-        if (!m_pPropertyMap)
-            return -1;
-    }
-    (*m_pPropertyMap)[pName] = pValue;
-    return 0;
-}
-
-    int
-DOMData::addProperty (pair<const _char *, const _char *> &p)
-{
+    pair<const _char *, const _char *> p(pName, pValue);
     if (!m_pPropertyMap)
     {
         m_pPropertyMap = new PropertyMap;
@@ -148,10 +135,10 @@ toString (DOMNode *node, _string &targetString, bool bChildOnly)
             targetString += L("<");
             targetString += node->name();
             /* TODO - Add the attributes */
-            if (node->getPropertyMap())
+            if (node->propertyMap())
             {
-                PropertyMap::const_iterator pmx = node->getPropertyMap()->begin ();
-                while (pmx != node->getPropertyMap()->end ())
+                PropertyMap::const_iterator pmx = node->propertyMap()->begin ();
+                while (pmx != node->propertyMap()->end ())
                 {
                     targetString += L(" ");
                     targetString += pmx->first;
@@ -190,11 +177,11 @@ toString (DOMNode *node, _string &targetString, bool bChildOnly)
             }
             targetString += L("</");
             targetString += node->name();
-            if (node->getPropertyMap()->find(L("childrenforceclosed")) != node->getPropertyMap()->end())
+            if (node->propertyMap()->find(L("childrenforceclosed")) != node->propertyMap()->end())
             {
                 targetString += " culpritchildren=\"1\"";
             }
-            else if (node->getPropertyMap()->find(L("forceclosed")) != node->getPropertyMap()->end())
+            else if (node->propertyMap()->find(L("forceclosed")) != node->propertyMap()->end())
             {
                 targetString += " forceclosed=\"1\"";
             }
