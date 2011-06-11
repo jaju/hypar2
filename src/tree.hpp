@@ -12,8 +12,7 @@ template<typename G>
 class TreeNode : public G {
     protected:
         TreeNode *_parent, *_prev, *_next, *_child, *_last;
-    public:
-        int level, horizontalLevel;
+        int _level, _horizontalLevel;
 
     public:
         static TreeNode *create() {
@@ -49,6 +48,10 @@ class TreeNode : public G {
         void setLast(TreeNode *n) { _last = n; }
         TreeNode *&prev() { return (TreeNode *&) _prev; }
         void setPrev(TreeNode *n) { _prev = n; }
+        int level() { return _level; }
+        void setLevel(int l) { _level = l; }
+        int horizontalLevel() { return _horizontalLevel; }
+        void setHorizontalLevel(int l) { _horizontalLevel = l; }
 
     protected:
         TreeNode();
@@ -65,7 +68,7 @@ class TreeNode : public G {
 template<typename G>
 TreeNode<G>::TreeNode() :
     G(), _parent (0), _prev (0), _next (0),
-    _child (0), _last (0), level (0), horizontalLevel (0) {}
+    _child (0), _last (0), _level (0), _horizontalLevel (0) {}
 
     template<typename G>
     TreeNode<G>::~TreeNode() {
@@ -86,8 +89,8 @@ TreeNode<G>::TreeNode(const TreeNode &o) : G(o) {
     _next = o._next;
     _child = o._child;
     _last = o._last;
-    level = o.level;
-    horizontalLevel = o.horizontalLevel;
+    _level = o._level;
+    _horizontalLevel = o._horizontalLevel;
 }
 
 template<typename G>
@@ -97,8 +100,8 @@ void TreeNode<G>::reset () {
     _next = 0;
     _child = 0;
     _last = 0;
-    level = 0;
-    horizontalLevel = 0;
+    _level = 0;
+    _horizontalLevel = 0;
     G::reset();
 }
 
@@ -137,14 +140,14 @@ int TreeNode<G>::detach ()
 
 template<typename G>
 int TreeNode<G>::initLevel (int iLevel, bool bNext) {
-    level = iLevel;
+    _level = iLevel;
     if (_child)
     {
-        _child->initLevel (level + 1, true);
+        _child->initLevel (_level + 1, true);
     }
     if (bNext && _next)
     {
-        _next->initLevel (level, true);
+        _next->initLevel (_level, true);
     }
     return 0;
 }
@@ -158,7 +161,7 @@ int TreeNode<G>::attachAsChild (TreeNode *pNode) {
         _child = _last = pNode;
         pNode->_parent = this;
         pNode->_prev = pNode->_next = 0;
-        pNode->initLevel (level + 1, true);
+        pNode->initLevel (_level + 1, true);
         return 1;
     }
     else
@@ -211,7 +214,7 @@ int TreeNode<G>::insertAsChild (TreeNode *pNewChild) {
     pNewChild->_parent = this;
     _child = pNewChild;
     _last = pNewChild;
-    _child->initLevel(level + 1, true);
+    _child->initLevel(_level + 1, true);
     return 1;
 }
 
@@ -234,7 +237,7 @@ int TreeNode<G>::attachAsPrevious (TreeNode *pNode) {
         }
     }
     _prev = pNode;
-    pNode->initLevel(level, false);
+    pNode->initLevel(_level, false);
     return 0;
 }
 
@@ -257,6 +260,6 @@ int TreeNode<G>::attachAsNext (TreeNode *pNode) {
         }
     }
     _next = pNode;
-    pNode->initLevel (level, false);
+    pNode->initLevel (_level, false);
     return 0;
 }

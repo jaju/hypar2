@@ -144,7 +144,7 @@ toString (DOMNode *node, _string &targetString, bool bChildOnly)
     switch (node->type())
     {
         case DOMData::ELEMENT:
-            targetString += textutils::echoSpaces (node->level);
+            targetString += textutils::echoSpaces (node->level());
             targetString += L("<");
             targetString += node->name();
             /* TODO - Add the attributes */
@@ -163,9 +163,9 @@ toString (DOMNode *node, _string &targetString, bool bChildOnly)
             }
 #if 1
             targetString += L(" level=\"");
-            targetString += textutils::_itos (node->level);
+            targetString += textutils::_itos (node->level());
             targetString += L("\" horlevel=\"");
-            targetString += textutils::_itos (node->horizontalLevel);
+            targetString += textutils::_itos (node->horizontalLevel());
             targetString += L("\"");
 #endif
             if (node->child())

@@ -73,7 +73,7 @@ int main (int argc, char *argv[])
     DOMNode *node = DOMNode::create(); // FIXME - LEAK - XXX
     node->setType(DOMNode::ELEMENT);
     node->setName(L("root"));
-    node->level = -1;
+    node->setLevel(-1);
     DOMNode *pNode = h.parse (pBuffer, node);
 
     _string text = L("");
