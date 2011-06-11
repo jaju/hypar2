@@ -49,29 +49,19 @@ DOMData::~DOMData ()
 }
 
 
-DOMNode *DOMNode::clone () const
+DOMData::DOMData (const DOMData &other)
 {
-    DOMNode *pRetNode = clone (m_type, m_pName);
-    if (m_pPropertyMap)
+    (*this) = other; // Copies the basic types.
+    if (other.m_pPropertyMap)
     {
-        PropertyMap::iterator pmx = m_pPropertyMap->begin ();
+        PropertyMap::iterator pmx = other.m_pPropertyMap->begin ();
         while (pmx != m_pPropertyMap->end ())
         {
-            pRetNode->addProperty ((*pmx).first, (*pmx).second);
+            addProperty ((*pmx).first, (*pmx).second);
             pmx++;
         }
     }
-    return pRetNode;
 }
-
-    DOMNode *
-DOMNode::clone (NodeType nodeType, const _char *pName) const
-{
-    if (!pName) { pName = m_pName; }
-    DOMNode *pRetNode = new DOMNode (nodeType, pName);
-    return pRetNode;
-}
-
 
 int DOMData::copyAttributes (Tag *tag)
 {
@@ -104,10 +94,6 @@ DOMData::reset ()
     m_pContent = 0;
 }
 
-void DOMNode::reset() {
-    TreeNode<DOMData>::reset();
-}
-
 
     int
 DOMData::addProperty (const _char *pName, const _char *pValue)
@@ -129,9 +115,6 @@ DOMData::addProperty (pair<const _char *, const _char *> &p)
     if (!m_pPropertyMap)
     {
         m_pPropertyMap = new PropertyMap;
-        m_pPropertyMap->clear ();
-        if (!m_pPropertyMap)
-            return -1;
     }
     if ((m_pPropertyMap->insert (p)).second == true)
     {
@@ -156,35 +139,19 @@ DOMData::findProperty (const _char *pName) const
 }
 
     void
-DOMNode::recursiveCb (DOMData::CallBack f)
+toString (DOMNode *node, _string &targetString, bool bChildOnly)
 {
-    if (_child)
+    switch (node->type())
     {
-        child()->recursiveCb (f);
-    }
-
-    if (_next)
-    {
-        next()->recursiveCb (f);
-    }
-
-    return;
-}
-
-    void
-DOMNode::toString (_string &targetString, bool bChildOnly)
-{
-    switch (m_type)
-    {
-        case ELEMENT:
-            targetString += textutils::echoSpaces (level);
+        case DOMData::ELEMENT:
+            targetString += textutils::echoSpaces (node->level);
             targetString += L("<");
-            targetString += m_pName;
+            targetString += node->name();
             /* TODO - Add the attributes */
-            if (m_pPropertyMap)
+            if (node->getPropertyMap())
             {
-                PropertyMap::iterator pmx = m_pPropertyMap->begin ();
-                while (pmx != m_pPropertyMap->end ())
+                PropertyMap::const_iterator pmx = node->getPropertyMap()->begin ();
+                while (pmx != node->getPropertyMap()->end ())
                 {
                     targetString += L(" ");
                     targetString += pmx->first;
@@ -196,88 +163,94 @@ DOMNode::toString (_string &targetString, bool bChildOnly)
             }
 #if 1
             targetString += L(" level=\"");
-            targetString += textutils::_itos (level);
+            targetString += textutils::_itos (node->level);
             targetString += L("\" horlevel=\"");
-            targetString += textutils::_itos (horizontalLevel);
+            targetString += textutils::_itos (node->horizontalLevel);
             targetString += L("\"");
 #endif
-            if (_child)
+            if (node->child())
             {
                 targetString += L(">\n");
-                child()->toString(targetString);
+                toString(node->child(), targetString);
             }
             else
             {
-                if (m_bSelfClosing)
+                if (node->selfClosing())
                 {
                     targetString += L("/>\n");
                 }
                 else
                 {
                     targetString += L("></");
-                    targetString += m_pName;
+                    targetString += node->name();
                     targetString += " selfclosing=\"1\"";
                     targetString += L(">\n");
                 }
                 break;
             }
             targetString += L("</");
-            targetString += m_pName;
-            if (m_pPropertyMap->find(L("childrenforceclosed")) != m_pPropertyMap->end())
+            targetString += node->name();
+            if (node->getPropertyMap()->find(L("childrenforceclosed")) != node->getPropertyMap()->end())
             {
                 targetString += " culpritchildren=\"1\"";
             }
-            else if (m_pPropertyMap->find(L("forceclosed")) != m_pPropertyMap->end())
+            else if (node->getPropertyMap()->find(L("forceclosed")) != node->getPropertyMap()->end())
             {
                 targetString += " forceclosed=\"1\"";
             }
             targetString += L(">\n");
             break;
-        case TEXT:
-            targetString += m_pContent;
+        case DOMData::TEXT:
+            if (node->content())
+            targetString += node->content();
             break;
-        case COMMENT:
+        case DOMData::COMMENT:
+            if (node->content()) {
             targetString += L("<");
-            targetString += m_pContent;
+            targetString += node->content();
             targetString += L(">\n");
+            }
             break;
         default:
             break;
     }
-    if (!bChildOnly && _next)
+    if (!bChildOnly && node->next())
     {
-        next()->toString (targetString);
+        toString (node->next(), targetString);
     }
 }
 
-_string DOMNode::toString(bool bChildOnly)
+_string toString(DOMNode *node, bool bChildOnly)
 {
     _string result;
-    toString(result, bChildOnly);
+    toString(node, result, bChildOnly);
     return result;
 }
 
 
-void DOMNode::toText (_string &targetString, bool bChildOnly)
+void toText (DOMNode *node, _string &targetString, bool bChildOnly)
 {
-    switch (m_type)
+    switch (node->type())
     {
-        case ELEMENT:
-            if (_child)
+        case DOMData::ELEMENT:
+            if (node->child())
             {
-                child()->toText (targetString);
+                toText (node->child(), targetString);
             }
             break;
-        case TEXT:
-            targetString += m_pContent;
+        case DOMData::TEXT:
+            if (node->content()) {
+                targetString += node->content();
+                targetString += L(" ");
+            }
             break;
-        case COMMENT:
+        case DOMData::COMMENT:
         default:
             break;
     }
-    if (!bChildOnly && _next)
+    if (!bChildOnly && node->next())
     {
-        next()->toText (targetString);
+        toText (node->next(), targetString);
     }
 }
 

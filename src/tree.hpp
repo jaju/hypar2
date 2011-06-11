@@ -12,13 +12,15 @@ template<typename G>
 class TreeNode : public G {
     protected:
         TreeNode *_parent, *_prev, *_next, *_child, *_last;
-
     public:
         int level, horizontalLevel;
 
     public:
         static TreeNode *create() {
             return new TreeNode();
+        }
+        TreeNode *clone() {
+            return new TreeNode(*this);
         }
         int attachAsNext (TreeNode *pNode);
         int attachAsPrevious (TreeNode *pNode);
@@ -27,6 +29,14 @@ class TreeNode : public G {
         int attachAsChild (TreeNode *pNode);
         int initLevel (int iLevel = 0, bool bNext = true);
         int detach ();
+
+    public:
+        typedef bool (*NodeFilterPred)(TreeNode *, void *);
+        void depthVisitorFilter(NodeFilterPred f, void *context) {
+            _child && _child->depthVisitor(f, context);
+            _next && _next->depthVisitor(f, context);
+            (f)(this, context);
+        }
 
     public: // convenience
         TreeNode *&child() { return (TreeNode *&) _child; }
@@ -42,6 +52,7 @@ class TreeNode : public G {
 
     protected:
         TreeNode();
+        TreeNode(const TreeNode &other);
         virtual ~TreeNode();
         virtual void reset ();
 };
@@ -67,6 +78,17 @@ TreeNode<G>::TreeNode() :
             delete pTmpNode;
         }
     }
+
+template<typename G>
+TreeNode<G>::TreeNode(const TreeNode &o) : G(o) {
+    _parent = o._parent;
+    _prev = o._prev;
+    _next = o._next;
+    _child = o._child;
+    _last = o._last;
+    level = o.level;
+    horizontalLevel = o.horizontalLevel;
+}
 
 template<typename G>
 void TreeNode<G>::reset () {

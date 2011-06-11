@@ -102,7 +102,9 @@ int main (int argc, char *argv[])
     h.tagCb = &tagCbFunc;
     h.textCb = &textCb;
     h.commentCb = &commentCb;
-    DOMNode node (DOMNode::ELEMENT, L("root"));
+    DOMNode *node = DOMNode::create(); // FIXME - LEAK - XXX
+    node->setType(DOMNode::ELEMENT);
+    node->setName(L("root"));
     DOMNode *pNode = 0;
 
     gettimeofday (&tv_start, 0);
@@ -112,7 +114,7 @@ int main (int argc, char *argv[])
         _char *pBuffer = new _char[m.getBufferLength () + 1];
         bzero (pBuffer, m.getBufferLength () + 1);
         memcpy (pBuffer, m.getBuffer (), m.getBufferLength ());
-        pNode = h.parse (pBuffer, &node);
+        pNode = h.parse (pBuffer, node);
         delete pBuffer;
     }
     gettimeofday (&tv_end, 0);

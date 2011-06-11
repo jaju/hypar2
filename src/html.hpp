@@ -70,7 +70,6 @@ class HTMLDoc
 
     public:
         HTMLNode *getRootNode () { return m_pRootNode; }
-        int toString (string &outString);
         int toText (string &outString);
 
     private:

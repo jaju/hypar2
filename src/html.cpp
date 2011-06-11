@@ -90,13 +90,17 @@ bool processHTMLComment (_char *pComment, void *pArg)
 }
 
 
-HTMLNode::HTMLNode () :
-    DOMNode (DOMNode::ELEMENT, L ("htmlnode"))
-{}
+HTMLNode::HTMLNode () : DOMNode ()
+{
+    setType(DOMNode::ELEMENT);
+    setName("htmlnode");
+}
 
-HTMLNode::HTMLNode (DOMNode::NodeType nodeType, const _char *pStr) :
-    DOMNode(nodeType, pStr)
-{}
+HTMLNode::HTMLNode (DOMNode::NodeType nodeType, const _char *pStr) : DOMNode()
+{
+        setType(nodeType);
+        setName(pStr);
+}
 
 
 HTMLNode *HTMLNode::clone ()
@@ -217,28 +221,6 @@ HTMLNode *HTMLDoc::parse (const char *pBuffer, unsigned int length)
     m_pRootNode = reinterpret_cast<HTMLNode *>
         (m_sParser.parse (m_pBuffer, &m_sCloneableNode));
     return m_pRootNode;
-}
-
-int HTMLDoc::toString (string &outString)
-{
-    if (!m_pRootNode || !m_pRootNode->child())
-    {
-        return -1;
-    }
-    outString.assign ("");
-#ifdef USE_WIDECHAR
-    wstring text = L ("");
-    m_pRootNode->m_pChild->toString (text);
-    char *pLocalLocaleBuffer = new char[sizeof (wchar_t) * (text.size () + 1 )];
-    setlocale (LC_ALL, m_pLocale);
-    wcstombs (pLocalLocaleBuffer, text.c_str (),
-            sizeof (wchar_t) * (text.size () + 1));
-    outString = pLocalLocaleBuffer;
-    delete pLocalLocaleBuffer;
-#else
-    m_pRootNode->child()->toString (outString);
-#endif
-    return 0;
 }
 
 typedef struct _NVStringPair

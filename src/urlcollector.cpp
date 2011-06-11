@@ -93,10 +93,13 @@ int URLCollector::collect (_char *pBuffer, const char *pEncoding)
     h.textCb = &URLCollector::text_callback;
     h.commentCb = &URLCollector::comm_callback;
     h.m_pCallbackArg = (void *) this;
-    DOMNode node(DOMNode::ELEMENT, L("root"));
+    DOMNode *node = DOMNode::create();
+    node->setType(DOMNode::ELEMENT);
+    node->setName(L("root"));
 
-    node.level = -1;
-    h.parse (pBuffer, &node);
+    node->level = -1;
+    h.parse (pBuffer, node);
+    //delete node; // LEAK HERE - XXX - FIXME
     return m_URLList.size ();
 }
 

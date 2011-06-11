@@ -4,12 +4,12 @@
 #include "hashmap.hpp"
 #include "tag.hpp"
 #include "tree.hpp"
+#include <vector>
+using std::vector;
 
 BEGIN_NAMESPACE(hy);
 
 typedef HashMap <const _char *, const _char *, strcasehash, eqcase> PropertyMap;
-class DOMNode;
-typedef list <DOMNode * > NodeList;
 
 /**
  * The DOM element
@@ -47,6 +47,7 @@ class DOMData
 
     public:
         DOMData ();
+        DOMData (const DOMData &other);
         DOMData (NodeType nodeType, const _char *pStr);
         virtual ~DOMData ();
 
@@ -55,6 +56,7 @@ class DOMData
         int addProperty (const _char *pName, const _char *pValue);
         int copyAttributes (Tag *tag);
         const _char *findProperty (const _char *pName) const;
+        const PropertyMap *getPropertyMap() { return m_pPropertyMap; }
 
     public:
         inline bool equals (const _char *pName) const
@@ -73,50 +75,11 @@ class DOMData
 
 };
 
-class DOMNode : public TreeNode<DOMData> {
-    public:
-        DOMNode () {}
-        DOMNode(NodeType nodeType, const _char *pStr) {
-            initData(nodeType, pStr);
-        }
+typedef TreeNode<DOMData> DOMNode;
+typedef list <DOMNode * > NodeList;
 
-    public:
-        DOMNode *findFirstChild (const _char *pName);
-        DOMNode *findFirstChild (NodeType type);
-        DOMNode *findNext (const _char *pName, bool bConsiderThis = false);
-        DOMNode *findNext (NodeType type, bool bConsiderThis = false);
-        void recursiveCb (CallBack);
-
-    public:
-        int collectNodesByName (const _char *pName, NodeList *pNodeList,
-                bool siblings = false);
-        int collectNodesByAttrVal (const _char *pAttr, const _char *pVal,
-                NodeList *pNodeList, bool siblings = false);
-
-        int collectChildrenByType (NodeType type, NodeList *pNodeList);
-        int collectChildrenByName (const _char *pName,
-                NodeList *pNodeList);
-        void toString (_string &targetString, bool bChildOnly = false);
-        _string toString(bool bChildOnly = false);
-        void toText (_string &targetString, bool bChildOnly = false);
-        virtual DOMNode *clone () const;
-        virtual DOMNode *clone (NodeType nodeType, const _char *pName = 0) const;
-
-    public: // convenience
-        DOMNode *&child() { return (DOMNode *&) _child; }
-        void setChild(DOMNode *n) { _child = n; }
-        DOMNode *&parent() { return (DOMNode *&) _parent; }
-        void setParent(DOMNode *n) { _parent = n; }
-        DOMNode *&next() { return (DOMNode *&) _next; }
-        void setNext(DOMNode *n) { _next = n; }
-        DOMNode *&last() { return (DOMNode *&) _last; }
-        void setLast(DOMNode *n) { _last = n; }
-        DOMNode *&prev() { return (DOMNode *&) _prev; }
-        void setPrev(DOMNode *n) { _prev = n; }
-
-
-    protected:
-        void reset ();
-};
+void toString (DOMNode *node, _string &targetString, bool bChildOnly = false);
+_string toString(DOMNode *node, bool bChildOnly = false);
+void toText (DOMNode *node, _string &targetString, bool bChildOnly = false);
 
 END_NAMESPACE(hy);

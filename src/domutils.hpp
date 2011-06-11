@@ -22,6 +22,4 @@ NodeList filterNodesByName (const _char *pName, NodeList &_nodeList);
 NodeList filterNodesByAttrVal (const _char *pAttr, const _char *pVal,
         NodeList &_nodeList);
 
-int toText (DOMNode *pRootNode, _string &outString);
-
 END_NAMESPACE (hy);

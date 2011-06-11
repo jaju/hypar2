@@ -99,8 +99,9 @@ int XML::initDOM (Tag *pTag)
         return -1;
     }
 
-    m_pRootNode = m_pCloneableNode->clone (DOMNode::ELEMENT,
-            pTag ? pTag->m_pName : 0);
+    m_pRootNode = m_pCloneableNode->clone ();
+    m_pRootNode->setType(DOMNode::ELEMENT);
+    m_pRootNode->setName(pTag ? pTag->m_pName : 0);
 
     m_pCurrentParentNode = m_pRootNode;
     if (pTag)
@@ -121,7 +122,9 @@ int XML::addNode (Tag *pTag, bool bSelfClosing)
 int XML::addNode (const _char *pElementName, bool bSelfClosing)
 {
     debug(("Adding XML node...\n"));
-    DOMNode *pNode = m_pCloneableNode->clone (DOMNode::ELEMENT, pElementName);
+    DOMNode *pNode = m_pCloneableNode->clone ();
+    pNode->setType(DOMNode::ELEMENT);
+    pNode->setName(pElementName);
     pNode->setSelfClosing(bSelfClosing);
     if (m_pCurrentNode)
     {
@@ -145,7 +148,9 @@ int XML::addNodeSelfContained (DOMNode::NodeType nodeType,
         const _char *pContent)
 {
     debug(("Adding self-contained XML node\n"));
-    DOMNode *pNode = m_pCloneableNode->clone (nodeType, pContent);
+    DOMNode *pNode = m_pCloneableNode->clone ();
+    pNode->setType(nodeType);
+    pNode->setName(pContent);
     if (m_pCurrentNode)
     {
         m_pCurrentNode->setNext(pNode);
