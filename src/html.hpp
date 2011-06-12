@@ -85,9 +85,9 @@ class URLCollector
 {
     public:
         list<hy::URL *> m_URLList;
+        const char *m_pEncoding;
         unsigned int m_iMaxURLLen;
         string m_baseHref;
-        const char *m_pEncoding;
 
     public:
         URLCollector ();

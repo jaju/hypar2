@@ -24,9 +24,10 @@ Iconv::Iconv (const char *pFromEncoding, const char *pToEncoding) :
     m_iIconvDescriptor ((iconv_t) -1),
     m_status (EICONVINVAL)
 {
-    int _errno;
     m_iIconvDescriptor = iconv_open (m_pToEncoding, m_pFromEncoding);
-    _errno = errno;
+#if DEBUG
+    int _errno = errno;
+#endif
     if (m_iIconvDescriptor != (iconv_t) -1)
     {
         m_status = Iconv::OK;
@@ -59,10 +60,11 @@ size_t Iconv::convert (const char **pInbuf, size_t *pInbytesleft,
         char **pOutbuf, size_t *pOutbytesleft)
 {
     size_t retval = 0;
-    int _errno;
     retval = iconv (m_iIconvDescriptor, (char **) pInbuf, pInbytesleft,
             pOutbuf, pOutbytesleft);
-    _errno = errno;
+#if DEBUG
+    int _errno = errno;
+#endif
 
     if (retval == (size_t) -1)
     {

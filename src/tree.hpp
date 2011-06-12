@@ -24,6 +24,7 @@ class TreeNode : public G {
         TreeNode *clone() {
             return new TreeNode(*this);
         }
+        virtual ~TreeNode();
         int attachAsNext (TreeNode *pNode);
         int attachAsPrevious (TreeNode *pNode);
         int insertAsChild (TreeNode *pNewChild);
@@ -68,7 +69,6 @@ class TreeNode : public G {
     protected:
         TreeNode();
         TreeNode(const TreeNode &other);
-        virtual ~TreeNode();
         virtual void reset ();
 };
 

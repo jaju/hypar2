@@ -482,8 +482,6 @@ MAKE_VALID_ONLY_GOTO:
         }
         else
         {
-            int i;
-            i = m_entityStack.locateFromTop (pTag->m_pName);
             m_occurenceMapIter = m_occurenceMap.find (pTag->m_pName);
             if (m_pCurTagEntry->m_bOccurOnce &&
                     (m_occurenceMapIter != m_occurenceMap.end ()) &&

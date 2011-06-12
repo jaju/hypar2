@@ -102,7 +102,7 @@ int main (int argc, char *argv[])
     h.tagCb = &tagCbFunc;
     h.textCb = &textCb;
     h.commentCb = &commentCb;
-    DOMNode *node = DOMNode::create(); // FIXME - LEAK - XXX
+    DOMNode *node = DOMNode::create();
     node->setType(DOMNode::ELEMENT);
     node->setName(L("root"));
     DOMNode *pNode = 0;
@@ -126,5 +126,6 @@ int main (int argc, char *argv[])
     cout << ((1.0 * iNumPasses * 1000000) / diff) << " passes per second" << endl;
     cout << (lSize / diff) << " Mbytes per second" << endl;
 
+    delete pNode;
     return 0;
 }

@@ -99,7 +99,7 @@ int URLCollector::collect (_char *pBuffer, const char *pEncoding)
 
     node->setLevel(-1);
     h.parse (pBuffer, node);
-    //delete node; // LEAK HERE - XXX - FIXME
+    delete node;
     return m_URLList.size ();
 }
 

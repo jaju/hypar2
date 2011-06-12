@@ -70,7 +70,7 @@ int main (int argc, char *argv[])
     memcpy (pBuffer, m.getBuffer (), len - 1);
 #endif
     XML h;
-    DOMNode *node = DOMNode::create(); // FIXME - LEAK - XXX
+    DOMNode *node = DOMNode::create();
     node->setType(DOMNode::ELEMENT);
     node->setName(L("root"));
     node->setLevel(-1);
@@ -83,9 +83,10 @@ int main (int argc, char *argv[])
     strncpy (pLocalLocaleBuffer, text.c_str (), text.size () * 4 + 4);
     cout << pLocalLocaleBuffer << endl;
 
-    //delete pNode; - FIXME - LEAK
+    delete pNode;
     delete pLocalLocaleBuffer;
     delete pBuffer;
+    delete node;
 
     return 0;
 }
