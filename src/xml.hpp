@@ -80,7 +80,6 @@ class XML
                 bool bCheckOnly = false);
 
         int initDOM (Tag *tag = 0);
-        int addNode (const _char *pElementName, bool bClosure = false);
         int addNode (Tag *tag, bool bClosure = false);
         int addNodeSelfContained (DOMNode::NodeType nodeType,
                 const _char *pContent);

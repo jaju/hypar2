@@ -106,15 +106,10 @@ int XML::initDOM (Tag *pTag)
     return 0;
 }
 
+
 int XML::addNode (Tag *pTag, bool bSelfClosing)
 {
-    addNode (pTag->name(), bSelfClosing);
-    m_pCurrentParentNode->copyAttributes (pTag);
-    return 0;
-}
-
-int XML::addNode (const _char *pElementName, bool bSelfClosing)
-{
+    const _char *pElementName = pTag->name();
     debug(("Adding XML node...\n"));
     DOMNode *pNode = m_pCloneableNode->clone ();
     pNode->initType(DOMNode::ELEMENT, pElementName);
@@ -135,6 +130,7 @@ int XML::addNode (const _char *pElementName, bool bSelfClosing)
     m_pCurrentParentNode->setLast(pNode);
     pNode->setLevel(m_pCurrentParentNode->level() + 1);
     m_pCurrentParentNode = pNode;
+    m_pCurrentParentNode->copyAttributes (pTag);
     return 0;
 }
 
