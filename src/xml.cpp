@@ -30,11 +30,11 @@ static const TagEntry defaultTable[] =
     TagEntry (0, 0, TagEntry::TEXT_ATTR, false, false, 0, 0)
 };
 
-void XML::resetUnknownTagEntry ()
+void resetUnknownTagEntry (TagEntry &te, TagTable &tagTable)
 {
-    m_unknownTagEntry.setAncestor(m_tagTable.rootTagName ());
-    m_unknownTagEntry.setFirstAncestor(m_unknownTagEntry.ancestor());
-    m_unknownTagEntry.setClosure(true);
+    te.setAncestor(tagTable.rootTagName ());
+    te.setFirstAncestor(te.ancestor());
+    te.setClosure(true);
 }
 
 XML::XML () :
@@ -55,8 +55,6 @@ XML::XML () :
     commentCb (0)
 {
     doNotClean ();
-    resetUnknownTagEntry ();
-    m_occurenceMapIter = m_occurenceMap.end ();
 }
 
 XML::XML (const TagEntry *pte) :
@@ -76,8 +74,6 @@ XML::XML (const TagEntry *pte) :
     textCb (0),
     commentCb (0)
 {
-    resetUnknownTagEntry ();
-    m_occurenceMapIter = m_occurenceMap.end ();
 }
 
 void XML::reset ()
@@ -88,7 +84,6 @@ void XML::reset ()
     m_pCurrentParentNode = 0;
     m_entityStack.clear ();
     m_occurenceMap.clear ();
-    m_occurenceMapIter = m_occurenceMap.end ();
 }
 
 int XML::initDOM (Tag *pTag)
@@ -379,13 +374,14 @@ DOMNode *XML::parse (_char *pTextBuffer, DOMNode *pCloneableNode)
 inline int XML::handleElement (Tag *pTag, bool bDocStarted)
 {
     assert (pTag);
+    TagEntry unknownTagEntry;
     if (m_bMakeValidOnly)
     {
-        resetUnknownTagEntry ();
-        m_pCurTagEntry = &m_unknownTagEntry;
+        resetUnknownTagEntry(unknownTagEntry, m_tagTable);
+        m_pCurTagEntry = &unknownTagEntry;
         if (pTag->selfClosing())
         {
-            m_unknownTagEntry.setClosure(false);
+            unknownTagEntry.setClosure(false);
         }
         goto MAKE_VALID_ONLY_GOTO;
     }
@@ -404,13 +400,13 @@ inline int XML::handleElement (Tag *pTag, bool bDocStarted)
             hy_warn (("Unknown tag. Ignoring -> '%s'\n", pTag->name()));
             return -1;
         }
-        resetUnknownTagEntry ();
-        m_unknownTagEntry.setName(pTag->name());
+        resetUnknownTagEntry (unknownTagEntry, m_tagTable);
+        unknownTagEntry.setName(pTag->name());
         if (pTag->selfClosing())
         {
-            m_unknownTagEntry.setClosure(false);
+            unknownTagEntry.setClosure(false);
         }
-        m_pCurTagEntry = &m_unknownTagEntry;
+        m_pCurTagEntry = &unknownTagEntry;
     }
 
     if (unlikely (!bDocStarted))
@@ -482,7 +478,7 @@ MAKE_VALID_ONLY_GOTO:
         }
         else
         {
-            m_occurenceMapIter = m_occurenceMap.find (pTag->name());
+            OccurenceMap::iterator m_occurenceMapIter = m_occurenceMap.find (pTag->name());
             if (m_pCurTagEntry->occurOnce() &&
                     (m_occurenceMapIter != m_occurenceMap.end ()) &&
                     (true == m_occurenceMapIter->second))
@@ -492,7 +488,7 @@ MAKE_VALID_ONLY_GOTO:
             }
             clearCurrentContext (pTag, m_pCurTagEntry, false);
             addNode (pTag);
-            if (m_pCurTagEntry == &m_unknownTagEntry)
+            if (m_pCurTagEntry == &unknownTagEntry)
             {
                 m_pCurrentParentNode->addProperty (L ("unknowntag"), L ("1"));
             }

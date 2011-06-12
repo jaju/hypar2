@@ -45,9 +45,7 @@ class XML
         bool m_bDocStarted, m_bIgnoreUnknownTag;
         const TagEntry *m_pCurTagEntry;
         OccurenceMap m_occurenceMap;
-        OccurenceMap::iterator m_occurenceMapIter;
         EntityStack m_entityStack;
-        TagEntry m_unknownTagEntry;
         bool m_bMakeValidOnly;
 
     private:
@@ -71,7 +69,6 @@ class XML
 
     private:
         void reset ();
-        void resetUnknownTagEntry ();
 
         inline int handleElement (Tag *t, bool bDocStarted);
         inline int handleIgnoreChildren (Tag &t, EntityStream &wcs);
