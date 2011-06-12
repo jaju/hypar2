@@ -11,12 +11,19 @@ BEGIN_NAMESPACE(hy);
  */
 class Tag
 {
-    public:
+    private:
         const _char *m_pName;
         const _char *m_pStrEnd;
         _char *m_pTagAttrString;
         bool m_bEndTag, m_bSelfClosing;
         TagAttrList m_attrList;
+
+    public:
+        const char *name() const { return m_pName; }
+        bool endTag() const { return m_bEndTag; }
+        void setEndTag(bool b) { m_bEndTag = b; }
+        bool selfClosing() const { return m_bSelfClosing; }
+        const TagAttrList &attrList() const { return m_attrList; }
 
     public:
         Tag ();

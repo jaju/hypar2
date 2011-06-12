@@ -31,7 +31,7 @@ XML::EntityCbRetval URLCollector::href_callback (Tag *pTag, void *pArg)
     static const _char *pURLTagName = L("a");
     static const _char *pBase = L("base");
     URLCollector *pThis = (URLCollector *) pArg;
-    if (!pThis->m_baseHref.size() && _strcasecmp(pBase, pTag->m_pName) == 0)
+    if (!pThis->m_baseHref.size() && _strcasecmp(pBase, pTag->name()) == 0)
     {
         const _char *pVal = pTag->findProperty(L("href"));
         if (pVal)
@@ -47,9 +47,9 @@ XML::EntityCbRetval URLCollector::href_callback (Tag *pTag, void *pArg)
         }
         return XML::DROP_SIMPLE;
     }
-    if (_strcasecmp(pURLTagName, pTag->m_pName) == 0)
+    if (_strcasecmp(pURLTagName, pTag->name()) == 0)
     {
-        if (!pTag->m_bEndTag)
+        if (!pTag->endTag())
         {
             const _char *pVal = pTag->findProperty(L("href"));
             if (pVal)

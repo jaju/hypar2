@@ -14,7 +14,7 @@ TEST(Tag, ShouldParseASimpleTag) {
     textutils::CBuffer c(tag, strlen(tag));
     Tag t(c.get(), true);
 
-    ASSERT_STREQ(t.m_pName, "html");
+    ASSERT_STREQ(t.name(), "html");
 }
 
 TEST(Tag, ShouldParseAttributesOfATag) {
@@ -22,7 +22,7 @@ TEST(Tag, ShouldParseAttributesOfATag) {
     textutils::CBuffer c(tag, strlen(tag));
     Tag t(c.get(), true);
 
-    ASSERT_STREQ(t.m_pName, "body");
+    ASSERT_STREQ(t.name(), "body");
     ASSERT_STREQ(t.findProperty("bgcolor"), "white");
     ASSERT_STREQ(t.findProperty("fgcolor"), "black and white");
     ASSERT_STREQ(t.findProperty("foo"), "bar > and > baaz");
@@ -33,7 +33,7 @@ TEST(Tag, ShouldIdentifyEndTags) {
     textutils::CBuffer c(tag, strlen(tag));
     Tag t(c.get(), true);
 
-    ASSERT_STREQ(t.m_pName, "html");
-    ASSERT_TRUE(t.m_bEndTag);
+    ASSERT_STREQ(t.name(), "html");
+    ASSERT_TRUE(t.endTag());
     ASSERT_STREQ(t.findProperty("bgcolor"), "white");
 }

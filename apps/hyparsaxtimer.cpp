@@ -37,17 +37,17 @@ _string outString;
 XML::EntityCbRetval tagCbFunc (Tag *pTag, void *pArg)
 {
     if (
-            !(_strcasecmp(pTag->m_pName, L("style")))
+            !(_strcasecmp(pTag->name(), L("style")))
             ||
-            !(_strcasecmp(pTag->m_pName, L("script")))
+            !(_strcasecmp(pTag->name(), L("script")))
             ||
-            !(_strcasecmp(pTag->m_pName, L("noscript")))
+            !(_strcasecmp(pTag->name(), L("noscript")))
        )
     {
         return XML::IGNORE_CHILDREN;
     }
     const _char *pHref = 0;
-    if ((_strncmp (pTag->m_pName, L("a"), 1)) == 0 &&
+    if ((_strncmp (pTag->name(), L("a"), 1)) == 0 &&
             ((pHref = pTag->findProperty (L("href"))) != 0))
     {
         /* URL */

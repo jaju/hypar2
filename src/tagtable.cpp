@@ -42,15 +42,15 @@ int TagTable::construct (const TagEntry *pte)
 
     assert(pte != 0);
     const TagEntry *pEntry;
-    while (pte[iEntryCount].m_pName != 0)
+    while (pte[iEntryCount].name() != 0)
     {
         pEntry = &pte[iEntryCount];
-        NameTagPair p (pEntry->m_pName, pEntry);
+        NameTagPair p (pEntry->name(), pEntry);
         m_TERepository.insert (p);
-        if (pEntry->m_iContextLevel < iRootLevel)
+        if (pEntry->contextLevel() < iRootLevel)
         {
-            iRootLevel = pEntry->m_iContextLevel;
-            m_pRootElementName = pEntry->m_pName;
+            iRootLevel = pEntry->contextLevel();
+            m_pRootElementName = pEntry->name();
         }
         iEntryCount++;
     }

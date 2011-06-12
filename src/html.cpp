@@ -58,9 +58,9 @@ bool HTMLDoc::s_bProcessTextData = false;
 
 XML::EntityCbRetval processHTMLTag (Tag *pTag, void *pArg)
 {
-    if (!pTag->m_bEndTag)
+    if (!pTag->endTag())
     {
-        itsx = ignoreTagSet.find (pTag->m_pName);
+        itsx = ignoreTagSet.find (pTag->name());
         if (itsx != ignoreTagSet.end ())
         {
             return XML::IGNORE_CHILDREN;

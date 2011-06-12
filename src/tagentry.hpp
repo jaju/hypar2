@@ -14,11 +14,6 @@ BEGIN_NAMESPACE(hy);
 class TagEntry
 {
     public:
-        const _char *m_pName;
-        unsigned int m_iContextSwitch;
-        unsigned int m_iContextLevel;
-        bool m_bClosure;
-        bool m_bOccurOnce;
 
         enum
         {
@@ -26,23 +21,33 @@ class TagEntry
         };
 
     public:
+        const _char *name () const;
         const _char *parent() const { return m_pParent; }
         const _char *ancestor() const { return m_pAncestor; }
         const _char *firstParent() const { return m_pFirstParent; }
         const _char *firstAncestor() const { return m_pFirstAncestor; }
+        unsigned int contextSwitch() const { return m_iContextSwitch; }
+        unsigned int contextLevel() const { return m_iContextLevel; }
+        bool closure() const { return m_bClosure; }
+        bool occurOnce() const { return m_bOccurOnce; }
 
+        void setName(const _char *x) { m_pName = x; }
         void setParent(const _char *x) { m_pParent = x; }
         void setAncestor(const _char *x) { m_pAncestor = x; }
         void setFirstParent(const _char *x) { m_pFirstParent = x; }
         void setFirstAncestor(const _char *x) { m_pFirstAncestor = x; }
+        void setClosure(bool b) { m_bClosure = b; }
 
     private:
+        unsigned int m_iContextSwitch;
+        unsigned int m_iContextLevel;
+        bool m_bClosure;
+        bool m_bOccurOnce;
+        const _char *m_pName;
         const _char *m_pParent;
         const _char *m_pAncestor;
         const _char *m_pFirstParent;
         const _char *m_pFirstAncestor;
-
-    private:
         _char *m_pParentNew, *m_pAncestorNew; /* strdup()'ed strings */
         std::vector <const _char *> *m_pParentList, *m_pAncestorList;
 
@@ -61,7 +66,6 @@ class TagEntry
         ~TagEntry ();
 
     public:
-        const _char *getName ();
         bool isParent (const _char *pParent);
         bool isAncestor (const _char *pAncestor);
         const _char *getParent () const;

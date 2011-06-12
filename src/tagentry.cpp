@@ -57,13 +57,12 @@ parseAndStoreElementNamesFromCommaDelimitedString (
     return iNumElements;
 }
 
-TagEntry::TagEntry ()
-    :
-m_pName (0),
+TagEntry::TagEntry () :
         m_iContextSwitch (1),
         m_iContextLevel (TagEntry::TEXT_ATTR),
         m_bClosure (true),
         m_bOccurOnce (false),
+        m_pName (0),
         m_pParent (0),
         m_pAncestor (0),
         m_pFirstParent (0),
@@ -80,11 +79,11 @@ TagEntry::TagEntry (
         unsigned int iContextLevel, bool bClosure,
         bool bOccurOnce, const _char *pParent, const _char *pAncestor
         ) :
-    m_pName (pName),
     m_iContextSwitch (iContextSwitch),
     m_iContextLevel (iContextLevel),
     m_bClosure (bClosure),
     m_bOccurOnce (bOccurOnce),
+    m_pName (pName),
     m_pParent (pParent),
     m_pAncestor (pAncestor),
     m_pFirstParent (0),
@@ -188,8 +187,7 @@ TagEntry::findInList (const _char *needle,
     return -1;
 }
 
-    const _char *
-TagEntry::getName ()
+const _char *TagEntry::name () const
 {
     return m_pName;
 }

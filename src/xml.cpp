@@ -34,7 +34,7 @@ void XML::resetUnknownTagEntry ()
 {
     m_unknownTagEntry.setAncestor(m_tagTable.rootTagName ());
     m_unknownTagEntry.setFirstAncestor(m_unknownTagEntry.ancestor());
-    m_unknownTagEntry.m_bClosure = true;
+    m_unknownTagEntry.setClosure(true);
 }
 
 XML::XML () :
@@ -100,7 +100,7 @@ int XML::initDOM (Tag *pTag)
     }
 
     m_pRootNode = m_pCloneableNode->clone ();
-    m_pRootNode->initType(DOMNode::ELEMENT, (pTag ? pTag->m_pName : 0));
+    m_pRootNode->initType(DOMNode::ELEMENT, (pTag ? pTag->name() : 0));
 
     m_pCurrentParentNode = m_pRootNode;
     if (pTag)
@@ -113,7 +113,7 @@ int XML::initDOM (Tag *pTag)
 
 int XML::addNode (Tag *pTag, bool bSelfClosing)
 {
-    addNode (pTag->m_pName, bSelfClosing);
+    addNode (pTag->name(), bSelfClosing);
     m_pCurrentParentNode->copyAttributes (pTag);
     return 0;
 }
@@ -167,8 +167,8 @@ int XML::addNodeSelfContained (DOMNode::NodeType nodeType, const _char *pContent
 
 int XML::addNodeSelfContained (Tag *t)
 {
-    debug(("Adding self-contained Tag named %s\n", t->m_pName));
-    addNodeSelfContained (DOMNode::ELEMENT, t->m_pName);
+    debug(("Adding self-contained Tag named %s\n", t->name()));
+    addNodeSelfContained (DOMNode::ELEMENT, t->name());
     m_pCurrentNode->copyAttributes (t);
     return 0;
 }
@@ -238,8 +238,8 @@ goto_HICFurther:
                 wideCharStream.get ();
                 iMoreAdvances++;
             }
-            if (_strncasecmp (tag.m_pName, wideCharStream.getBuffer (),
-                        _strlen (tag.m_pName)) == 0)
+            if (_strncasecmp (tag.name(), wideCharStream.getBuffer (),
+                        _strlen (tag.name())) == 0)
             {
                 *pEnd = NULLCHAR;
                 addNode (&tag);
@@ -314,18 +314,18 @@ DOMNode *XML::parse (_char *pTextBuffer, DOMNode *pCloneableNode)
                     EntityCbRetval retval = XML::OK;
                     debug (("Got an element. Tag string: '%s'\n", pEntity));
                     Tag tag (pEntity, true);
-                    debug (("Tag name: '%s'\n", tag.m_pName));
+                    debug (("Tag name: '%s'\n", tag.name()));
                     if (tagCb)
                     {
                         retval = tagCb (&tag, m_pCallbackArg);
                         switch (retval)
                         {
                             case XML::DROP_SIMPLE:
-                                debug (("Ignoring '%s' ...\n", tag.m_pName));
+                                debug (("Ignoring '%s' ...\n", tag.name()));
                                 continue;
                             case XML::IGNORE_CHILDREN:
                                 debug (("Ignoring children '%s' ...\n",
-                                            tag.m_pName));
+                                            tag.name()));
                                 handleIgnoreChildren (tag, wideCharStream);
                                 break;
                             case XML::OK:
@@ -383,9 +383,9 @@ inline int XML::handleElement (Tag *pTag, bool bDocStarted)
     {
         resetUnknownTagEntry ();
         m_pCurTagEntry = &m_unknownTagEntry;
-        if (pTag->m_bSelfClosing)
+        if (pTag->selfClosing())
         {
-            m_unknownTagEntry.m_bClosure = false;
+            m_unknownTagEntry.setClosure(false);
         }
         goto MAKE_VALID_ONLY_GOTO;
     }
@@ -396,19 +396,19 @@ inline int XML::handleElement (Tag *pTag, bool bDocStarted)
         return -1;
     }
 
-    m_pCurTagEntry = m_tagTable.find (pTag->m_pName);
+    m_pCurTagEntry = m_tagTable.find (pTag->name());
     if (!m_pCurTagEntry)
     {
         if (m_bIgnoreUnknownTag && !m_bMakeValidOnly)
         {
-            hy_warn (("Unknown tag. Ignoring -> '%s'\n", pTag->m_pName));
+            hy_warn (("Unknown tag. Ignoring -> '%s'\n", pTag->name()));
             return -1;
         }
         resetUnknownTagEntry ();
-        m_unknownTagEntry.m_pName = pTag->m_pName;
-        if (pTag->m_bSelfClosing)
+        m_unknownTagEntry.setName(pTag->name());
+        if (pTag->selfClosing())
         {
-            m_unknownTagEntry.m_bClosure = false;
+            m_unknownTagEntry.setClosure(false);
         }
         m_pCurTagEntry = &m_unknownTagEntry;
     }
@@ -416,43 +416,43 @@ inline int XML::handleElement (Tag *pTag, bool bDocStarted)
     if (unlikely (!bDocStarted))
     {
         debug (("Document not started!\n"));
-        if (pTag->m_bEndTag)
+        if (pTag->endTag())
         {
             return -1;
         }
         const _char *rootTagName = m_tagTable.rootTagName();
-        if (_strcasecmp (pTag->m_pName, rootTagName) != 0)
+        if (_strcasecmp (pTag->name(), rootTagName) != 0)
         {
             Tag t (rootTagName);
-            hy_warn (("(Correction) Adding node '%s'\n", t.m_pName));
-            addNode (&t, m_pCurTagEntry->m_bClosure);
+            hy_warn (("(Correction) Adding node '%s'\n", t.name()));
+            addNode (&t, m_pCurTagEntry->closure());
             m_occurenceMap[rootTagName] = true;
             m_entityStack.push (rootTagName);
         }
         else
         {
-            debug (("Adding node '%s'\n", pTag->m_pName));
+            debug (("Adding node '%s'\n", pTag->name()));
             addNode (pTag);
             m_occurenceMap[rootTagName] = true;
-            m_entityStack.push (pTag->m_pName);
+            m_entityStack.push (pTag->name());
             return 0;
         }
     }
 
 MAKE_VALID_ONLY_GOTO:
     /* Opening tag or closing tag? */
-    if (pTag->m_bEndTag)
+    if (pTag->endTag())
     {
         /* Is it supposed to end? */
-        if (!m_pCurTagEntry->m_bClosure)
+        if (!m_pCurTagEntry->closure())
         {
             return -1;
         }
-        int i = m_entityStack.locateFromTop (pTag->m_pName);
+        int i = m_entityStack.locateFromTop (pTag->name());
         /* Pop everything */
         if (i < 0)
         {
-            hy_warn(("Closing node found without any corresponding opening: '%s'\n", pTag->m_pName));
+            hy_warn(("Closing node found without any corresponding opening: '%s'\n", pTag->name()));
         }
         else if (i > 0)
         {
@@ -474,20 +474,20 @@ MAKE_VALID_ONLY_GOTO:
         {
             correctStack (m_pCurTagEntry, false);
         }
-        if (!m_pCurTagEntry->m_bClosure)
+        if (!m_pCurTagEntry->closure())
         {
-            debug (("Adding a self-contained node '%s'\n", pTag->m_pName));
+            debug (("Adding a self-contained node '%s'\n", pTag->name()));
             addNodeSelfContained (pTag);
-            pTag->m_bEndTag = true;
+            pTag->setEndTag(true);
         }
         else
         {
-            m_occurenceMapIter = m_occurenceMap.find (pTag->m_pName);
-            if (m_pCurTagEntry->m_bOccurOnce &&
+            m_occurenceMapIter = m_occurenceMap.find (pTag->name());
+            if (m_pCurTagEntry->occurOnce() &&
                     (m_occurenceMapIter != m_occurenceMap.end ()) &&
                     (true == m_occurenceMapIter->second))
             {
-                hy_warn (("Can't add tag since it can only occur once - '%s'\n", m_pCurTagEntry->m_pName));
+                hy_warn (("Can't add tag since it can only occur once - '%s'\n", m_pCurTagEntry->name()));
                 return -1;
             }
             clearCurrentContext (pTag, m_pCurTagEntry, false);
@@ -496,8 +496,8 @@ MAKE_VALID_ONLY_GOTO:
             {
                 m_pCurrentParentNode->addProperty (L ("unknowntag"), L ("1"));
             }
-            m_occurenceMap[pTag->m_pName] = true;
-            m_entityStack.push (pTag->m_pName);
+            m_occurenceMap[pTag->name()] = true;
+            m_entityStack.push (pTag->name());
         }
     }
     return 0;
@@ -550,7 +550,7 @@ int XML::correctStack (const TagEntry *pTagEntry, bool bCheckOnly)
         if (bCheckOnly)
             return 1;
         Tag tag (pAncestor);
-        const TagEntry *pt = m_tagTable.find (tag.m_pName);
+        const TagEntry *pt = m_tagTable.find (tag.name());
         if (pt)
         {
             clearCurrentContext (&tag, pt, false);
@@ -558,7 +558,7 @@ int XML::correctStack (const TagEntry *pTagEntry, bool bCheckOnly)
         }
         addNode (&tag);
         m_pCurrentParentNode->addProperty (L("forceinserted"), L("1"));
-        m_entityStack.push (tag.m_pName);
+        m_entityStack.push (tag.name());
         iCorrections++;
     }
     else if (bParent && iLocationFromTop)
@@ -585,13 +585,13 @@ int XML::clearCurrentContext (Tag *pTag, const TagEntry *pTagEntry,
     }
     int retval = 0;
     const TagEntry *pte;
-    if ((pTagEntry->m_iContextSwitch == 1) &&
-            (m_entityStack.locateFromTop (pTag->m_pName) > 0))
+    if ((pTagEntry->contextSwitch() == 1) &&
+            (m_entityStack.locateFromTop (pTag->name()) > 0))
     {
         while (m_entityStack.size () > 0)
         {
             pte = m_tagTable.find (m_entityStack.top ());
-            if (pte && (pte->m_iContextLevel < TagEntry::TEXT_ATTR))
+            if (pte && (pte->contextLevel() < TagEntry::TEXT_ATTR))
             {
                 break;
             }
@@ -609,13 +609,13 @@ int XML::clearCurrentContext (Tag *pTag, const TagEntry *pTagEntry,
     }
     pte = m_tagTable.find (m_entityStack.top ());
     assert (!_strcasecmp (m_entityStack.top (), m_pCurrentParentNode->name()));
-    if (pTagEntry->m_iContextLevel < TagEntry::TEXT_ATTR)
+    if (pTagEntry->contextLevel() < TagEntry::TEXT_ATTR)
     {
         while (pte && (m_entityStack.size () > 0) &&
-                (pte->m_iContextLevel >= pTagEntry->m_iContextLevel) &&
-                (pte->m_iContextSwitch != 2))
+                (pte->contextLevel() >= pTagEntry->contextLevel()) &&
+                (pte->contextSwitch() != 2))
         {
-            if ((pte->m_iContextLevel == pTagEntry->m_iContextLevel) &&
+            if ((pte->contextLevel() == pTagEntry->contextLevel()) &&
                     (pte != pTagEntry))
             {
                 break;

@@ -71,8 +71,8 @@ int DOMData::copyAttributes (Tag *tag)
         m_pPropertyMap = new PropertyMap;
         assert (m_pPropertyMap);
     }
-    TagAttrList::const_iterator avx = tag->m_attrList.begin ();
-    while (avx != tag->m_attrList.end ())
+    TagAttrList::const_iterator avx = tag->attrList().begin ();
+    while (avx != tag->attrList().end ())
     {
         pair <_char *, _char *> p (avx->first, avx->second);
         m_pPropertyMap->insert (p);
