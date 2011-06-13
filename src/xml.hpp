@@ -40,22 +40,11 @@ class XML
         }
         EntityCbRetval;
 
-    private:
-        const TagTable m_tagTable;
-        bool m_bIgnoreUnknownTag;
-        EntityStack m_entityStack;
-        bool m_bMakeValidOnly;
-
-    private:
-        DOMNode *m_pCloneableNode, *m_pRootNode, *m_pCurrentNode,
-                *m_pCurrentParentNode;
-
     public:
         XML ();
         XML (const TagEntry *pte);
 
     public:
-        void doNotClean (bool flag = true);
         /**
          * The 'main' call.
          *
@@ -63,30 +52,10 @@ class XML
          * supplied pCloneableNode as the root of this 'DOM' tree.
          * NOTE the quotes - this isn't the standards-compliant DOM.
          */
-        DOMNode *parse (_char *pTextBuffer, DOMNode *pCloneableNode);
-
-    private:
-        void reset ();
-
-        inline int handleElement (Tag *t, bool bDocStarted, OccurenceMap &m_occurenceMap);
-        inline int handleIgnoreChildren (Tag &t, EntityStream &wcs);
-        inline int handleText (_char *pText);
-        inline int handleComment (_char *pComment);
-
-        int correctStack (const TagEntry *pTagEntry, bool bCheckOnly = false);
-        int clearCurrentContext (Tag *t, const TagEntry *pTagEntry,
-                bool bCheckOnly = false);
-
-        int initDOM (Tag *tag = 0);
-        int addNode (Tag *tag, bool bClosure = false);
-        int addNodeSelfContained (DOMNode::NodeType nodeType,
-                const _char *pContent);
-        int addNodeSelfContained (Tag *t);
-        int closeNode ();
-        int closeNode (unsigned int iNumTimes);
+        DOMNode *parse (_char *pTextBuffer, DOMNode *pCloneableNode, void *pCallbackArg = 0);
+        void doNotClean (bool flag = true);
 
     public:
-        void *m_pCallbackArg;
         /**
          * A call-back function called when 'tags' are encountered
          *
@@ -115,6 +84,31 @@ class XML
          * Call back for comments. Comment is ignored if return value is false
          */
         bool (*commentCb) (_char *pComment, void *x);
+
+    private:
+        void reset ();
+        int initDOM (Tag *tag = 0);
+        //////////////////////////////////////////////////////////////////////////////////
+        inline int handleElement (Tag *t, bool bDocStarted, OccurenceMap &m_occurenceMap);
+        inline int handleIgnoreChildren (Tag &t, EntityStream &wcs);
+        inline int handleText (_char *pText);
+        inline int handleComment (_char *pComment);
+        //////////////////////////////////////////////////////////////////////////////////
+        int correctStack (const TagEntry *pTagEntry, bool bCheckOnly = false);
+        int addNode (Tag *tag, bool bClosure = false);
+        int addNodeSelfContained (DOMNode::NodeType nodeType, const _char *pContent);
+        int addNodeSelfContained (Tag *t);
+        int closeNode ();
+        int closeNode (unsigned int iNumTimes);
+        int clearCurrentContext (Tag *t, const TagEntry *pTagEntry, bool bCheckOnly = false);
+        //////////////////////////////////////////////////////////////////////////////////
+
+    private:
+        const TagTable m_tagTable;
+        bool m_bIgnoreUnknownTag;
+        EntityStack m_entityStack;
+        bool m_bMakeValidOnly;
+        DOMNode *m_pCloneableNode, *m_pRootNode, *m_pCurrentNode, *m_pCurrentParentNode;
 };
 
 END_NAMESPACE (hy);

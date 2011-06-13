@@ -91,13 +91,12 @@ int URLCollector::collect (_char *pBuffer, const char *pEncoding)
     h.tagCb = &URLCollector::href_callback;
     h.textCb = &URLCollector::text_callback;
     h.commentCb = &URLCollector::comm_callback;
-    h.m_pCallbackArg = (void *) this;
     DOMNode *node = DOMNode::create();
     node->setType(DOMNode::ELEMENT);
     node->setName(L("root"));
 
     node->setLevel(-1);
-    h.parse (pBuffer, node);
+    h.parse (pBuffer, node, (void *) this);
     delete node;
     return m_URLList.size ();
 }

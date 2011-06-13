@@ -38,6 +38,9 @@ void resetUnknownTagEntry (TagEntry &te, const TagTable &tagTable)
 }
 
 XML::XML () :
+    tagCb (0),
+    textCb (0),
+    commentCb (0),
     m_tagTable ((const TagEntry *) &defaultTable),
     m_bIgnoreUnknownTag (false),
     m_entityStack (),
@@ -45,16 +48,15 @@ XML::XML () :
     m_pCloneableNode (0),
     m_pRootNode (0),
     m_pCurrentNode (0),
-    m_pCurrentParentNode (0),
-    m_pCallbackArg (0),
-    tagCb (0),
-    textCb (0),
-    commentCb (0)
+    m_pCurrentParentNode (0)
 {
     doNotClean ();
 }
 
 XML::XML (const TagEntry *pte) :
+    tagCb (0),
+    textCb (0),
+    commentCb (0),
     m_tagTable (pte),
     m_bIgnoreUnknownTag (false),
     m_entityStack (),
@@ -62,11 +64,7 @@ XML::XML (const TagEntry *pte) :
     m_pCloneableNode (0),
     m_pRootNode (0),
     m_pCurrentNode (0),
-    m_pCurrentParentNode (0),
-    m_pCallbackArg (0),
-    tagCb (0),
-    textCb (0),
-    commentCb (0)
+    m_pCurrentParentNode (0)
 {
 }
 
@@ -258,7 +256,7 @@ void XML::doNotClean (bool flag)
  * The 'main' routine. Note: pTextBuffer should be editable!
  */
 
-DOMNode *XML::parse (_char *pTextBuffer, DOMNode *pCloneableNode)
+DOMNode *XML::parse (_char *pTextBuffer, DOMNode *pCloneableNode, void *pCallbackArg)
 {
     /* Define/declare needed variables */
     _char *pEntity;
@@ -302,7 +300,7 @@ DOMNode *XML::parse (_char *pTextBuffer, DOMNode *pCloneableNode)
                     debug (("Tag name: '%s'\n", tag.name()));
                     if (tagCb)
                     {
-                        retval = tagCb (&tag, m_pCallbackArg);
+                        retval = tagCb (&tag, pCallbackArg);
                         switch (retval)
                         {
                             case XML::DROP_SIMPLE:
@@ -334,7 +332,7 @@ DOMNode *XML::parse (_char *pTextBuffer, DOMNode *pCloneableNode)
             case EntityStream::TEXT:
                 {
                     debug (("Got a text-block\n"));
-                    if (textCb && !textCb (pEntity, m_pCallbackArg))
+                    if (textCb && !textCb (pEntity, pCallbackArg))
                     {
                         break;
                     }
@@ -347,7 +345,7 @@ DOMNode *XML::parse (_char *pTextBuffer, DOMNode *pCloneableNode)
                 break;
             case EntityStream::COMMENT:
                 {
-                    if (commentCb && !commentCb (pEntity, m_pCallbackArg))
+                    if (commentCb && !commentCb (pEntity, pCallbackArg))
                     {
                         break;
                     }
