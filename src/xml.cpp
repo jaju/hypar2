@@ -39,9 +39,7 @@ void resetUnknownTagEntry (TagEntry &te, TagTable &tagTable)
 
 XML::XML () :
     m_tagTable ((const TagEntry *) &defaultTable),
-    m_bDocStarted (false),
     m_bIgnoreUnknownTag (false),
-    m_pCurTagEntry (0),
     m_occurenceMap (),
     m_entityStack (),
     m_bMakeValidOnly (false),
@@ -59,9 +57,7 @@ XML::XML () :
 
 XML::XML (const TagEntry *pte) :
     m_tagTable (pte),
-    m_bDocStarted (false),
     m_bIgnoreUnknownTag (false),
-    m_pCurTagEntry (0),
     m_occurenceMap (),
     m_entityStack (),
     m_bMakeValidOnly (false),
@@ -371,10 +367,11 @@ inline int XML::handleElement (Tag *pTag, bool bDocStarted)
 {
     assert (pTag);
     TagEntry unknownTagEntry;
+    const TagEntry *pCurTagEntry = 0;
     if (m_bMakeValidOnly)
     {
         resetUnknownTagEntry(unknownTagEntry, m_tagTable);
-        m_pCurTagEntry = &unknownTagEntry;
+        pCurTagEntry = &unknownTagEntry;
         if (pTag->selfClosing())
         {
             unknownTagEntry.setClosure(false);
@@ -388,8 +385,8 @@ inline int XML::handleElement (Tag *pTag, bool bDocStarted)
         return -1;
     }
 
-    m_pCurTagEntry = m_tagTable.find (pTag->name());
-    if (!m_pCurTagEntry)
+    pCurTagEntry = m_tagTable.find (pTag->name());
+    if (!pCurTagEntry)
     {
         if (m_bIgnoreUnknownTag && !m_bMakeValidOnly)
         {
@@ -402,7 +399,7 @@ inline int XML::handleElement (Tag *pTag, bool bDocStarted)
         {
             unknownTagEntry.setClosure(false);
         }
-        m_pCurTagEntry = &unknownTagEntry;
+        pCurTagEntry = &unknownTagEntry;
     }
 
     if (unlikely (!bDocStarted))
@@ -417,7 +414,7 @@ inline int XML::handleElement (Tag *pTag, bool bDocStarted)
         {
             Tag t (rootTagName);
             hy_warn (("(Correction) Adding node '%s'\n", t.name()));
-            addNode (&t, m_pCurTagEntry->closure());
+            addNode (&t, pCurTagEntry->closure());
             m_occurenceMap[rootTagName] = true;
             m_entityStack.push (rootTagName);
         }
@@ -436,7 +433,7 @@ MAKE_VALID_ONLY_GOTO:
     if (pTag->endTag())
     {
         /* Is it supposed to end? */
-        if (!m_pCurTagEntry->closure())
+        if (!pCurTagEntry->closure())
         {
             return -1;
         }
@@ -464,9 +461,9 @@ MAKE_VALID_ONLY_GOTO:
     {
         if (!m_bMakeValidOnly)
         {
-            correctStack (m_pCurTagEntry, false);
+            correctStack (pCurTagEntry, false);
         }
-        if (!m_pCurTagEntry->closure())
+        if (!pCurTagEntry->closure())
         {
             debug (("Adding a self-contained node '%s'\n", pTag->name()));
             addNodeSelfContained (pTag);
@@ -475,16 +472,16 @@ MAKE_VALID_ONLY_GOTO:
         else
         {
             OccurenceMap::iterator m_occurenceMapIter = m_occurenceMap.find (pTag->name());
-            if (m_pCurTagEntry->occurOnce() &&
+            if (pCurTagEntry->occurOnce() &&
                     (m_occurenceMapIter != m_occurenceMap.end ()) &&
                     (true == m_occurenceMapIter->second))
             {
-                hy_warn (("Can't add tag since it can only occur once - '%s'\n", m_pCurTagEntry->name()));
+                hy_warn (("Can't add tag since it can only occur once - '%s'\n", pCurTagEntry->name()));
                 return -1;
             }
-            clearCurrentContext (pTag, m_pCurTagEntry, false);
+            clearCurrentContext (pTag, pCurTagEntry, false);
             addNode (pTag);
-            if (m_pCurTagEntry == &unknownTagEntry)
+            if (pCurTagEntry == &unknownTagEntry)
             {
                 m_pCurrentParentNode->addProperty (L ("unknowntag"), L ("1"));
             }

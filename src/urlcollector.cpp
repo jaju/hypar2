@@ -15,7 +15,6 @@ URLCollector::URLCollector (DOMNode *pNode) :
     m_iMaxURLLen (0),
     m_baseHref ("")
 {
-    //m_baseHref = "";
     //collect(pNode);
 }
 

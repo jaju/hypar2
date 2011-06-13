@@ -42,8 +42,7 @@ class XML
 
     private:
         TagTable m_tagTable;
-        bool m_bDocStarted, m_bIgnoreUnknownTag;
-        const TagEntry *m_pCurTagEntry;
+        bool m_bIgnoreUnknownTag;
         OccurenceMap m_occurenceMap;
         EntityStack m_entityStack;
         bool m_bMakeValidOnly;
