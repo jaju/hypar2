@@ -35,9 +35,9 @@ class TagTable
         int construct (const TagEntry *pte);
 
     public:
-        const TagEntry *find (const _char *pName);
-        const _char *rootTagName ();
-        inline status_t getStatus () { return m_status; }
+        const TagEntry *find (const _char *pName) const;
+        const _char *rootTagName () const;
+        inline status_t getStatus () const { return m_status; }
 
     protected:
         status_t m_status;

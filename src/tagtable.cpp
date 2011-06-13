@@ -58,11 +58,11 @@ int TagTable::construct (const TagEntry *pte)
     return iEntryCount;
 }
 
-const TagEntry *TagTable::find (const _char *pName)
+const TagEntry *TagTable::find (const _char *pName) const
 {
     if (likely (pName))
     {
-        TERepository::iterator rx = m_TERepository.find (pName);
+        TERepository::const_iterator rx = m_TERepository.find (pName);
         if (rx != m_TERepository.end ())
         {
             return rx->second;
@@ -71,7 +71,7 @@ const TagEntry *TagTable::find (const _char *pName)
     return 0;
 }
 
-const _char *TagTable::rootTagName ()
+const _char *TagTable::rootTagName () const
 {
     return m_pRootElementName;
 }

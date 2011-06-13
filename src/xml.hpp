@@ -41,7 +41,7 @@ class XML
         EntityCbRetval;
 
     private:
-        TagTable m_tagTable;
+        const TagTable m_tagTable;
         bool m_bIgnoreUnknownTag;
         OccurenceMap m_occurenceMap;
         EntityStack m_entityStack;

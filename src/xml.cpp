@@ -30,7 +30,7 @@ static const TagEntry defaultTable[] =
     TagEntry (0, 0, TagEntry::TEXT_ATTR, false, false, 0, 0)
 };
 
-void resetUnknownTagEntry (TagEntry &te, TagTable &tagTable)
+void resetUnknownTagEntry (TagEntry &te, const TagTable &tagTable)
 {
     te.setAncestor(tagTable.rootTagName ());
     te.setFirstAncestor(te.ancestor());
