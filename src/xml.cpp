@@ -40,7 +40,6 @@ void resetUnknownTagEntry (TagEntry &te, const TagTable &tagTable)
 XML::XML () :
     m_tagTable ((const TagEntry *) &defaultTable),
     m_bIgnoreUnknownTag (false),
-    m_occurenceMap (),
     m_entityStack (),
     m_bMakeValidOnly (false),
     m_pCloneableNode (0),
@@ -58,7 +57,6 @@ XML::XML () :
 XML::XML (const TagEntry *pte) :
     m_tagTable (pte),
     m_bIgnoreUnknownTag (false),
-    m_occurenceMap (),
     m_entityStack (),
     m_bMakeValidOnly (false),
     m_pCloneableNode (0),
@@ -79,7 +77,6 @@ void XML::reset ()
     m_pCurrentNode = 0;
     m_pCurrentParentNode = 0;
     m_entityStack.clear ();
-    m_occurenceMap.clear ();
 }
 
 int XML::initDOM (Tag *pTag)
@@ -266,6 +263,7 @@ DOMNode *XML::parse (_char *pTextBuffer, DOMNode *pCloneableNode)
     /* Define/declare needed variables */
     _char *pEntity;
     bool bDocStarted = false;
+    OccurenceMap occurenceMap;
 
     /* Sanity checks */
     if (!pTextBuffer || !pCloneableNode)
@@ -316,7 +314,7 @@ DOMNode *XML::parse (_char *pTextBuffer, DOMNode *pCloneableNode)
                                 handleIgnoreChildren (tag, wideCharStream);
                                 break;
                             case XML::OK:
-                                if (handleElement (&tag, bDocStarted) == 0)
+                                if (handleElement (&tag, bDocStarted, occurenceMap) == 0)
                                 {
                                     bDocStarted = true;
                                 }
@@ -326,7 +324,7 @@ DOMNode *XML::parse (_char *pTextBuffer, DOMNode *pCloneableNode)
                     }
                     else
                     {
-                        if (handleElement (&tag, bDocStarted) == 0)
+                        if (handleElement (&tag, bDocStarted, occurenceMap) == 0)
                         {
                             bDocStarted = true;
                         }
@@ -363,7 +361,7 @@ DOMNode *XML::parse (_char *pTextBuffer, DOMNode *pCloneableNode)
     return m_pRootNode;
 }
 
-inline int XML::handleElement (Tag *pTag, bool bDocStarted)
+inline int XML::handleElement (Tag *pTag, bool bDocStarted, OccurenceMap &occurenceMap)
 {
     assert (pTag);
     TagEntry unknownTagEntry;
@@ -415,14 +413,14 @@ inline int XML::handleElement (Tag *pTag, bool bDocStarted)
             Tag t (rootTagName);
             hy_warn (("(Correction) Adding node '%s'\n", t.name()));
             addNode (&t, pCurTagEntry->closure());
-            m_occurenceMap[rootTagName] = true;
+            occurenceMap[rootTagName] = true;
             m_entityStack.push (rootTagName);
         }
         else
         {
             debug (("Adding node '%s'\n", pTag->name()));
             addNode (pTag);
-            m_occurenceMap[rootTagName] = true;
+            occurenceMap[rootTagName] = true;
             m_entityStack.push (pTag->name());
             return 0;
         }
@@ -471,10 +469,10 @@ MAKE_VALID_ONLY_GOTO:
         }
         else
         {
-            OccurenceMap::iterator m_occurenceMapIter = m_occurenceMap.find (pTag->name());
+            OccurenceMap::iterator occurenceMapIter = occurenceMap.find (pTag->name());
             if (pCurTagEntry->occurOnce() &&
-                    (m_occurenceMapIter != m_occurenceMap.end ()) &&
-                    (true == m_occurenceMapIter->second))
+                    (occurenceMapIter != occurenceMap.end ()) &&
+                    (true == occurenceMapIter->second))
             {
                 hy_warn (("Can't add tag since it can only occur once - '%s'\n", pCurTagEntry->name()));
                 return -1;
@@ -485,7 +483,7 @@ MAKE_VALID_ONLY_GOTO:
             {
                 m_pCurrentParentNode->addProperty (L ("unknowntag"), L ("1"));
             }
-            m_occurenceMap[pTag->name()] = true;
+            occurenceMap[pTag->name()] = true;
             m_entityStack.push (pTag->name());
         }
     }

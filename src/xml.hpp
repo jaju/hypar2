@@ -43,7 +43,6 @@ class XML
     private:
         const TagTable m_tagTable;
         bool m_bIgnoreUnknownTag;
-        OccurenceMap m_occurenceMap;
         EntityStack m_entityStack;
         bool m_bMakeValidOnly;
 
@@ -69,7 +68,7 @@ class XML
     private:
         void reset ();
 
-        inline int handleElement (Tag *t, bool bDocStarted);
+        inline int handleElement (Tag *t, bool bDocStarted, OccurenceMap &m_occurenceMap);
         inline int handleIgnoreChildren (Tag &t, EntityStream &wcs);
         inline int handleText (_char *pText);
         inline int handleComment (_char *pComment);
