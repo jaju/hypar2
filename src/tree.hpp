@@ -58,11 +58,6 @@ class TreeNode : public G {
         int level()           { return _level; }
         int horizontalLevel() { return _horizontalLevel; }
 
-        void setChild(TreeNode *n)     { _child = n; }
-        void setParent(TreeNode *n)    { _parent = n; }
-        void setNext(TreeNode *n)      { _next = n; }
-        void setLast(TreeNode *n)      { _last = n; }
-        void setPrev(TreeNode *n)      { _prev = n; }
         void setLevel(int l)           { _level = l; }
         void setHorizontalLevel(int l) { _horizontalLevel = l; }
 

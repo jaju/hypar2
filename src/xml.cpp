@@ -101,27 +101,24 @@ int XML::initDOM (Tag *pTag)
 int XML::addNode (Tag *pTag, bool bSelfClosing)
 {
     const _char *pElementName = pTag->name();
-    debug(("Adding XML node...\n"));
+    debug(("Adding node...\n"));
     DOMNode *pNode = m_pCloneableNode->clone ();
     pNode->initType(DOMNode::ELEMENT, pElementName);
     pNode->setName(pElementName);
     pNode->setSelfClosing(bSelfClosing);
+    pNode->copyAttributes(pTag);
+    pNode->setLevel(m_pCurrentParentNode->level() + 1);
     if (m_pCurrentNode)
     {
-        m_pCurrentNode->setNext(pNode);
-        pNode->setPrev(m_pCurrentNode);
+        m_pCurrentNode->attachAsNext(pNode);
         pNode->setHorizontalLevel(m_pCurrentNode->horizontalLevel() + 1);
         m_pCurrentNode = 0;
     }
     else
     {
-        m_pCurrentParentNode->setChild(pNode);
+        m_pCurrentParentNode->attachAsChild(pNode);
     }
-    pNode->setParent(m_pCurrentParentNode);
-    m_pCurrentParentNode->setLast(pNode);
-    pNode->setLevel(m_pCurrentParentNode->level() + 1);
     m_pCurrentParentNode = pNode;
-    m_pCurrentParentNode->copyAttributes (pTag);
     return 0;
 }
 
@@ -132,17 +129,14 @@ int XML::addNodeSelfContained (DOMNode::NodeType nodeType, const _char *pContent
     pNode->initType(nodeType, pContent);
     if (m_pCurrentNode)
     {
-        m_pCurrentNode->setNext(pNode);
-        pNode->setPrev(m_pCurrentNode);
+        m_pCurrentNode->attachAsNext(pNode);
         pNode->setHorizontalLevel(m_pCurrentNode->horizontalLevel() + 1);
     }
     else
     {
-        m_pCurrentParentNode->setChild(pNode);
+        m_pCurrentParentNode->attachAsChild(pNode);
     }
-    pNode->setParent(m_pCurrentParentNode);
     pNode->setLevel(m_pCurrentParentNode->level() + 1);
-    m_pCurrentParentNode->setLast(pNode);
     m_pCurrentNode = pNode;
     return 0;
 }
