@@ -60,7 +60,9 @@ TEST_F(TreeTest, ChildrenInsertsWork) {
     ASSERT_EQ(a->last(), last2);
     ASSERT_EQ(a->next(), b);
     ASSERT_EQ(d->next(), e);
+}
 
+TEST_F(TreeTest, LevelsAreInitializedCorrectly) {
     ASSERT_EQ(root->level(), 0);
     ASSERT_EQ(a->level(), 1);
     ASSERT_EQ(b->level(), 1);
