@@ -30,7 +30,7 @@ class TreeNode : public G {
         int insertAsChild (TreeNode *pNewChild);
         int insertAsParent (TreeNode *pNode);
         int attachAsChild (TreeNode *pNode);
-        int initLevel (int iLevel = 0, bool bNext = true);
+        int initLevel (int iLevel = 0, bool bNext = true, int iHorizontalLevel = 0);
         int detach ();
 
     public:
@@ -75,19 +75,20 @@ class TreeNode : public G {
 template<typename G>
 TreeNode<G>::TreeNode() :
     G(), _parent (0), _prev (0), _next (0),
-    _child (0), _last (0), _level (0), _horizontalLevel (0) {}
+    _child (0), _last (0), _level (0), _horizontalLevel (0)
+{}
 
-    template<typename G>
-    TreeNode<G>::~TreeNode() {
-        TreeNode *pTmpNode = _child;
+template<typename G>
+TreeNode<G>::~TreeNode() {
+    TreeNode *pTmpNode = _child;
 
-        while (_child)
-        {
-            pTmpNode = _child;
-            _child = _child->_next;
-            delete pTmpNode;
-        }
+    while (_child)
+    {
+        pTmpNode = _child;
+        _child = _child->_next;
+        delete pTmpNode;
     }
+}
 
 template<typename G>
 TreeNode<G>::TreeNode(const TreeNode &o) : G(o) {
@@ -142,19 +143,22 @@ int TreeNode<G>::detach ()
     _parent = 0;
     _prev = 0;
     _next = 0;
+    _level = 0;
+    _horizontalLevel = 0;
     return 0;
 }
 
 template<typename G>
-int TreeNode<G>::initLevel (int iLevel, bool bNext) {
+int TreeNode<G>::initLevel (int iLevel, bool bNext, int horizontalLevel) {
     _level = iLevel;
+    _horizontalLevel = horizontalLevel;
     if (_child)
     {
-        _child->initLevel (_level + 1, true);
+        _child->initLevel (_level + 1, true, 0);
     }
     if (bNext && _next)
     {
-        _next->initLevel (_level, true);
+        _next->initLevel (_level, true, horizontalLevel + 1);
     }
     return 0;
 }
@@ -267,6 +271,6 @@ int TreeNode<G>::attachAsNext (TreeNode *pNode) {
         }
     }
     _next = pNode;
-    pNode->initLevel (_level, false);
+    pNode->initLevel (_level, false, _horizontalLevel + 1);
     return 0;
 }
