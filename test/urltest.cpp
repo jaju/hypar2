@@ -29,10 +29,14 @@ TEST(URL, GeneratesCorrectUrlFromRelativeAndBase) {
     string urlStr("http://www.google.com/search/?q=hello+world");
     string relativeUrlStr("blog/");
     URL u(relativeUrlStr, urlStr);
-
     ASSERT_EQ(u.getCanonical(), "http://www.google.com:80/search/blog/");
 
-    urlStr = "http://www.google.com/search?q=hello+world";
+    relativeUrlStr = "/blog";
     URL u2(relativeUrlStr, urlStr);
-    ASSERT_EQ(u2.getCanonical(), "http://www.google.com:80/blog/");
+    ASSERT_EQ(u2.getCanonical(), "http://www.google.com:80/blog");
+
+    urlStr = "http://www.google.com/search?q=hello+world";
+    URL u3(relativeUrlStr, urlStr);
+    ASSERT_EQ(u2.getCanonical(), "http://www.google.com:80/blog");
+
 }
