@@ -16,14 +16,6 @@ using namespace std;
 
 BEGIN_NAMESPACE (hy);
 
-size_t str_hash_func (const char *__s);
-size_t strcase_hash_func (const char *__s);
-size_t strcase_hash_func (const URL &u);
-#ifdef USE_WIDECHAR
-size_t str_hash_func (const wchar_t *__s);
-size_t strcase_hash_func (const wchar_t *__s);
-#endif
-
 struct eqcase
 {
     public:

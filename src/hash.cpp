@@ -12,6 +12,61 @@
 
 BEGIN_NAMESPACE (hy);
 
+#ifdef USE_WIDECHAR
+size_t str_hash_func (const wchar_t *s)
+{
+	unsigned long __h = 0;
+	for ( ; *s; ++s)
+		__h = 5*__h + *s;
+	return size_t (__h);
+}
+
+size_t strcase_hash_func (const wchar_t *s)
+{
+	unsigned long __h = 0;
+	for ( ; *s; ++s)
+		__h = 5*__h + towlower (*s);
+	return size_t (__h);
+}
+#endif
+
+size_t strcase_hash_func (const char *s)
+{
+	unsigned long __h = 0;
+	for ( ; *s; ++s)
+		__h = 5*__h + tolower (*s);
+	return size_t (__h);
+}
+
+size_t strcase_hash_func (const URL &u)
+{
+    unsigned long __h1 = 0, __h2 = 0;
+    __h1 += strcase_hash_func (u.getHost ().c_str ());
+    __h1 += u.getPort ();
+    string s = u.getPath ();
+    __h2 = strcase_hash_func (s.c_str ());
+    if (s.at (s.length () - 1) != '/')
+    {
+        __h2 = 5*__h2 + '/';
+    }
+#if DEBUG
+    if (u.isCGI ())
+    {
+        cerr << "Warning: CGI URI in strcase_hash_func - not handled!" << endl;
+    }
+#endif
+    return size_t (__h1 + __h2);
+}
+
+size_t str_hash_func (const char *s)
+{
+    unsigned long __h = 0;
+    for ( ; *s; ++s)
+        __h = 5*__h + *s;
+    return size_t (__h);
+}
+
+
 size_t strhash::operator () (const char *s) const
 {
     return str_hash_func (s);
@@ -64,62 +119,11 @@ bool eqcase::operator () (const wchar_t *str1, const wchar_t *str2) const
     return (wcscasecmp (str1, str2) == 0);
 }
 
-size_t str_hash_func (const wchar_t *s)
-{
-	unsigned long __h = 0;
-	for ( ; *s; ++s)
-		__h = 5*__h + *s;
-	return size_t (__h);
-}
-
-size_t strcase_hash_func (const wchar_t *s)
-{
-	unsigned long __h = 0;
-	for ( ; *s; ++s)
-		__h = 5*__h + towlower (*s);
-	return size_t (__h);
-}
 #endif
 
 size_t strcasehash::operator () (const URL &u) const
 {
     return strcase_hash_func (u);
-}
-
-size_t str_hash_func (const char *s)
-{
-    unsigned long __h = 0;
-    for ( ; *s; ++s)
-        __h = 5*__h + *s;
-    return size_t (__h);
-}
-
-size_t strcase_hash_func (const char *s)
-{
-	unsigned long __h = 0;
-	for ( ; *s; ++s)
-		__h = 5*__h + tolower (*s);
-	return size_t (__h);
-}
-
-size_t strcase_hash_func (const URL &u)
-{
-    unsigned long __h1 = 0, __h2 = 0;
-    __h1 += strcase_hash_func (u.getHost ().c_str ());
-    __h1 += u.getPort ();
-    string s = u.getPath ();
-    __h2 = strcase_hash_func (s.c_str ());
-    if (s.at (s.length () - 1) != '/')
-    {
-        __h2 = 5*__h2 + '/';
-    }
-#if DEBUG
-    if (u.isCGI ())
-    {
-        cerr << "Warning: CGI URI in strcase_hash_func - not handled!" << endl;
-    }
-#endif
-    return size_t (__h1 + __h2);
 }
 
 END_NAMESPACE (hy);
