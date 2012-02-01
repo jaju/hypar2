@@ -47,7 +47,7 @@ NodeList filterNodesByAttrVal (const _char *pAttr, const _char *pVal,
 
     while (_x != _nodeList.end ())
     {
-        pThisAttrVal = (*_x)->findProperty (pAttr);
+        pThisAttrVal = (*_x)->getProperty (pAttr);
         if (pThisAttrVal)
         {
             if (pVal && (_strcmp (pVal, pThisAttrVal) == 0))

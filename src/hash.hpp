@@ -12,7 +12,6 @@
 #include "url.hpp"
 
 #include <iostream>
-using namespace std;
 
 BEGIN_NAMESPACE (hy);
 

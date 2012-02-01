@@ -4,8 +4,6 @@
 #include "hashmap.hpp"
 #include "tag.hpp"
 #include "tree.hpp"
-#include <vector>
-using std::vector;
 
 BEGIN_NAMESPACE(hy);
 
@@ -23,58 +21,52 @@ typedef HashMap <const _char *, const _char *, strcasehash, eqcase> PropertyMap;
 class DOMData
 {
     public:
-        typedef enum
-        {
-            END = -1,
-            ELEMENT,
-            TEXT,
-            COMMENT
-        }
-        NodeType;
+    typedef enum
+    {
+        END = -1,
+        ELEMENT,
+        TEXT,
+        COMMENT
+    }
+    NodeType;
 
     public:
-        NodeType type()                  const { return m_type; }
-        const char *name()               const { return m_pName; }
-        const char *content()            const { return m_pContent; }
-        bool selfClosing()               const { return m_bSelfClosing; }
-        const PropertyMap *propertyMap() const { return m_pPropertyMap; }
+    NodeType type()                const { return m_type; }
+    void setType(NodeType type)    { m_type = type; }
 
-        void setSelfClosing(bool s)    { m_bSelfClosing = s; }
-        void setType(NodeType type)    { m_type = type; }
-        void setName(const char *name) { m_pName = name; }
+    const char *name()             const { return m_pName; }
+    void setName(const char *name) { m_pName = name; }
+
+    bool selfClosing()             const { return m_bSelfClosing; }
+    void setSelfClosing(bool s)    { m_bSelfClosing = s; }
+
+    const char *content()            const { return m_pContent; }
+    const PropertyMap *propertyMap() const { return m_pPropertyMap; }
+
+    public:
+    DOMData ();
+    DOMData (const DOMData &other);
+    void initType(NodeType nodeType, const _char *pStr);
+    virtual ~DOMData ();
+
+    public:
+    const _char *getProperty (const _char *pName) const;
+    int setProperty (const _char *pName, const _char *pValue);
+    int setProperty (std::pair<const _char *, const _char *> p);
+    int copyAttributes (Tag *tag);
 
     protected:
-        void reset ();
-
-    public:
-        DOMData ();
-        DOMData (const DOMData &other);
-        void initType(NodeType nodeType, const _char *pStr);
-        virtual ~DOMData ();
-
-    public:
-        int addProperty (const _char *pName, const _char *pValue);
-        int copyAttributes (Tag *tag);
-        const _char *findProperty (const _char *pName) const;
-
-    public:
-        inline bool equals (const _char *pName) const
-        {
-            if (m_type == ELEMENT)
-                return (_strcasecmp (pName, m_pName) ? false : true);
-            return false;
-        }
+    PropertyMap *m_pPropertyMap;
+    NodeType m_type;
+    const _char *m_pName, *m_pContent;
+    bool m_bSelfClosing;
 
     protected:
-        PropertyMap *m_pPropertyMap;
-        NodeType m_type;
-        const _char *m_pName, *m_pContent;
-        bool m_bSelfClosing;
-
+    void reset ();
 };
 
 typedef TreeNode<DOMData> DOMNode;
-typedef list <DOMNode * > NodeList;
+typedef std::list <DOMNode *> NodeList;
 
 void toString (DOMNode *node, _string &targetString, bool bChildOnly = false);
 _string toString(DOMNode *node, bool bChildOnly = false);

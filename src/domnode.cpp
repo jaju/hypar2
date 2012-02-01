@@ -52,12 +52,13 @@ DOMData::~DOMData ()
 DOMData::DOMData (const DOMData &other)
 {
     (*this) = other; // Copies the basic types.
+    assert(m_pPropertyMap != other.m_pPropertyMap);
     if (other.m_pPropertyMap)
     {
         PropertyMap::iterator pmx = other.m_pPropertyMap->begin ();
         while (pmx != m_pPropertyMap->end ())
         {
-            addProperty ((*pmx).first, (*pmx).second);
+            setProperty ((*pmx).first, (*pmx).second);
             pmx++;
         }
     }
@@ -74,8 +75,7 @@ int DOMData::copyAttributes (Tag *tag)
     TagAttrList::const_iterator avx = tag->m_attrList.begin ();
     while (avx != tag->m_attrList.end ())
     {
-        pair <_char *, _char *> p (avx->first, avx->second);
-        m_pPropertyMap->insert (p);
+        m_pPropertyMap->insert (*avx);
         avx++;
         retval++;
     }
@@ -96,9 +96,13 @@ DOMData::reset ()
 
 
     int
-DOMData::addProperty (const _char *pName, const _char *pValue)
+DOMData::setProperty (const _char *pName, const _char *pValue)
 {
-    pair<const _char *, const _char *> p(pName, pValue);
+    return setProperty(make_pair(pName, pValue));
+}
+    int
+DOMData::setProperty (pair<const _char *, const _char *> p)
+{
     if (!m_pPropertyMap)
     {
         m_pPropertyMap = new PropertyMap;
@@ -110,8 +114,8 @@ DOMData::addProperty (const _char *pName, const _char *pValue)
     return -1;
 }
 
-    const _char *
-DOMData::findProperty (const _char *pName) const
+const _char *
+DOMData::getProperty (const _char *pName) const
 {
     if (m_pPropertyMap)
     {
@@ -134,7 +138,6 @@ toString (DOMNode *node, _string &targetString, bool bChildOnly)
             targetString += textutils::echoSpaces (node->level());
             targetString += L("<");
             targetString += node->name();
-            /* TODO - Add the attributes */
             if (node->propertyMap())
             {
                 PropertyMap::const_iterator pmx = node->propertyMap()->begin ();
@@ -170,7 +173,7 @@ toString (DOMNode *node, _string &targetString, bool bChildOnly)
                 {
                     targetString += L("></");
                     targetString += node->name();
-                    targetString += " selfclosing=\"1\"";
+                    targetString += " selfclosing=\"0\"";
                     targetString += L(">\n");
                 }
                 break;
@@ -189,13 +192,13 @@ toString (DOMNode *node, _string &targetString, bool bChildOnly)
             break;
         case DOMData::TEXT:
             if (node->content())
-            targetString += node->content();
+                targetString += node->content();
             break;
         case DOMData::COMMENT:
             if (node->content()) {
-            targetString += L("<");
-            targetString += node->content();
-            targetString += L(">\n");
+                targetString += L("<");
+                targetString += node->content();
+                targetString += L(">\n");
             }
             break;
         default:

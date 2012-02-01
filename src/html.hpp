@@ -84,7 +84,7 @@ class HTMLDoc
 class URLCollector
 {
     public:
-        list<hy::URL *> m_URLList;
+        std::list<hy::URL *> m_URLList;
         const char *m_pEncoding;
         unsigned int m_iMaxURLLen;
         string m_baseHref;

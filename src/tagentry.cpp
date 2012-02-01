@@ -111,7 +111,7 @@ TagEntry::TagEntry (
                 *tmpStrPtr = _tolower(*tmpStrPtr);
                 tmpStrPtr++;
             }
-            m_pParentList = new vector <const _char *>;
+            m_pParentList = new std::vector <const _char *>;
             parseAndStoreElementNamesFromCommaDelimitedString (m_pParentNew,
                     m_pParentList);
             m_pFirstParent = m_pParentList->at (0);
@@ -135,7 +135,7 @@ TagEntry::TagEntry (
                 *tmpStrPtr = _tolower (*tmpStrPtr);
                 tmpStrPtr++;
             }
-            m_pAncestorList = new vector<const _char *>;
+            m_pAncestorList = new std::vector<const _char *>;
             parseAndStoreElementNamesFromCommaDelimitedString (m_pAncestorNew,
                     m_pAncestorList);
             m_pFirstAncestor = m_pAncestorList->at (0);
