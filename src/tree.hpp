@@ -9,6 +9,13 @@
 #include <cassert>
 #include <vector>
 
+// The reason for deriving from the template-parameter class G is to
+// make it easy for the actual data-nodes (which "mix" with TreeNode)
+// to use the 'relative'() calls without having to cast types.
+// For eg: node->parent() is not only type TreeNode, but also G.
+// If TreeNode did not derive from G, then in classes utilizing TreeNode,
+// all calls to get 'relatives' would return type 'TreeNode' which
+// then need to be cast to type 'G.'
 template<typename G>
 class TreeNode : public G {
         typedef std::vector<const TreeNode*> Vector;
