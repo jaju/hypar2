@@ -32,31 +32,6 @@ END_C_DECLS
 USING_NAMESPACE (std);
 USING_NAMESPACE (hy);
 
-XML::EntityCbRetval tagCbFunc (Tag *pTag, void *pArg)
-{
-    if (
-            !(_strcasecmp(pTag->m_pName, L("style")))
-            ||
-            !(_strcasecmp(pTag->m_pName, L("script")))
-            ||
-            !(_strcasecmp(pTag->m_pName, L("noscript")))
-       )
-    {
-        return XML::IGNORE_CHILDREN;
-    }
-    return XML::OK;
-}
-
-bool textCb (_char *pText, void *pArg)
-{
-    return true;
-}
-
-bool commentCb (_char *pText, void *pArg)
-{
-    return false;
-}
-
 void usage (int argc, char *argv[])
 {
     cerr << argv[0] << " <html-file>" << endl;
