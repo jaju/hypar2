@@ -40,20 +40,6 @@ class XML
         }
         EntityCbRetval;
 
-    private:
-        TagTable m_tagTable;
-        bool m_bDocStarted, m_bIgnoreUnknownTag;
-        const TagEntry *m_pCurTagEntry;
-        OccurenceMap m_occurenceMap;
-        OccurenceMap::iterator m_occurenceMapIter;
-        EntityStack m_entityStack;
-        TagEntry m_unknownTagEntry;
-        bool m_bMakeValidOnly;
-
-    private:
-        DOMNode *m_pCloneableNode, *m_pRootNode, *m_pCurrentNode,
-                *m_pCurrentParentNode;
-
     public:
         XML ();
         XML (const TagEntry *pte);
@@ -68,28 +54,6 @@ class XML
          * NOTE the quotes - this isn't the standards-compliant DOM.
          */
         DOMNode *parse (_char *pTextBuffer, DOMNode *pCloneableNode);
-
-    private:
-        void reset ();
-        void resetUnknownTagEntry ();
-
-        inline int handleElement (Tag *t, bool bDocStarted);
-        inline int handleIgnoreChildren (Tag &t, EntityStream &wcs);
-        inline int handleText (_char *pText);
-        inline int handleComment (_char *pComment);
-
-        int correctStack (const TagEntry *pTagEntry, bool bCheckOnly = false);
-        int clearCurrentContext (Tag *t, const TagEntry *pTagEntry,
-                bool bCheckOnly = false);
-
-        int initDOM (Tag *tag = 0);
-        int addNode (const _char *pElementName, bool bClosure = false);
-        int addNode (Tag *tag, bool bClosure = false);
-        int addNodeSelfContained (DOMNode::NodeType nodeType,
-                const _char *pContent);
-        int addNodeSelfContained (Tag *t);
-        int closeNode ();
-        int closeNode (unsigned int iNumTimes);
 
     public:
         void *m_pCallbackArg;
@@ -121,6 +85,43 @@ class XML
          * Call back for comments. Comment is ignored if return value is false
          */
         bool (*commentCb) (_char *pComment, void *x);
+
+    private:
+        TagTable m_tagTable;
+        bool m_bDocStarted, m_bIgnoreUnknownTag;
+        const TagEntry *m_pCurTagEntry;
+        OccurenceMap m_occurenceMap;
+        OccurenceMap::iterator m_occurenceMapIter;
+        EntityStack m_entityStack;
+        TagEntry m_unknownTagEntry;
+        bool m_bMakeValidOnly;
+
+    private:
+        DOMNode *m_pCloneableNode, *m_pRootNode, *m_pCurrentNode,
+                *m_pCurrentParentNode;
+
+    private:
+        void reset ();
+        void resetUnknownTagEntry ();
+
+        inline int handleElement (Tag *t, bool bDocStarted);
+        inline int handleIgnoreChildren (Tag &t, EntityStream &wcs);
+        inline int handleText (_char *pText);
+        inline int handleComment (_char *pComment);
+
+        int correctStack (const TagEntry *pTagEntry, bool bCheckOnly = false);
+        int clearCurrentContext (Tag *t, const TagEntry *pTagEntry,
+                bool bCheckOnly = false);
+
+        int initDOM (Tag *tag = 0);
+        int addNode (const _char *pElementName, bool bClosure = false);
+        int addNode (Tag *tag, bool bClosure = false);
+        int addNodeSelfContained (DOMNode::NodeType nodeType,
+                const _char *pContent);
+        int addNodeSelfContained (Tag *t);
+        int closeNode ();
+        int closeNode (unsigned int iNumTimes);
+
 };
 
 END_NAMESPACE (hy);

@@ -38,6 +38,10 @@ void XML::resetUnknownTagEntry ()
 }
 
 XML::XML () :
+    m_pCallbackArg (0),
+    tagCb (0),
+    textCb (0),
+    commentCb (0),
     m_tagTable ((const TagEntry *) &defaultTable),
     m_bDocStarted (false),
     m_bIgnoreUnknownTag (false),
@@ -48,11 +52,7 @@ XML::XML () :
     m_pCloneableNode (0),
     m_pRootNode (0),
     m_pCurrentNode (0),
-    m_pCurrentParentNode (0),
-    m_pCallbackArg (0),
-    tagCb (0),
-    textCb (0),
-    commentCb (0)
+    m_pCurrentParentNode (0)
 {
     doNotClean ();
     resetUnknownTagEntry ();
@@ -60,6 +60,10 @@ XML::XML () :
 }
 
 XML::XML (const TagEntry *pte) :
+    m_pCallbackArg (0),
+    tagCb (0),
+    textCb (0),
+    commentCb (0),
     m_tagTable (pte),
     m_bDocStarted (false),
     m_bIgnoreUnknownTag (false),
@@ -70,11 +74,7 @@ XML::XML (const TagEntry *pte) :
     m_pCloneableNode (0),
     m_pRootNode (0),
     m_pCurrentNode (0),
-    m_pCurrentParentNode (0),
-    m_pCallbackArg (0),
-    tagCb (0),
-    textCb (0),
-    commentCb (0)
+    m_pCurrentParentNode (0)
 {
     resetUnknownTagEntry ();
     m_occurenceMapIter = m_occurenceMap.end ();
