@@ -25,3 +25,5 @@ apps/mmapcat
 apps/hypariconv
 apps/hyparsaxtimer
 apps/hytablereader
+apps/hyhtmlclean
+core.*
