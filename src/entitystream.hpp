@@ -60,22 +60,11 @@ class EntityStream
         }
         EntityType;
 
-    private:
-        _char *m_pStart, *m_pEnd, *m_pCur;
-        long m_lBufLength;
-        status_t m_status;
-        EntityType m_prevEntity;
-
-    private:
-        EntityStream () {}
-        long getRemainingLength ();
-
     public:
         EntityStream (_char *pBuffer, long lBufLength);
         ~EntityStream () {}
 
     public:
-
         unsigned long advance (unsigned long lLenToAdvance = 1);
         unsigned long rewind (unsigned long lLenToRewind = 1);
 
@@ -87,6 +76,16 @@ class EntityStream
 
         void setPrevEntity (EntityType et);
         EntityType getNextEntity (_char **pEntityStr, bool bSetNull = false);
+
+    private:
+        _char *m_pStart, *m_pEnd, *m_pCur;
+        long m_lBufLength;
+        status_t m_status;
+        EntityType m_prevEntity;
+
+    private:
+        EntityStream () {}
+        long getRemainingLength ();
 
 };
 

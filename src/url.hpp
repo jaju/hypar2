@@ -14,7 +14,7 @@
 
 BEGIN_NAMESPACE (hy);
 
-typedef std::pair<string, string> NVPair;
+typedef std::pair<std::string, std::string> NVPair;
 typedef std::list<NVPair> CGIAttrList;
 
 /**
@@ -29,6 +29,8 @@ typedef std::list<NVPair> CGIAttrList;
  */
 class URL
 {
+    private:
+        typedef std::string string;
     public:
         /**
          * Indicates successes and failures */
@@ -135,6 +137,7 @@ class URL
     public:
         bool operator == (const URL &u) const;
         bool equals (const URL &u) const;
+
 };
 
 END_NAMESPACE (hy);

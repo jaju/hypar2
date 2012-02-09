@@ -17,6 +17,8 @@ BEGIN_NAMESPACE (hy);
 
 struct eqcase
 {
+    private:
+        typedef std::string string;
     public:
         eqcase () {}
         ~eqcase () {}
@@ -30,6 +32,8 @@ struct eqcase
 
 struct strhash
 {
+    private:
+        typedef std::string string;
     public:
         strhash () {}
         ~strhash () {}
@@ -44,6 +48,8 @@ struct strhash
 
 struct strcasehash
 {
+    private:
+        typedef std::string string;
     public:
         strcasehash () {}
         ~strcasehash () {}

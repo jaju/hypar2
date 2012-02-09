@@ -39,6 +39,8 @@ class HTMLNode : public DOMNode
 
 class HTMLDoc
 {
+    private:
+        typedef std::string string;
     public:
         typedef enum
         {
@@ -83,6 +85,8 @@ class HTMLDoc
 
 class URLCollector
 {
+    private:
+        typedef std::string string;
     public:
         std::list<hy::URL *> m_URLList;
         const char *m_pEncoding;

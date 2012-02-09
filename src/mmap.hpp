@@ -17,6 +17,8 @@ BEGIN_NAMESPACE (hy);
  */
 class Mmap
 {
+    private:
+        typedef std::string string;
     public:
         typedef enum
         {

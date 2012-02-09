@@ -43,7 +43,7 @@ size_t strcase_hash_func (const URL &u)
     unsigned long __h1 = 0, __h2 = 0;
     __h1 += strcase_hash_func (u.getHost ().c_str ());
     __h1 += u.getPort ();
-    string s = u.getPath ();
+    std::string s = u.getPath ();
     __h2 = strcase_hash_func (s.c_str ());
     if (s.at (s.length () - 1) != '/')
     {

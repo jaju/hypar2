@@ -37,11 +37,6 @@
 
 #include <cstring>
 #include <string>
-using std::string;
-
-#if USE_WIDECHAR
-using std::wstring;
-#endif
 
 #if USE_WIDECHAR
 # include <cwchar>
