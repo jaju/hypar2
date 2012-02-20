@@ -58,17 +58,10 @@ int main (int argc, char *argv[])
     setlocale (LC_ALL, "en_IN.UTF-8");
     Mmap m (argv[1]);
     _char *pBuffer = 0;
-#if USE_WIDECHAR
-    hy::MbToWide toWideCharConverter ("UTF-8");
-    pBuffer = reinterpret_cast<_char *> (toWideCharConverter.convert (
-                m.getBuffer (), m.getBufferLength ()
-                ));
-#else
     int len = m.getBufferLength () + 1;
     pBuffer = new char[len];
     bzero (pBuffer, len);
     memcpy (pBuffer, m.getBuffer (), len - 1);
-#endif
     HTMLDoc h(HTMLDoc::kMEMBUF, pBuffer);
     DOMNode *node = DOMNode::create();
     node->setType(DOMNode::ELEMENT);
