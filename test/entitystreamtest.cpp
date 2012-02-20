@@ -23,25 +23,25 @@ class EntityStreamTest : public ::testing::Test {
        textutils::CBuffer *buffer;
 };
 
+typedef pair<EntityStream::EntityType, string> TypeDataPair;
+
 TEST_F(EntityStreamTest, GetsAllEntitiesProperly) {
     EntityStream e(buffer->get(), buffer->length());
     EntityStream::EntityType type;
-    vector<string> entityStrings;
-    vector<EntityStream::EntityType> types;
+    vector<TypeDataPair> typesAndData;
     char *pEntityStr;
     while ((type = e.getNextEntity(&pEntityStr, true)) != EntityStream::END) {
-        entityStrings.push_back(pEntityStr);
-        types.push_back(type);
+        typesAndData.push_back(TypeDataPair(type, pEntityStr));
     }
-    ASSERT_EQ(entityStrings.size(), 12);
-    ASSERT_EQ(entityStrings[0], "html");
-    ASSERT_EQ(types[0], EntityStream::ELEMENT);
-    ASSERT_EQ(entityStrings[2], "!--This is my comment.--");
-    ASSERT_EQ(types[2], EntityStream::COMMENT);
-    ASSERT_EQ(entityStrings[7], "body bgcolor=\"white\" ");
-    ASSERT_EQ(types[7], EntityStream::ELEMENT);
-    ASSERT_EQ(entityStrings[8], "  Hello, World ! ");
-    ASSERT_EQ(types[8], EntityStream::TEXT);
-    ASSERT_EQ(entityStrings[11], "!- A broken comment! -");
-    ASSERT_EQ(types[11], EntityStream::COMMENT);
+    ASSERT_EQ(typesAndData.size(), 12);
+    ASSERT_EQ(typesAndData[0].second, "html");
+    ASSERT_EQ(typesAndData[0].first, EntityStream::ELEMENT);
+    ASSERT_EQ(typesAndData[2].second, "!--This is my comment.--");
+    ASSERT_EQ(typesAndData[2].first, EntityStream::COMMENT);
+    ASSERT_EQ(typesAndData[7].second, "body bgcolor=\"white\" ");
+    ASSERT_EQ(typesAndData[7].first, EntityStream::ELEMENT);
+    ASSERT_EQ(typesAndData[8].second, "  Hello, World ! ");
+    ASSERT_EQ(typesAndData[8].first, EntityStream::TEXT);
+    ASSERT_EQ(typesAndData[11].second, "!- A broken comment! -");
+    ASSERT_EQ(typesAndData[11].first, EntityStream::COMMENT);
 }
