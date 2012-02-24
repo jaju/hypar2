@@ -52,6 +52,7 @@ class Mmap
          * exist
          */
         virtual const char *getBuffer ();
+        virtual char *getBufferCopy(); // You gotta delete[] this!
         virtual const char *getFileName ();
         /**
          * Call to get the length of the file

@@ -32,9 +32,6 @@ BEGIN_C_DECLS;
 END_C_DECLS;
 
 using namespace std;
-#if __GNUC__ > 2
-using namespace __gnu_cxx;
-#endif
 using namespace hy;
 
 using hy::Mmap;
@@ -57,11 +54,7 @@ int main (int argc, char *argv[])
     }
     setlocale (LC_ALL, "en_IN.UTF-8");
     Mmap m (argv[1]);
-    _char *pBuffer = 0;
-    int len = m.getBufferLength () + 1;
-    pBuffer = new char[len];
-    bzero (pBuffer, len);
-    memcpy (pBuffer, m.getBuffer (), len - 1);
+    _char *pBuffer = m.getBufferCopy();
     HTMLDoc h(HTMLDoc::kMEMBUF, pBuffer);
     DOMNode *node = DOMNode::create();
     node->setType(DOMNode::ELEMENT);

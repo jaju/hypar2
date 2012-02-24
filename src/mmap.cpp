@@ -86,6 +86,14 @@ const char *Mmap::getBuffer ()
     return m_pBuffer;
 }
 
+char *Mmap::getBufferCopy ()
+{
+    char *copy = new char[m_szBuflen + 1];
+    bzero(copy, m_szBuflen + 1);
+    memcpy(copy, m_pBuffer, m_szBuflen);
+    return copy;
+}
+
 const char *Mmap::getFileName ()
 {
     return m_filename.c_str ();
