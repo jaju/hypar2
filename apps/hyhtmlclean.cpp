@@ -9,35 +9,15 @@
 
 #include "localdefs.h"
 #include "mmap.hpp"
-#include "mbtowide.hpp"
-#include "entitystream.hpp"
 #include "html.hpp"
-#include "hash.hpp"
-#include "hashset.hpp"
-
-#if !DEBUG
-#define DEBUG 0
-#endif
-#include "debug.hpp"
 
 #include <iostream>
 #include <fstream>
 #include <queue>
 #include <string>
 
-BEGIN_C_DECLS;
-#include <assert.h>
-#include <stdio.h>
-#include <locale.h>
-END_C_DECLS;
-
 using namespace std;
 using namespace hy;
-
-using hy::Mmap;
-
-typedef HashSet<const _char *, strcasehash, eqcase> StringSet;
-
 
 void usage (int argc, char *argv[])
 {
@@ -52,26 +32,12 @@ int main (int argc, char *argv[])
         usage(argc, argv);
         return -1;
     }
-    setlocale (LC_ALL, "en_IN.UTF-8");
     Mmap m (argv[1]);
-    _char *pBuffer = m.getBufferCopy();
+    char *pBuffer = m.getBufferCopy();
     HTMLDoc h(HTMLDoc::kMEMBUF, pBuffer);
-    DOMNode *node = DOMNode::create();
-    node->setType(DOMNode::ELEMENT);
-    node->setName(L("root"));
-    node->setLevel(-1);
-    DOMNode *pNode = h.getRootNode();
 
-    _string text = L("");
-    toString(pNode->child(), text);
+    cout << toString(h.getRootNode()->child()) << endl;
 
-    char *pLocalLocaleBuffer = new char[text.size () * 4 + 4];
-    strncpy (pLocalLocaleBuffer, text.c_str (), text.size () * 4 + 4);
-    cout << pLocalLocaleBuffer << endl;
-
-    delete pLocalLocaleBuffer;
     delete pBuffer;
-    delete node;
-
     return 0;
 }
