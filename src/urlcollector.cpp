@@ -89,10 +89,10 @@ int URLCollector::collect (_char *pBuffer, const char *pEncoding)
     setlocale (LC_ALL, pEncoding);
     URLCollector::m_iMaxURLLen = 0;
     XML h (HTMLDoc::s_defaultHTMLTable);
-    h.tagCb = &URLCollector::href_callback;
-    h.textCb = &URLCollector::text_callback;
-    h.commentCb = &URLCollector::comm_callback;
-    h.m_pCallbackArg = (void *) this;
+    h.setTagCb(&URLCollector::href_callback);
+    h.setTextCb(&URLCollector::text_callback);
+    h.setCommentCb(&URLCollector::comm_callback);
+    h.setCallbackArg((void *) this);
     DOMNode *node = DOMNode::create();
     node->setType(DOMNode::ELEMENT);
     node->setName(L("root"));

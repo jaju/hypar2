@@ -99,9 +99,9 @@ int main (int argc, char *argv[])
     lSize *= iNumPasses;
 
     XML h (HTMLDoc::s_defaultHTMLTable);
-    h.tagCb = &tagCbFunc;
-    h.textCb = &textCb;
-    h.commentCb = &commentCb;
+    h.setTagCb(&tagCbFunc);
+    h.setTextCb(&textCb);
+    h.setCommentCb(&commentCb);
     DOMNode *node = DOMNode::create();
     node->setType(DOMNode::ELEMENT);
     node->setName(L("root"));

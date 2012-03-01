@@ -56,6 +56,12 @@ class XML
         DOMNode *parse (_char *pTextBuffer, DOMNode *pCloneableNode);
 
     public:
+        void setCallbackArg(void *pCallbackArg) { m_pCallbackArg = pCallbackArg; }
+        void setTagCb(EntityCbRetval (*t) (Tag *pTag, void *x)) { tagCb = t; }
+        void setTextCb(bool (*t) (_char *pText, void *x)) { textCb = t; }
+        void setCommentCb(bool (*t) (_char *pComment, void *x)) { commentCb = t; }
+
+    private:
         void *m_pCallbackArg;
         /**
          * A call-back function called when 'tags' are encountered
@@ -86,7 +92,6 @@ class XML
          */
         bool (*commentCb) (_char *pComment, void *x);
 
-    private:
         TagTable m_tagTable;
         bool m_bDocStarted, m_bIgnoreUnknownTag;
         const TagEntry *m_pCurTagEntry;

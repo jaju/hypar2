@@ -173,9 +173,9 @@ HTMLDoc::HTMLDoc (SourceType sourceType, const char *pSource,
             ignoreTagSet.insert (*p);
             p++;
         }
-        m_sParser.tagCb = &processHTMLTag;
-        m_sParser.textCb = &processHTMLText;
-        m_sParser.commentCb = &processHTMLComment;
+        m_sParser.setTagCb(&processHTMLTag);
+        m_sParser.setTextCb(&processHTMLText);
+        m_sParser.setCommentCb(&processHTMLComment);
         s_bIsInitialised = true;
     }
     if (m_sourceType == kFILE)
