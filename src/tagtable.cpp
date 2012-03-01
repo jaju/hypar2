@@ -16,8 +16,6 @@ using namespace std;
 
 BEGIN_NAMESPACE (hy);
 
-typedef pair<const _char*, const TagEntry*> NameTagPair;
-
 TagTable::TagTable () :
     m_status (EINIT),
     m_pRootElementName (0),
@@ -45,8 +43,7 @@ int TagTable::construct (const TagEntry *pte)
     while (pte[iEntryCount].m_pName != 0)
     {
         pEntry = &pte[iEntryCount];
-        NameTagPair p (pEntry->m_pName, pEntry);
-        m_TERepository.insert (p);
+        m_TERepository.insert (make_pair(pEntry->m_pName, pEntry));
         if (pEntry->m_iContextLevel < iRootLevel)
         {
             iRootLevel = pEntry->m_iContextLevel;
