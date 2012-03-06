@@ -38,29 +38,10 @@
 #include <cstring>
 #include <string>
 
-#if USE_WIDECHAR
-# include <cwchar>
-# include <cwctype>
-#define _STDLIB_H
+#include <cwchar>
+#include <cwctype>
 #include <cstdlib>
-# define L(x) L##x
-# define _strcmp ::wcscmp
-# define _strncmp ::wcsncmp
-# define _strcasecmp ::wcscasecmp
-# define _strncasecmp ::wcsncasecmp
-# define _strrchr ::wcsrchr
-# define _strstr ::wcswcs
-# define _strdup ::wcsdup
-# define _strlen ::wcslen
-# define _tolower ::towlower
-# define _isspace ::iswspace
-# define _char wchar_t
-# define _cout wcout
-# define _cerr wcerr
-# define _strncpy ::wcsncpy
-# define _strtol ::wcstol
-typedef std::wstring _string;
-#else /* !USE_WIDECHAR */
+
 # define L(x) x
 # define _strcmp strcmp
 # define _strncmp strncmp
@@ -78,4 +59,3 @@ typedef std::wstring _string;
 # define _strncpy strncpy
 # define _strtol strtol
 typedef std::string _string;
-#endif /* USE_WIDECHAR */

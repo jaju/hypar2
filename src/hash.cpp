@@ -11,8 +11,8 @@
 #include <cctype> // for tolower etc.
 
 BEGIN_NAMESPACE (hy);
+using std::wstring;
 
-#ifdef USE_WIDECHAR
 size_t str_hash_func (const wchar_t *s)
 {
 	unsigned long __h = 0;
@@ -28,7 +28,6 @@ size_t strcase_hash_func (const wchar_t *s)
 		__h = 5*__h + towlower (*s);
 	return size_t (__h);
 }
-#endif
 
 size_t strcase_hash_func (const char *s)
 {
@@ -87,7 +86,6 @@ size_t strcasehash::operator() (const string &s) const
     return strcase_hash_func (s.c_str ());
 }
 
-#ifdef USE_WIDECHAR
 size_t strcasehash::operator() (const wchar_t *s) const
 {
     return strcase_hash_func (s);
@@ -96,7 +94,6 @@ size_t strcasehash::operator() (const wstring &s) const
 {
     return strcase_hash_func (s.c_str ());
 }
-#endif
 
 bool eqcase::operator () (const string &str1, const string &str2) const
 {
@@ -108,7 +105,6 @@ bool eqcase::operator() (const char *str1, const char *str2) const
     return (strcasecmp (str1, str2) == 0);
 }
 
-#ifdef USE_WIDECHAR
 bool eqcase::operator() (const wstring &str1, const wstring &str2)
 {
     return (wcscasecmp(str1.c_str (), str2.c_str ()) == 0);
@@ -118,8 +114,6 @@ bool eqcase::operator () (const wchar_t *str1, const wchar_t *str2) const
 {
     return (wcscasecmp (str1, str2) == 0);
 }
-
-#endif
 
 size_t strcasehash::operator () (const URL &u) const
 {

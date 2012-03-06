@@ -12,15 +12,6 @@
 
 BEGIN_NAMESPACE (hy);
 
-/**
- * Convert to wchar_t * and return a pointer to the converted (static)
- * buffer location (hence: non thread-safe!!)
- */
-const char *echowide (const char *s);
-#ifdef USE_WIDECHAR
-char *echowide (const _char *s);
-#endif
-long echowide (long l);
 void debug_print (const char *format, ...);
 
 #define hy_warn(a) debug_print ("WARN:%s(%d): ", __FILE__, __LINE__); debug_print a

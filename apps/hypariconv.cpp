@@ -35,7 +35,6 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-#if USE_WIDECHAR
     _char *pBuffer = 0;
     hy::MbToWide toWideCharConverter(argv[1]);
 
@@ -79,6 +78,5 @@ int main(int argc, char *argv[])
     }
     cout << endl;
     cout << "The length of the wide_char buffer is " << _strlen(pBuffer) << endl;
-#endif
     return 0;
 }

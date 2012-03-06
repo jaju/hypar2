@@ -47,7 +47,7 @@ static const char *txt_trim (string &s)
     return s.c_str ();
 }
 
-#ifdef USE_WIDECHAR
+#if 0
 static const wchar_t *txt_trim (wstring &s)
 {
     const wchar_t *pString = s.c_str ();
@@ -71,7 +71,7 @@ static const wchar_t *txt_trim (wstring &s)
     s = new_string;
     return s.c_str ();
 }
-#endif /* USE_WIDECHAR */
+#endif
 
 USING_NAMESPACE (std);
 

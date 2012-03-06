@@ -9,9 +9,7 @@
 
 #include "html.hpp"
 #include "mmap.hpp"
-#include "mbtowide.hpp"
 #include "entitystream.hpp"
-#include "hash.hpp"
 #include "hashset.hpp"
 #include "debug.hpp"
 
@@ -19,17 +17,6 @@
 #include <fstream>
 #include <queue>
 #include <string>
-
-BEGIN_C_DECLS;
-#include <assert.h>
-#include <stdio.h>
-#include <locale.h>
-END_C_DECLS;
-
-USING_NAMESPACE (std);
-#if __GNUC__ > 2
-USING_NAMESPACE (__gnu_cxx);
-#endif
 
 BEGIN_NAMESPACE (hy);
 
@@ -40,15 +27,15 @@ static const _char *ignoreTagArray [] =
 };
 
 typedef HashSet <const _char *, strcasehash, eqcase> StringSet;
-
 static StringSet ignoreTagSet;
 static StringSet::iterator itsx;
+void htmlDOMToText (DOMNode *pNode, _string &targetString, bool bChildOnly = false);
 
 /*
  * Initialize all static data structures
  */
 
-HTMLNode HTMLDoc::m_sCloneableNode (DOMNode::ELEMENT, L ("cloneable"));
+DOMNode* HTMLDoc::m_sCloneableNode = DOMNode::create();
 bool HTMLDoc::s_bIsInitialised = false;
 bool HTMLDoc::s_bProcessTextData = false;
 
@@ -90,71 +77,52 @@ bool processHTMLComment (_char *pComment, void *pArg)
 }
 
 
-HTMLNode::HTMLNode () : DOMNode ()
+void htmlDOMToText (DOMNode *pNode, _string &targetString, bool bChildOnly)
 {
-    initType(DOMNode::ELEMENT, "htmlnode");
-}
-
-HTMLNode::HTMLNode (DOMNode::NodeType nodeType, const _char *pStr) : DOMNode()
-{
-        initType(nodeType, pStr);
-}
-
-
-HTMLNode *HTMLNode::clone ()
-{
-    return new HTMLNode;
-}
-
-
-HTMLNode *HTMLNode::clone (NodeType nodeType, const _char *pStr)
-{
-    return new HTMLNode(nodeType, pStr);
-}
-
-
-void HTMLNode::toText (_string &targetString, bool bChildOnly)
-{
-    switch (m_type)
+    switch (pNode->type())
     {
-        case ELEMENT:
-            if (!_strcasecmp (m_pName, L("br")))
+        case DOMData::ELEMENT:
+            if (!_strcasecmp (pNode->name(), L("br")))
             {
                 targetString += L('\n');
             }
             else if (
-                    !(_strcasecmp(m_pName, L("style")))
+                    !(_strcasecmp(pNode->name(), L("style")))
                     ||
-                    !(_strcasecmp(m_pName, L("script")))
+                    !(_strcasecmp(pNode->name(), L("script")))
                     ||
-                    !(_strcasecmp(m_pName, L("noscript")))
+                    !(_strcasecmp(pNode->name(), L("noscript")))
                     )
             {
             }
             else
             {
-                if (_child)
+                if (pNode->child())
                 {
-                    ((HTMLNode *) child())->toText (targetString);
+                    htmlDOMToText(pNode->child(), targetString);
                 }
             }
             break;
-        case TEXT:
+        case DOMNode::TEXT:
             {
                 _string processedText = L("");
-                /* XXX - Casting might be invalid in the future! */
-                HTMLDoc::postProcessText ((_char *) m_pContent, processedText);
+                HTMLDoc::postProcessText ((_char *) pNode->content(), processedText);
                 targetString += processedText;
             }
             break;
-        case COMMENT:
+        case DOMNode::COMMENT:
         default:
             break;
     }
-    if (!bChildOnly && _next)
+    if (!bChildOnly && pNode->next())
     {
-        ((HTMLNode *) next())->toText (targetString);
+        htmlDOMToText(pNode->next(), targetString);
     }
+}
+
+int HTMLDoc::toText(string &outString) {
+    htmlDOMToText(m_pRootNode->child(), outString);
+    return 0;
 }
 
 HTMLDoc::HTMLDoc (SourceType sourceType, const char *pSource,
@@ -194,7 +162,7 @@ HTMLDoc::~HTMLDoc ()
     safe_delete (m_pBuffer);
 }
 
-HTMLNode *HTMLDoc::parseFromFile (const char *pFileName)
+DOMNode *HTMLDoc::parseFromFile (const char *pFileName)
 {
     if (!pFileName)
     {
@@ -205,19 +173,12 @@ HTMLNode *HTMLDoc::parseFromFile (const char *pFileName)
     return parse (m.getBuffer (), m.getBufferLength ());
 }
 
-HTMLNode *HTMLDoc::parse (const char *pBuffer, unsigned int length)
+DOMNode *HTMLDoc::parse (const char *pBuffer, unsigned int length)
 {
-#ifdef USE_WIDECHAR
-    MbToWide toWideCharConverter (m_pLocale);
-    m_pBuffer = reinterpret_cast<wchar_t *>
-        (toWideCharConverter.convert (pBuffer, length));
-#else
     m_pBuffer = new char[length + 1];
     bzero(m_pBuffer, length + 1);
     memcpy (m_pBuffer, pBuffer, length);
-#endif
-    m_pRootNode = reinterpret_cast<HTMLNode *>
-        (m_sParser.parse (m_pBuffer, &m_sCloneableNode));
+    m_pRootNode = m_sParser.parse (m_pBuffer, m_sCloneableNode);
     return m_pRootNode;
 }
 

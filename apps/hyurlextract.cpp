@@ -54,16 +54,9 @@ int main(int argc, char *argv[])
     setlocale (LC_ALL, "ISO-8859-1");
     Mmap m (argv[1]);
     _char *pBuffer = 0;
-#if USE_WIDECHAR
-    hy::MbToWide toWideCharConverter ("ISO-8859-1");
-    pBuffer = reinterpret_cast<_char *> (toWideCharConverter.convert (
-                m.getBuffer (), m.getBufferLength ()
-                ));
-#else
     pBuffer = new char[m.getBufferLength () + 1];
     bzero (pBuffer, m.getBufferLength () + 1);
     memcpy (pBuffer, m.getBuffer (), m.getBufferLength ());
-#endif
     hy::URLCollector url_collector (pBuffer);
     list<URL *>::iterator urlx = url_collector.m_URLList.begin ();
     while (urlx != url_collector.m_URLList.end ())

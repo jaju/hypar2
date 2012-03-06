@@ -15,23 +15,6 @@
 
 BEGIN_NAMESPACE (hy);
 
-const char *echowide (const char *s)
-{
-    return s;
-}
-
-#if USE_WIDECHAR
-char *echowide (const _char *s)
-{
-#define BUFSZ 16*1024
-    static char s_strBuf[BUFSZ];
-    int len = _strlen (s) < BUFSZ ? _strlen (s) : BUFSZ;
-    bzero (s_strBuf, BUFSZ);
-    wcstombs (s_strBuf, s, len);
-    return s_strBuf;
-}
-#endif
-
 void debug_print (const char *format, ...)
 {
     va_list ap;

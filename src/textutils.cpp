@@ -27,7 +27,6 @@ void tolower (char *s)
     transform (s, s + strlen (s), s, (int (*)(int)) std::tolower);
 }
 
-#if USE_WIDECHAR
 void towlower (_string &s)
 {
     transform (s.begin (), s.end (), s.begin (), (int (*)(int)) ::towlower);
@@ -37,7 +36,6 @@ void towlower (_char *s)
 {
     transform (s, s + _strlen (s), s, (int (*)(int)) ::towlower);
 }
-#endif
 
 _char *echoSpaces (int iNumSpaces)
 {
@@ -114,7 +112,6 @@ _string _itos (int ii)
     return _string (retstr + 1);
 }
 
-#if USE_WIDECHAR
 string wideToNarrow (const wstring &ws)
 {
     return wideToNarrow (static_cast<const wchar_t *> (ws.c_str ()));
@@ -140,7 +137,6 @@ string toLocalLocale(const wchar_t *s)
 {
     return wideToNarrow (s);
 }
-#endif
 
 END_NAMESPACE (textutils);
 END_NAMESPACE (hy);

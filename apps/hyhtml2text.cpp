@@ -49,9 +49,8 @@ int main (int argc, char *argv[])
     pFilename = argv[1];
     HTMLDoc h (HTMLDoc::kFILE, pFilename);
     _string outString = L("");
-    HTMLNode *pNode = h.getRootNode ();
 
-    ((HTMLNode *) pNode->child())->toText (outString);
+    h.toText (outString);
 
     cout << outString.c_str () << endl;
 

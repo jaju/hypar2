@@ -18,24 +18,12 @@ BEGIN_NAMESPACE (hy);
 
 
 /*
- * Extension for DOMNode - HTMLNode
+ * Extension for DOMNode - DOMNode
  */
 
 XML::EntityCbRetval processHTMLTag (Tag *pTag, void *pArg);
 bool processHTMLText (_char *pText, void *pArg);
 bool processHTMLComment (_char *pComment, void *pArg);
-
-class HTMLNode : public DOMNode
-{
-    public:
-        HTMLNode();
-        HTMLNode(DOMNode::NodeType nodeType, const _char *pStr);
-        HTMLNode *clone();
-        HTMLNode *clone(NodeType nodeType, const _char *pStr);
-
-    public:
-        void toText (_string &targetString, bool bChildOnly = false);
-};
 
 class HTMLDoc
 {
@@ -56,12 +44,12 @@ class HTMLDoc
 
     private:
         XML m_sParser;
-        static HTMLNode m_sCloneableNode;
+        static DOMNode *m_sCloneableNode;
         static bool s_bIsInitialised;
 
     private:
         SourceType m_sourceType;
-        HTMLNode *m_pRootNode;
+        DOMNode *m_pRootNode;
         const char *m_pLocale;
         _char *m_pBuffer;
 
@@ -71,12 +59,12 @@ class HTMLDoc
         ~HTMLDoc ();
 
     public:
-        HTMLNode *getRootNode () { return m_pRootNode; }
+        DOMNode *getRootNode () { return m_pRootNode; }
         int toText (string &outString);
 
     private:
-        HTMLNode *parseFromFile (const char *pFileName);
-        HTMLNode *parse (const char *pContents, unsigned int length);
+        DOMNode *parseFromFile (const char *pFileName);
+        DOMNode *parse (const char *pContents, unsigned int length);
 
     public:
         void setProcessText (bool b = true) { s_bProcessTextData = b; }

@@ -51,7 +51,6 @@ char *MbToWide::convert (const char *pInbuf, size_t inbytesLeft)
 size_t MbToWide::convert (const char **pInbuf, size_t *pInbytesleft,
         char **pOutbuf, size_t *pOutbytesleft)
 {
-#ifdef USE_WIDECHAR
 # ifndef WIN32
     return m_iconv.convert (pInbuf, pInbytesleft, pOutbuf, pOutbytesleft);
 # else
@@ -61,11 +60,6 @@ size_t MbToWide::convert (const char **pInbuf, size_t *pInbytesleft,
     return mbsrtowcs ((_char *) *m_pOutbuf, *pInbuf, *pOutbytesleft,
             &conv_state);
 # endif
-#else
-    strncpy (*pOutbuf, *pInbuf, *pInbytesleft);
-    *pOutbytesleft -= *pInbytesleft;
-    return 0;
-#endif
 }
 
 END_NAMESPACE (hy);
