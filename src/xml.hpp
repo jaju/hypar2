@@ -44,8 +44,17 @@ class XML
         XML ();
         XML (const TagEntry *pte);
 
+        /**
+         * Configuration calls.
+         */
     public:
         void doNotClean (bool flag = true);
+        void setCallbackArg(void *pCallbackArg) { m_pCallbackArg = pCallbackArg; }
+        void setTagCb(EntityCbRetval (*t) (Tag *pTag, void *x)) { tagCb = t; }
+        void setTextCb(bool (*t) (_char *pText, void *x)) { textCb = t; }
+        void setCommentCb(bool (*t) (_char *pComment, void *x)) { commentCb = t; }
+
+    public:
         /**
          * The 'main' call.
          *
@@ -54,12 +63,6 @@ class XML
          * NOTE the quotes - this isn't the standards-compliant DOM.
          */
         DOMNode *parse (_char *pTextBuffer, DOMNode *pCloneableNode);
-
-    public:
-        void setCallbackArg(void *pCallbackArg) { m_pCallbackArg = pCallbackArg; }
-        void setTagCb(EntityCbRetval (*t) (Tag *pTag, void *x)) { tagCb = t; }
-        void setTextCb(bool (*t) (_char *pText, void *x)) { textCb = t; }
-        void setCommentCb(bool (*t) (_char *pComment, void *x)) { commentCb = t; }
 
     private:
         void *m_pCallbackArg;
