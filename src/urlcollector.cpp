@@ -28,12 +28,12 @@ URLCollector::URLCollector (_char *pBuffer) :
 
 XML::EntityCbRetval URLCollector::href_callback (Tag *pTag, void *pArg)
 {
-    static const _char *pURLTagName = L("a");
-    static const _char *pBase = L("base");
+    static const _char *pURLTagName = "a";
+    static const _char *pBase = "base";
     URLCollector *pThis = (URLCollector *) pArg;
     if (!pThis->m_baseHref.size() && _strcasecmp(pBase, pTag->m_pName) == 0)
     {
-        const _char *pVal = pTag->findProperty(L("href"));
+        const _char *pVal = pTag->findProperty("href");
         if (pVal)
         {
             int l = _strlen(pVal);
@@ -51,7 +51,7 @@ XML::EntityCbRetval URLCollector::href_callback (Tag *pTag, void *pArg)
     {
         if (!pTag->m_bEndTag)
         {
-            const _char *pVal = pTag->findProperty(L("href"));
+            const _char *pVal = pTag->findProperty("href");
             if (pVal)
             {
                 if (_strlen(pVal) > pThis->m_iMaxURLLen)
@@ -59,8 +59,8 @@ XML::EntityCbRetval URLCollector::href_callback (Tag *pTag, void *pArg)
                     pThis->m_iMaxURLLen = _strlen(pVal);
                 }
                 URL *u = new URL (pVal, pThis->m_baseHref);
-                const _char *pRelVal = pTag->findProperty (L("rel"));
-                if (pRelVal && !_strcasecmp (pRelVal, L("nofollow")))
+                const _char *pRelVal = pTag->findProperty ("rel");
+                if (pRelVal && !_strcasecmp (pRelVal, "nofollow"))
                 {
                     u->setNoFollow ();
                 }
@@ -95,7 +95,7 @@ int URLCollector::collect (_char *pBuffer, const char *pEncoding)
     h.setCallbackArg((void *) this);
     DOMNode *node = DOMNode::create();
     node->setType(DOMNode::ELEMENT);
-    node->setName(L("root"));
+    node->setName("root");
 
     node->setLevel(-1);
     h.parse (pBuffer, node);

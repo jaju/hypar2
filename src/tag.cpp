@@ -147,22 +147,22 @@ Tag::toString (_string &targetString)
         TagAttrList::iterator avx = m_attrList.begin ();
         while (avx != m_attrList.end ())
         {
-            targetString += L (' ');
+            targetString += ' ';
             targetString += (*avx).first;
-            targetString += L ("=\"");
+            targetString += "=\"";
             targetString += (*avx).second;
-            targetString += L ('\"');
+            targetString += '\"';
             avx++;
         }
     }
     else if (m_pTagAttrString)
     {
-        targetString += L (' ');
+        targetString += ' ';
         targetString += m_pTagAttrString;
     }
     if (m_bSelfClosing && !m_bEndTag)
     {
-        targetString += L ("/>");
+        targetString += "/>";
     }
     else
     {
@@ -181,7 +181,7 @@ Tag::getQuotedName (_char *&pStr, _char **pName, bool bSetNull)
     {
         return -1;
     }
-    if (L('"') == *pStr || L('\'') == *pStr)
+    if ('"' == *pStr || '\'' == *pStr)
     {
         _char wideQuote = *pStr;
         pStr++;
@@ -194,20 +194,20 @@ Tag::getQuotedName (_char *&pStr, _char **pName, bool bSetNull)
         }
         if (pStr >= m_pStrEnd)
             return -1;
-        if (*pStr != L('='))
+        if (*pStr != '=')
         {
             return 1;
         }
         if (bSetNull)
         {
-            *pStr = L('\0');
+            *pStr = '\0';
             pStr++;
         }
     }
     else
     {
         *pName = pStr;
-        while ((pStr < m_pStrEnd) && (*pStr != L('=')) && !_isspace(*pStr))
+        while ((pStr < m_pStrEnd) && (*pStr != '=') && !_isspace(*pStr))
         {
             pStr++;
         }
@@ -219,14 +219,14 @@ Tag::getQuotedName (_char *&pStr, _char **pName, bool bSetNull)
         }
         if (pStr >= m_pStrEnd)
             return -1;
-        if (*pStr != L('='))
+        if (*pStr != '=')
         {
             pStr++;
             return 1;
         }
         if (bSetNull)
         {
-            *pStr = L('\0');
+            *pStr = '\0';
             pStr++;
         }
     }
@@ -248,7 +248,7 @@ Tag::getQuotedValue (_char *&pStr, _char **pValue, bool bSetNull)
     {
         return -1;
     }
-    if (L('"') == *pStr || L('\'') == *pStr)
+    if ('"' == *pStr || '\'' == *pStr)
     {
         _char wideQuote = *pStr;
         pStr++;
@@ -261,7 +261,7 @@ Tag::getQuotedValue (_char *&pStr, _char **pValue, bool bSetNull)
         }
         if (bSetNull)
         {
-            *pStr = L('\0');
+            *pStr = '\0';
         }
         pStr++;
         return 0;
@@ -275,7 +275,7 @@ Tag::getQuotedValue (_char *&pStr, _char **pValue, bool bSetNull)
         }
         if (bSetNull)
         {
-            *pStr = L('\0');
+            *pStr = '\0';
         }
         pStr++;
         return 0;

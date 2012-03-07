@@ -136,59 +136,59 @@ toString (DOMNode *node, _string &targetString, bool bChildOnly)
     {
         case DOMData::ELEMENT:
             targetString += textutils::echoSpaces (node->level());
-            targetString += L("<");
+            targetString += "<";
             targetString += node->name();
             if (node->propertyMap())
             {
                 PropertyMap::const_iterator pmx = node->propertyMap()->begin ();
                 while (pmx != node->propertyMap()->end ())
                 {
-                    targetString += L(" ");
+                    targetString += " ";
                     targetString += pmx->first;
-                    targetString += L("=\"");
+                    targetString += "=\"";
                     targetString += pmx->second;
-                    targetString += L("\"");
+                    targetString += "\"";
                     pmx++;
                 }
             }
 #if 1
-            targetString += L(" level=\"");
+            targetString += " level=\"";
             targetString += textutils::_itos (node->level());
-            targetString += L("\" horlevel=\"");
+            targetString += "\" horlevel=\"";
             targetString += textutils::_itos (node->horizontalLevel());
-            targetString += L("\"");
+            targetString += "\"";
 #endif
             if (node->child())
             {
-                targetString += L(">\n");
+                targetString += ">\n";
                 toString(node->child(), targetString);
             }
             else
             {
                 if (node->selfClosing())
                 {
-                    targetString += L("/>\n");
+                    targetString += "/>\n";
                 }
                 else
                 {
-                    targetString += L("></");
+                    targetString += "></";
                     targetString += node->name();
                     targetString += " selfclosing=\"0\"";
-                    targetString += L(">\n");
+                    targetString += ">\n";
                 }
                 break;
             }
-            targetString += L("</");
+            targetString += "</";
             targetString += node->name();
-            if (node->propertyMap()->find(L("childrenforceclosed")) != node->propertyMap()->end())
+            if (node->propertyMap()->find("childrenforceclosed") != node->propertyMap()->end())
             {
                 targetString += " culpritchildren=\"1\"";
             }
-            else if (node->propertyMap()->find(L("forceclosed")) != node->propertyMap()->end())
+            else if (node->propertyMap()->find("forceclosed") != node->propertyMap()->end())
             {
                 targetString += " forceclosed=\"1\"";
             }
-            targetString += L(">\n");
+            targetString += ">\n";
             break;
         case DOMData::TEXT:
             if (node->content())
@@ -196,9 +196,9 @@ toString (DOMNode *node, _string &targetString, bool bChildOnly)
             break;
         case DOMData::COMMENT:
             if (node->content()) {
-                targetString += L("<");
+                targetString += "<";
                 targetString += node->content();
-                targetString += L(">\n");
+                targetString += ">\n";
             }
             break;
         default:
@@ -231,7 +231,7 @@ void toText (DOMNode *node, _string &targetString, bool bChildOnly)
         case DOMData::TEXT:
             if (node->content()) {
                 targetString += node->content();
-                targetString += L(" ");
+                targetString += " ";
             }
             break;
         case DOMData::COMMENT:

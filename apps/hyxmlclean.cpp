@@ -65,11 +65,11 @@ int main (int argc, char *argv[])
     XML h;
     DOMNode *node = DOMNode::create();
     node->setType(DOMNode::ELEMENT);
-    node->setName(L("root"));
+    node->setName("root");
     node->setLevel(-1);
     DOMNode *pNode = h.parse (pBuffer, node);
 
-    _string text = L("");
+    _string text = "";
     toString(pNode->child(), text);
 
     char *pLocalLocaleBuffer = new char[text.size () * 4 + 4];

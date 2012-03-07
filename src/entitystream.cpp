@@ -27,7 +27,7 @@ EntityStream::EntityStream (_char *pBuffer, long lBufLength) :
 {
     assert (pBuffer != 0);
     assert (lBufLength != 0);
-    if (*m_pEnd != L('\0'))
+    if (*m_pEnd != '\0')
     {
         cerr << "Please use only NULL terminated buffers" << endl;
         assert (0);
@@ -77,7 +77,7 @@ _char EntityStream::peek ()
     }
     else
     {
-        return L('\0');
+        return '\0';
     }
 }
 
@@ -92,7 +92,7 @@ _char EntityStream::get ()
     else
     {
         m_status = EntityStream::EWCSTREAMEOF;
-        return L('\0');
+        return '\0';
     }
 }
 
@@ -195,7 +195,7 @@ EntityStream::getNextEntity (_char **pEntityStr, bool bSetNull)
         _char *pFirstGangle = 0;
         bool bFirstGangleFound = false;
         _char quoteChar = 0;
-        if (likely ((*m_pCur != BANG) && (*m_pCur != L('?'))))
+        if (likely ((*m_pCur != BANG) && (*m_pCur != '?')))
         {
             /* Tag-element */
             bool bInQuote = false;
@@ -203,16 +203,16 @@ EntityStream::getNextEntity (_char **pEntityStr, bool bSetNull)
             _char *pNewLine = 0;
             *pEntityStr = m_pCur;
 
-            while ((m_pCur != m_pEnd) && (L('>') != *m_pCur))
+            while ((m_pCur != m_pEnd) && ('>' != *m_pCur))
             {
-                if (((*m_pCur == L('"')) || (*m_pCur == L('\'')))
-                        && (*(m_pCur - 1) != L('\\')))
+                if (((*m_pCur == '"') || (*m_pCur == '\''))
+                        && (*(m_pCur - 1) != '\\'))
                 {
                     bInQuote = !bInQuote;
                     quoteChar = *m_pCur;
                     while ((m_pCur != m_pEnd) && (*m_pCur != quoteChar))
                     {
-                        if ((L('\\') != *(m_pCur - 1)) && (L('\n') == *m_pCur))
+                        if (('\\' != *(m_pCur - 1)) && ('\n' == *m_pCur))
                         {
                             bNewLine = true;
                             pNewLine = m_pCur;
@@ -257,7 +257,7 @@ EntityStream::getNextEntity (_char **pEntityStr, bool bSetNull)
             }
             if (bSetNull && (m_pCur != m_pEnd))
             {
-                *(m_pCur) = L('\0');
+                *(m_pCur) = '\0';
             }
             advance ();
             if (*pEntityStr == m_pCur - 1)
@@ -275,7 +275,7 @@ EntityStream::getNextEntity (_char **pEntityStr, bool bSetNull)
             bool bIsPureComment = false;
             *pEntityStr = m_pCur;
 
-            if (L('-') == *(m_pCur + 1))
+            if ('-' == *(m_pCur + 1))
             {
                 bIsPureComment = true;
             }
@@ -290,14 +290,14 @@ goto_getOverComment:
                 m_prevEntity = END;
                 return END;
             }
-            if (bIsPureComment && (_strncmp (m_pCur - 1, L("->"), 2) != 0))
+            if (bIsPureComment && (_strncmp (m_pCur - 1, "->", 2) != 0))
             {
                 advance();
                 goto goto_getOverComment;
             }
             if (bSetNull && (m_pCur != m_pEnd))
             {
-                *m_pCur = L('\0');
+                *m_pCur = '\0';
             }
             advance();
             m_prevEntity = COMMENT;
@@ -314,7 +314,7 @@ goto_getOverComment:
         if (bSetNull)
         {
             if (m_pCur != m_pEnd)
-                *(m_pCur) = L('\0');
+                *(m_pCur) = '\0';
         }
         advance ();
         m_prevEntity = TEXT;

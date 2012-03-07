@@ -25,12 +25,12 @@
 
 BEGIN_NAMESPACE (hy);
 
-#define LANGLE L('<')
-#define GANGLE L('>')
-#define BANG L('!')
-#define MINUS L('-')
-#define SLASH L('/')
-#define NULLCHAR L('\0')
+#define LANGLE '<'
+#define GANGLE '>'
+#define BANG '!'
+#define MINUS '-'
+#define SLASH '/'
+#define NULLCHAR '\0'
 
 
 /**

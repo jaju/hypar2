@@ -48,7 +48,7 @@ int main (int argc, char *argv[])
 
     pFilename = argv[1];
     HTMLDoc h (HTMLDoc::kFILE, pFilename);
-    _string outString = L("");
+    _string outString = "";
 
     h.toText (outString);
 

@@ -40,9 +40,9 @@ void towlower (_char *s)
 _char *echoSpaces (int iNumSpaces)
 {
 #define kMaxSpaces 1024
-    static _char sSpaces[kMaxSpaces + 1] = {L(' ')};
+    static _char sSpaces[kMaxSpaces + 1] = {' '};
     /* XXX - Can be optimized, to initialize the last char to NULL only once */
-    sSpaces[kMaxSpaces] = L('\0');
+    sSpaces[kMaxSpaces] = '\0';
     _char *returnString = sSpaces + kMaxSpaces;
     if (iNumSpaces <= 0)
         return returnString;
@@ -56,7 +56,7 @@ _char *echoSpaces (int iNumSpaces)
 
 _string formatContent (const _char *pContent, int iNumIndents)
 {
-    _string formattedString = L("");
+    _string formattedString = "";
     int currentCursor = 0;
     _string spacePrefix = echoSpaces (iNumIndents);
     if (iNumIndents <= 0)
@@ -69,8 +69,8 @@ _string formatContent (const _char *pContent, int iNumIndents)
         if (!*pContent)
             break;
         for (currentCursor = 0; *pContent &&
-                *(pContent + currentCursor) != L('\n'); currentCursor++);
-        if (*(pContent + currentCursor) == L('\n'))
+                *(pContent + currentCursor) != '\n'; currentCursor++);
+        if (*(pContent + currentCursor) == '\n')
             currentCursor++;
         formattedString += spacePrefix;
         formattedString.append (pContent, currentCursor + 1);
@@ -90,7 +90,7 @@ _string _itos (int ii)
     _char *retstr = wbuf + 15;
     char *p = buf + 15;
 
-    *retstr = L('0');
+    *retstr = '0';
     *p = '0';
 
     int residue = 0;
@@ -104,7 +104,7 @@ _string _itos (int ii)
             cut = true;
         }
         residue = i % 10;
-        *retstr = L('0') + residue;
+        *retstr = '0' + residue;
         *p = '0' + residue;
         i = i/10;
         retstr--; p--;

@@ -25,24 +25,24 @@ parseAndStoreElementNamesFromCommaDelimitedString (
     int iNumElements = 0;
     while (!bFinished)
     {
-        while (*pString && (_isspace (*pString) || (L(',') == *pString)))
+        while (*pString && (_isspace (*pString) || (',' == *pString)))
         {
             pString++;
         }
         pStart = pString;
-        while (*pString && (L(',') != *pString) && !_isspace (*pString))
+        while (*pString && (',' != *pString) && !_isspace (*pString))
         {
             pString++;
         }
-        if (L(',') == *pString)
+        if (',' == *pString)
         {
-            *pString = L('\0');
+            *pString = '\0';
             pString++;
         }
         else
         {
-            *pString = L('\0');
-            while (*pString && (L(',') != *pString))
+            *pString = '\0';
+            while (*pString && (',' != *pString))
             {
                 pString++;
             }

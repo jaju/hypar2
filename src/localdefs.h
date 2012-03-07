@@ -42,7 +42,6 @@
 #include <cwctype>
 #include <cstdlib>
 
-# define L(x) x
 # define _strcmp strcmp
 # define _strncmp strncmp
 # define _strcasecmp strcasecmp

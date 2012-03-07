@@ -22,11 +22,11 @@ using std::flush;
 
 BEGIN_NAMESPACE (hy);
 
-#define HYXML_ROOT_NODE L("XML_Root")
+#define HYXML_ROOT_NODE "XML_Root"
 
 static const TagEntry defaultTable[] =
 {
-    TagEntry (L("root"),  1,  1,    true,   true, 0, 0),
+    TagEntry ("root",  1,  1,    true,   true, 0, 0),
     TagEntry (0, 0, TagEntry::TEXT_ATTR, false, false, 0, 0)
 };
 
@@ -457,12 +457,12 @@ MAKE_VALID_ONLY_GOTO:
         else if (i > 0)
         {
             if (m_pCurrentParentNode)
-                m_pCurrentParentNode->setProperty(L("childrenforceclosed"), L("1"));
+                m_pCurrentParentNode->setProperty("childrenforceclosed", "1");
         }
         while (i >= 0)
         {
             if (i != 0)
-                m_pCurrentParentNode->setProperty (L ("forceclosed"), L ("10"));
+                m_pCurrentParentNode->setProperty ("forceclosed", "10");
             closeNode ();
             m_entityStack.pop ();
             i--;
@@ -494,7 +494,7 @@ MAKE_VALID_ONLY_GOTO:
             addNode (pTag);
             if (m_pCurTagEntry == &m_unknownTagEntry)
             {
-                m_pCurrentParentNode->setProperty (L ("unknowntag"), L ("1"));
+                m_pCurrentParentNode->setProperty ("unknowntag", "1");
             }
             m_occurenceMap[pTag->m_pName] = true;
             m_entityStack.push (pTag->m_pName);
@@ -557,7 +557,7 @@ int XML::correctStack (const TagEntry *pTagEntry, bool bCheckOnly)
             iCorrections += correctStack (pt, bCheckOnly);
         }
         addNode (&tag);
-        m_pCurrentParentNode->setProperty (L("forceinserted"), L("1"));
+        m_pCurrentParentNode->setProperty ("forceinserted", "1");
         m_entityStack.push (tag.m_pName);
         iCorrections++;
     }
@@ -567,7 +567,7 @@ int XML::correctStack (const TagEntry *pTagEntry, bool bCheckOnly)
             return 1;
         while (iLocationFromTop)
         {
-            m_pCurrentParentNode->setProperty(L("forceclosed"), L("1"));
+            m_pCurrentParentNode->setProperty("forceclosed", "1");
             closeNode (); m_entityStack.pop ();
             iLocationFromTop--; iCorrections++;
         }
@@ -599,7 +599,7 @@ int XML::clearCurrentContext (Tag *pTag, const TagEntry *pTagEntry,
             {
                 return 1;
             }
-            m_pCurrentParentNode->setProperty (L("forceclosed"), L("1"));
+            m_pCurrentParentNode->setProperty ("forceclosed", "1");
             closeNode (); m_entityStack.pop (); retval++;
         }
     }
@@ -624,7 +624,7 @@ int XML::clearCurrentContext (Tag *pTag, const TagEntry *pTagEntry,
             {
                 return 1;
             }
-            m_pCurrentParentNode->setProperty (L("forceclosed"), L("2"));
+            m_pCurrentParentNode->setProperty ("forceclosed", "2");
             closeNode (); m_entityStack.pop (); retval++;
             if (pte == pTagEntry)
             {

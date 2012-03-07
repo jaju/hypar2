@@ -22,7 +22,7 @@ BEGIN_NAMESPACE (hy);
 
 static const _char *ignoreTagArray [] =
 {
-    L ("script"),
+    "script",
     0
 };
 
@@ -60,7 +60,7 @@ bool processHTMLText (_char *pText, void *pArg)
 {
     if (HTMLDoc::s_bProcessTextData)
     {
-        _string scratchPad = L("");
+        _string scratchPad = "";
         HTMLDoc::postProcessText (pText, scratchPad);
         _strncpy (pText, scratchPad.c_str (), scratchPad.length () + 1);
     }
@@ -82,16 +82,16 @@ void htmlDOMToText (DOMNode *pNode, _string &targetString, bool bChildOnly)
     switch (pNode->type())
     {
         case DOMData::ELEMENT:
-            if (!_strcasecmp (pNode->name(), L("br")))
+            if (!_strcasecmp (pNode->name(), "br"))
             {
-                targetString += L('\n');
+                targetString += '\n';
             }
             else if (
-                    !(_strcasecmp(pNode->name(), L("style")))
+                    !(_strcasecmp(pNode->name(), "style"))
                     ||
-                    !(_strcasecmp(pNode->name(), L("script")))
+                    !(_strcasecmp(pNode->name(), "script"))
                     ||
-                    !(_strcasecmp(pNode->name(), L("noscript")))
+                    !(_strcasecmp(pNode->name(), "noscript"))
                     )
             {
             }
@@ -105,7 +105,7 @@ void htmlDOMToText (DOMNode *pNode, _string &targetString, bool bChildOnly)
             break;
         case DOMNode::TEXT:
             {
-                _string processedText = L("");
+                _string processedText = "";
                 HTMLDoc::postProcessText ((_char *) pNode->content(), processedText);
                 targetString += processedText;
             }
@@ -191,14 +191,14 @@ NVStringPair;
 
 static const NVStringPair HTMLTextSymTabArray [] =
 {
-    {L ("nbsp"), L (" ")},
-    {L ("gt"),   L (">")},
-    {L ("lt"),   L ("<")},
-    {L ("amp"),  L ("&")},
-    {L ("#39"),  L ("'")},
-    {L ("copy"),  L ("©")},
-    {L ("quot"),  L ("\"")},
-    {L ("raquo"), L("»")},
+    {"nbsp", " "},
+    {"gt",   ">"},
+    {"lt",   "<"},
+    {"amp",  "&"},
+    {"#39",  "'"},
+    {"copy",  "©"},
+    {"quot",  "\""},
+    {"raquo", "»"},
     {0, 0}
 };
 
@@ -241,8 +241,8 @@ HTMLDoc::postProcessText (_char *pTextBufferEditable, _string &processedText)
     /* Now, starts the processing */
     _char *pChunkStart = pTextBufferEditable;
     _char *pChunkEnd = pTextBufferEditable;
-    const _char ampersand = L('&');
-    const _char semicolon = L(';');
+    const _char ampersand = '&';
+    const _char semicolon = ';';
 
     while (*pChunkStart)
     {
