@@ -11,9 +11,6 @@ TEST(DOMParserTest, ParsesASimpleString) {
     string input = "<html><head><title>Hello, World!</title></head><body>This is the body. </body></html>";
     char *copy = strdup(input.c_str());
     DOMNode *node = DOMNode::create();
-    node->setType(DOMNode::ELEMENT);
-    node->setName("root");
-    node->setLevel(-1);
 
     XML h;
     DOMNode *pNode = h.parse(copy, node);

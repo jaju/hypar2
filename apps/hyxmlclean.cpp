@@ -64,9 +64,6 @@ int main (int argc, char *argv[])
     memcpy (pBuffer, m.getBuffer (), len - 1);
     XML h;
     DOMNode *node = DOMNode::create();
-    node->setType(DOMNode::ELEMENT);
-    node->setName("root");
-    node->setLevel(-1);
     DOMNode *pNode = h.parse (pBuffer, node);
 
     _string text = "";

@@ -63,6 +63,9 @@ class DOMData
 
     protected:
     void reset ();
+
+    private:
+    static const char* const defaultName;
 };
 
 typedef TreeNode<DOMData> DOMNode;

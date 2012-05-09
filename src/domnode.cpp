@@ -18,9 +18,11 @@ USING_NAMESPACE (std);
 
 BEGIN_NAMESPACE (hy);
 
+const char * const DOMData::defaultName = "root";
 DOMData::DOMData() :
     m_pPropertyMap (0),
-    m_pName (0),
+    m_type(DOMNode::ELEMENT),
+    m_pName (defaultName),
     m_pContent (0),
     m_bSelfClosing (true)
 {

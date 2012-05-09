@@ -87,7 +87,7 @@ class TreeNode : public G {
 template<typename G>
 TreeNode<G>::TreeNode() :
     G(), _parent (0), _prev (0), _next (0),
-    _child (0), _last (0), _level (0), _horizontalLevel (0)
+    _child (0), _last (0), _level (-1), _horizontalLevel (-1)
 {}
 
 template<typename G>

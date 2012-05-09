@@ -103,8 +103,6 @@ int main (int argc, char *argv[])
     h.setTextCb(&textCb);
     h.setCommentCb(&commentCb);
     DOMNode *node = DOMNode::create();
-    node->setType(DOMNode::ELEMENT);
-    node->setName("root");
     DOMNode *pNode = 0;
 
     gettimeofday (&tv_start, 0);
