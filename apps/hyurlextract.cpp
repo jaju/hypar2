@@ -8,7 +8,6 @@
  */
 
 #include "mmap.hpp"
-#include "mbtowide.hpp"
 #include "entitystream.hpp"
 #include "html.hpp"
 #include "url.hpp"
