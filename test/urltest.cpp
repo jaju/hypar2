@@ -26,17 +26,17 @@ TEST(URL, ParsesAllComponents) {
 }
 
 TEST(URL, GeneratesCorrectUrlFromRelativeAndBase) {
-    string urlStr("http://www.google.com/search/?q=hello+world");
+    string urlStr("https://www.google.com/search/?q=hello+world");
     string relativeUrlStr("blog/");
     URL u(relativeUrlStr, urlStr);
-    ASSERT_EQ(u.getCanonical(), "http://www.google.com:80/search/blog/");
+    ASSERT_EQ(u.getCanonical(), "https://www.google.com:443/search/blog/");
 
     relativeUrlStr = "/blog";
     URL u2(relativeUrlStr, urlStr);
-    ASSERT_EQ(u2.getCanonical(), "http://www.google.com:80/blog");
+    ASSERT_EQ(u2.getCanonical(), "https://www.google.com:443/blog");
 
     urlStr = "http://www.google.com/search?q=hello+world";
     URL u3(relativeUrlStr, urlStr);
-    ASSERT_EQ(u2.getCanonical(), "http://www.google.com:80/blog");
+    ASSERT_EQ(u3.getCanonical(), "http://www.google.com:80/blog");
 
 }
