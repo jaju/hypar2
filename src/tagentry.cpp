@@ -10,8 +10,7 @@
 #include "tagentry.hpp"
 #include "hash.hpp"
 #include "debug.hpp"
-#include <malloc.h>
-#include <assert.h>
+#include <cassert>
 
 BEGIN_NAMESPACE (hy);
 
