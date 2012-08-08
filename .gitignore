@@ -16,6 +16,7 @@ tags
 Testing/
 *.swp
 *.swo
+src/config.h
 apps/googleextract
 apps/hyhtml2text
 apps/hyhtmldoc
