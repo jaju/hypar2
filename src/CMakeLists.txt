@@ -1,8 +1,8 @@
 #
 # Copyright 2011 Ravindra Jaju (jaju [AT] msync org)
 #
-file(GLOB_RECURSE HEADER_FILES "*.h" "*.hpp" "*.hh")
-file(GLOB_RECURSE SRC_FILES "*.c" "*.cpp" "*.cc")
+file(GLOB_RECURSE HEADER_FILES "*.h" "*.hpp")
+file(GLOB_RECURSE SRC_FILES "*.cpp")
 
 option(DEBUG "Build the project with debug calls" ON)
 check_include_files(list HAVE_CXX_LIST)

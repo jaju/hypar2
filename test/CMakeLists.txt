@@ -6,7 +6,7 @@ find_package(GMock REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 include_directories(${GOOGLEMOCK_INCLUDE_DIR})
 
-file(GLOB_RECURSE TEST_FILES_CPP "*Test.cpp" "*test.cpp")
+file(GLOB_RECURSE TEST_FILES_CPP "*test.cpp")
 
 foreach(testfile ${TEST_FILES_CPP})
     get_filename_component(testname ${testfile} NAME_WE)
