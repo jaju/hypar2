@@ -31,9 +31,6 @@ BEGIN_C_DECLS
 END_C_DECLS
 
 using namespace std;
-#if __GNUC__ > 2
-using namespace __gnu_cxx;
-#endif
 using hy::Mmap;
 using hy::URL;
 unsigned int iMaxURLLen = 0;

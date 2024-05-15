@@ -3,14 +3,14 @@
 #include "localdefs.hpp"
 #include <boost/tokenizer.hpp>
 #include <string>
-#include <tr1/unordered_set>
+#include <unordered_set>
 
 #include <iostream>
 using namespace std;
 
 class XMLTokenizerFunc {
     private:
-        typedef std::tr1::unordered_set<char> charset;
+        typedef std::unordered_set<char> charset;
         typedef std::string::const_iterator iter;
         charset quotes;
     public:

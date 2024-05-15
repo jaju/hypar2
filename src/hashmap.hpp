@@ -9,8 +9,8 @@
 
 #pragma once
 #ifndef WIN32 // This is a GNU using system, with gcc version >= 3
-# include <tr1/unordered_map>
-# define HashMap std::tr1::unordered_map
+# include <unordered_map>
+# define HashMap std::unordered_map
 #else
 /* WIN32 guys, include your hash_map here! */
 #error "Win32: hashmap not implemented!"

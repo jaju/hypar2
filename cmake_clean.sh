@@ -1,0 +1,1 @@
+rm -rf CMakeCache.txt CMakeFiles CTestTestfile.cmake Makefile cmake cmake_install.cmake  src/CMakeFiles apps/CMakeFiles test/CMakeFiles test/CTestTestfile.cmake src/CTestTestfile.cmake src/cmake_install.cmake apps/CTestTestfile.cmake apps/cmake_install.cmake test/cmake_install.cmake test/Makefile apps/Makefile src/Makefile

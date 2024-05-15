@@ -42,7 +42,7 @@ XML::EntityCbRetval URLCollector::href_callback (Tag *pTag, void *pArg)
                 char *s = new char[sizeof(_char) * (l + 1)];
                 strncpy(s, pVal, l + 1);
                 pThis->m_baseHref = reinterpret_cast<char *>(s);
-                delete s;
+                delete[] s;
             }
         }
         return XML::DROP_SIMPLE;

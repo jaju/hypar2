@@ -358,7 +358,7 @@ string URL::getCanonical (bool dropFragment) const
     ans.append (":");
 
     char cport[sizeof (short) * 2 * CHAR_BIT];
-    sprintf (cport, "%hd", m_sPort);
+    snprintf (cport, sizeof(cport) - 1, "%hd", m_sPort);
     ans.append (cport);
     ans.append (m_path);
     if (!dropFragment && m_fragment.size ())

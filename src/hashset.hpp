@@ -9,8 +9,8 @@
 
 #pragma once
 #ifndef WIN32
-# include <tr1/unordered_set>
-# define HashSet std::tr1::unordered_set
+# include <unordered_set>
+# define HashSet std::unordered_set
 #else
 /* WIN32 guys, include your hash_map here! */
 #include <set>

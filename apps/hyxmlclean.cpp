@@ -31,9 +31,6 @@ BEGIN_C_DECLS;
 END_C_DECLS;
 
 using namespace std;
-#if __GNUC__ > 2
-using namespace __gnu_cxx;
-#endif
 using namespace hy;
 
 using hy::Mmap;
@@ -73,7 +70,7 @@ int main (int argc, char *argv[])
     cout << pLocalLocaleBuffer << endl;
 
     delete pNode;
-    delete pLocalLocaleBuffer;
+    delete[] pLocalLocaleBuffer;
     delete pBuffer;
     delete node;
 

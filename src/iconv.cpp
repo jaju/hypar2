@@ -45,7 +45,7 @@ Iconv::Iconv (const char *pFromEncoding, const char *pToEncoding) :
 
 Iconv::~Iconv ()
 {
-    if (m_iIconvDescriptor >= 0)
+    if (m_iIconvDescriptor != 0)
     {
         assert (iconv_close (m_iIconvDescriptor) == 0);
     }

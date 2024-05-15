@@ -11,6 +11,7 @@ install_manifest.txt
 *Makefile
 .project
 *.so
+*.dylib
 test/*test
 tags
 Testing/
@@ -28,3 +29,4 @@ apps/hyparsaxtimer
 apps/hytablereader
 apps/hyhtmlclean
 core.*
+/.clangd

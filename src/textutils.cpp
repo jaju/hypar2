@@ -124,7 +124,7 @@ string wideToNarrow (const wchar_t *ws)
     char *pLocalLocaleBuffer = new char[bufsz];
     wcstombs (pLocalLocaleBuffer, ws, bufsz);
     return_string.assign (pLocalLocaleBuffer);
-    delete pLocalLocaleBuffer;
+    delete[] pLocalLocaleBuffer;
     return return_string;
 }
 
