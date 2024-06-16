@@ -113,7 +113,7 @@ int main (int argc, char *argv[])
         bzero (pBuffer, m.getBufferLength () + 1);
         memcpy (pBuffer, m.getBuffer (), m.getBufferLength ());
         pNode = h.parse (pBuffer, node);
-        delete pBuffer;
+        delete[] pBuffer;
     }
     gettimeofday (&tv_end, 0);
 
