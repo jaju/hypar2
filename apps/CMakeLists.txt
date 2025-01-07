@@ -2,7 +2,7 @@ link_directories (${CMAKE_SOURCE_DIR}/hypar)
 
 file(GLOB_RECURSE APP_SOURCES "*.cpp")
 
-find_package(Boost REQUIRED)
+find_package(Boost CONFIG)
 
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})

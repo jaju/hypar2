@@ -30,3 +30,4 @@ apps/hytablereader
 apps/hyhtmlclean
 core.*
 /.clangd
+/build
